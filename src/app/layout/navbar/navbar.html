@@ -1,0 +1,363 @@
+<header
+  class="sticky top-0 z-40 w-full backdrop-blur-xl bg-white/70 dark:bg-slate-900/80 border-b border-slate-200/80 dark:border-slate-800/80 transition-colors duration-300"
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between min-h-[76px] py-2 sm:py-2.5 gap-4">
+      <!-- Brand Logo -->
+      <div
+        class="flex items-center gap-3.5 cursor-pointer group shrink-0"
+        (click)="weatherService.fetchWeather('Obninsk')"
+      >
+        <div
+          class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl overflow-hidden border transition-all duration-300 group-hover:scale-105 shrink-0 bg-slate-100/90 dark:bg-slate-900 border-slate-200/90 dark:border-white/10 shadow-md shadow-slate-300/40 dark:shadow-xl dark:shadow-sky-500/20"
+        >
+          <img
+            [src]="themeService.isDark() ? 'logo-dark.jpg' : 'logo-light.jpg'"
+            alt="wttr.app"
+            class="w-full h-full object-cover transition-opacity duration-300"
+          />
+        </div>
+        <div>
+          <span
+            class="font-extrabold text-2xl sm:text-3xl tracking-tight bg-gradient-to-r from-sky-600 via-indigo-600 to-purple-600 dark:from-sky-400 dark:via-indigo-300 dark:to-purple-400 bg-clip-text text-transparent leading-none"
+          >
+            wttr.app
+          </span>
+          <p class="text-xs text-slate-500 dark:text-slate-400 hidden sm:block mt-1 font-medium">
+            {{ i18n.dict().navbar.subtitle }}
+          </p>
+        </div>
+      </div>
+
+      <!-- Search Bar -->
+      <div class="flex-1 max-w-xl">
+        <form (ngSubmit)="onSearch()" class="relative flex items-center">
+          <div class="relative w-full">
+            <i
+              class="pi pi-search absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 pointer-events-none"
+            ></i>
+            <input
+              type="text"
+              [(ngModel)]="searchQuery"
+              name="search"
+              [placeholder]="i18n.dict().common.searchPlaceholder"
+              class="w-full pl-10 pr-24 py-2.5 rounded-full text-sm bg-slate-100 dark:bg-slate-800/90 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 border border-transparent focus:border-sky-500 dark:focus:border-sky-400 focus:bg-white dark:focus:bg-slate-900 focus:outline-none focus:ring-4 focus:ring-sky-500/10 transition-all duration-200 shadow-inner"
+            />
+            <div class="absolute right-1.5 top-1/2 -translate-y-1/2 flex items-center gap-1">
+              <button
+                type="button"
+                (click)="locateMe()"
+                [pTooltip]="i18n.dict().common.locateMe"
+                tooltipPosition="bottom"
+                [showDelay]="500"
+                class="w-8 h-8 rounded-full flex items-center justify-center text-slate-500 hover:text-sky-600 dark:text-slate-400 dark:hover:text-sky-400 hover:bg-slate-200/60 dark:hover:bg-slate-700/60 transition-colors"
+              >
+                <i class="pi pi-map-marker text-xs"></i>
+              </button>
+              <button
+                type="submit"
+                class="px-3 py-1.5 rounded-full text-xs font-medium bg-sky-500 hover:bg-sky-600 text-white shadow-sm hover:shadow transition-all"
+              >
+                {{ i18n.dict().common.searchBtn }}
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- Actions (Language, Settings & Theme Toggle) -->
+      <div class="flex items-center gap-2 shrink-0">
+        <!-- Language Selector Dropdown -->
+        <div class="relative">
+          <button
+            type="button"
+            (click)="toggleLangMenu()"
+            class="w-10 h-10 rounded-xl border border-slate-200/90 dark:border-slate-800 bg-white/70 dark:bg-slate-800/60 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 transition-all duration-200 hover:scale-105 active:scale-95 shadow-sm hover:shadow flex items-center justify-center shrink-0 cursor-pointer"
+            [class.ring-2]="isLangMenuOpen()"
+            [class.ring-sky-500/40]="isLangMenuOpen()"
+            [class.bg-sky-500/10]="isLangMenuOpen()"
+            [class.text-sky-600]="isLangMenuOpen()"
+            [class.dark:text-sky-400]="isLangMenuOpen()"
+            [pTooltip]="i18n.dict().navbar.langTooltip"
+            tooltipPosition="bottom"
+            [showDelay]="500"
+          >
+            <span
+              class="text-xs font-bold font-mono tracking-wider select-none leading-none uppercase"
+            >
+              {{ weatherService.currentLanguageInfo().badge }}
+            </span>
+          </button>
+
+          <!-- Language Dropdown Menu -->
+          @if (isLangMenuOpen()) {
+            <!-- Backdrop -->
+            <div class="fixed inset-0 z-40" (click)="isLangMenuOpen.set(false)"></div>
+
+            <div
+              class="absolute right-0 mt-2 w-56 py-1.5 rounded-2xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-slate-200/90 dark:border-slate-800 shadow-2xl z-50 animate-in fade-in zoom-in-95 duration-150 max-h-96 overflow-y-auto"
+            >
+              <div
+                class="px-3 py-1.5 mb-1 border-b border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-[11px] font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider"
+              >
+                <span>{{ i18n.dict().navbar.langHeader }}</span>
+                <span class="font-mono text-[10px]">{{
+                  weatherService.supportedLanguages.length
+                }}</span>
+              </div>
+
+              @for (lang of weatherService.supportedLanguages; track lang.code; let idx = $index) {
+                @if (idx === 2) {
+                  <div class="my-1 border-t border-slate-100 dark:border-slate-800/80"></div>
+                }
+                <button
+                  type="button"
+                  (click)="selectLanguage(lang.code)"
+                  class="w-full px-3 py-2 text-left flex items-center justify-between text-xs transition-colors rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/80 cursor-pointer"
+                  [class.bg-sky-50]="weatherService.currentLang() === lang.code"
+                  [class.dark:bg-sky-950/40]="weatherService.currentLang() === lang.code"
+                  [class.text-sky-600]="weatherService.currentLang() === lang.code"
+                  [class.dark:text-sky-400]="weatherService.currentLang() === lang.code"
+                  [class.font-semibold]="weatherService.currentLang() === lang.code"
+                >
+                  <div class="flex items-center gap-2.5">
+                    <span
+                      class="w-7 h-5 rounded-md flex items-center justify-center text-[10px] font-bold font-mono tracking-wider shrink-0 transition-colors uppercase border"
+                      [class.bg-sky-100]="weatherService.currentLang() === lang.code"
+                      [class.dark:bg-sky-900/60]="weatherService.currentLang() === lang.code"
+                      [class.text-sky-700]="weatherService.currentLang() === lang.code"
+                      [class.dark:text-sky-300]="weatherService.currentLang() === lang.code"
+                      [class.border-sky-300/80]="weatherService.currentLang() === lang.code"
+                      [class.dark:border-sky-700/80]="weatherService.currentLang() === lang.code"
+                      [class.bg-slate-100]="weatherService.currentLang() !== lang.code"
+                      [class.dark:bg-slate-800]="weatherService.currentLang() !== lang.code"
+                      [class.text-slate-600]="weatherService.currentLang() !== lang.code"
+                      [class.dark:text-slate-300]="weatherService.currentLang() !== lang.code"
+                      [class.border-slate-200/80]="weatherService.currentLang() !== lang.code"
+                      [class.dark:border-slate-700/80]="weatherService.currentLang() !== lang.code"
+                    >
+                      {{ lang.badge }}
+                    </span>
+                    <div class="flex flex-col">
+                      <span class="text-slate-900 dark:text-slate-100 font-medium leading-tight">
+                        {{ lang.nativeName }}
+                      </span>
+                      <span class="text-[10px] text-slate-400 dark:text-slate-500 font-mono">
+                        {{ lang.code }} · {{ lang.label }}
+                      </span>
+                    </div>
+                  </div>
+                  @if (weatherService.currentLang() === lang.code) {
+                    <i class="pi pi-check text-sky-500 text-xs"></i>
+                  }
+                </button>
+              }
+            </div>
+          }
+        </div>
+
+        <!-- Settings Dropdown Toggle -->
+        <button
+          type="button"
+          (click)="toggleSettings()"
+          class="w-10 h-10 rounded-xl border border-slate-200/90 dark:border-slate-800 bg-white/70 dark:bg-slate-800/60 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 transition-all duration-200 hover:scale-105 active:scale-95 shadow-sm hover:shadow flex items-center justify-center shrink-0 cursor-pointer"
+          [class.ring-2]="isSettingsOpen()"
+          [class.ring-sky-500/40]="isSettingsOpen()"
+          [class.bg-sky-500/10]="isSettingsOpen()"
+          [class.text-sky-600]="isSettingsOpen()"
+          [class.dark:text-sky-400]="isSettingsOpen()"
+          [pTooltip]="i18n.dict().navbar.settingsTooltip"
+          tooltipPosition="bottom"
+          [showDelay]="500"
+        >
+          <i class="pi pi-sliders-h text-sm"></i>
+        </button>
+
+        <!-- Theme Toggle -->
+        <button
+          type="button"
+          (click)="toggleTheme()"
+          class="w-10 h-10 rounded-xl border border-slate-200/90 dark:border-slate-800 bg-white/70 dark:bg-slate-800/60 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 transition-all duration-200 hover:scale-105 active:scale-95 shadow-sm hover:shadow flex items-center justify-center shrink-0 cursor-pointer"
+          [pTooltip]="
+            themeService.currentTheme() === 'dark'
+              ? i18n.dict().navbar.themeLightTooltip
+              : i18n.dict().navbar.themeDarkTooltip
+          "
+          tooltipPosition="bottom"
+          [showDelay]="500"
+        >
+          @if (themeService.currentTheme() === 'dark') {
+            <i class="pi pi-sun text-amber-400 text-sm"></i>
+          } @else {
+            <i class="pi pi-moon text-indigo-600 text-sm"></i>
+          }
+        </button>
+      </div>
+    </div>
+
+    <!-- Quick Presets Sub-bar -->
+    <div
+      class="flex items-center gap-2 py-2 overflow-x-auto no-scrollbar border-t border-slate-100 dark:border-slate-800/60 text-xs"
+    >
+      <span
+        class="text-slate-400 dark:text-slate-500 whitespace-nowrap flex items-center gap-1 font-medium pl-1"
+      >
+        <i class="pi pi-compass text-[11px]"></i> {{ i18n.dict().navbar.quick }}
+      </span>
+      <div class="flex items-center gap-1.5 flex-nowrap">
+        @for (item of quickPresets(); track item.query) {
+          <button
+            type="button"
+            (click)="selectPreset(item.query)"
+            [class.bg-sky-500]="
+              weatherService.currentQuery().toLowerCase() === item.query.toLowerCase()
+            "
+            [class.text-white]="
+              weatherService.currentQuery().toLowerCase() === item.query.toLowerCase()
+            "
+            [class.bg-slate-100]="
+              weatherService.currentQuery().toLowerCase() !== item.query.toLowerCase()
+            "
+            [class.dark:bg-slate-800]="
+              weatherService.currentQuery().toLowerCase() !== item.query.toLowerCase()
+            "
+            [class.text-slate-700]="
+              weatherService.currentQuery().toLowerCase() !== item.query.toLowerCase()
+            "
+            [class.dark:text-slate-300]="
+              weatherService.currentQuery().toLowerCase() !== item.query.toLowerCase()
+            "
+            class="px-2.5 py-1 rounded-full whitespace-nowrap hover:bg-sky-500/10 hover:text-sky-600 dark:hover:text-sky-400 transition-all font-medium text-[11px]"
+          >
+            {{ item.label }}
+          </button>
+        }
+      </div>
+    </div>
+
+    <!-- Settings Panel (Collapsible) -->
+    @if (isSettingsOpen()) {
+      <div
+        class="py-3 px-4 my-2 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 flex flex-wrap items-center justify-between gap-4 text-xs animate-in fade-in slide-in-from-top-2 duration-200"
+      >
+        <!-- Temp Units -->
+        <div class="flex items-center gap-2">
+          <span class="text-slate-500 dark:text-slate-400 font-medium">{{
+            i18n.dict().navbar.tempLabel
+          }}</span>
+          <div
+            class="inline-flex rounded-lg p-0.5 bg-slate-200/80 dark:bg-slate-900/80 border border-slate-300/50 dark:border-slate-700"
+          >
+            <button
+              type="button"
+              (click)="setTempUnit('C')"
+              [class.bg-white]="weatherService.settings().tempUnit === 'C'"
+              [class.dark:bg-slate-800]="weatherService.settings().tempUnit === 'C'"
+              [class.shadow-sm]="weatherService.settings().tempUnit === 'C'"
+              [class.text-sky-600]="weatherService.settings().tempUnit === 'C'"
+              class="px-2.5 py-1 rounded-md font-semibold transition-all"
+            >
+              °C
+            </button>
+            <button
+              type="button"
+              (click)="setTempUnit('F')"
+              [class.bg-white]="weatherService.settings().tempUnit === 'F'"
+              [class.dark:bg-slate-800]="weatherService.settings().tempUnit === 'F'"
+              [class.shadow-sm]="weatherService.settings().tempUnit === 'F'"
+              [class.text-sky-600]="weatherService.settings().tempUnit === 'F'"
+              class="px-2.5 py-1 rounded-md font-semibold transition-all"
+            >
+              °F
+            </button>
+          </div>
+        </div>
+
+        <!-- Wind Units -->
+        <div class="flex items-center gap-2">
+          <span class="text-slate-500 dark:text-slate-400 font-medium">{{
+            i18n.dict().navbar.windLabel
+          }}</span>
+          <div
+            class="inline-flex rounded-lg p-0.5 bg-slate-200/80 dark:bg-slate-900/80 border border-slate-300/50 dark:border-slate-700"
+          >
+            <button
+              type="button"
+              (click)="setWindUnit('ms')"
+              [class.bg-white]="weatherService.settings().windUnit === 'ms'"
+              [class.dark:bg-slate-800]="weatherService.settings().windUnit === 'ms'"
+              [class.shadow-sm]="weatherService.settings().windUnit === 'ms'"
+              [class.text-sky-600]="weatherService.settings().windUnit === 'ms'"
+              class="px-2.5 py-1 rounded-md font-semibold transition-all"
+            >
+              {{ i18n.dict().navbar.unitMs }}
+            </button>
+            <button
+              type="button"
+              (click)="setWindUnit('kmh')"
+              [class.bg-white]="weatherService.settings().windUnit === 'kmh'"
+              [class.dark:bg-slate-800]="weatherService.settings().windUnit === 'kmh'"
+              [class.shadow-sm]="weatherService.settings().windUnit === 'kmh'"
+              [class.text-sky-600]="weatherService.settings().windUnit === 'kmh'"
+              class="px-2.5 py-1 rounded-md font-semibold transition-all"
+            >
+              {{ i18n.dict().navbar.unitKmh }}
+            </button>
+            <button
+              type="button"
+              (click)="setWindUnit('mph')"
+              [class.bg-white]="weatherService.settings().windUnit === 'mph'"
+              [class.dark:bg-slate-800]="weatherService.settings().windUnit === 'mph'"
+              [class.shadow-sm]="weatherService.settings().windUnit === 'mph'"
+              [class.text-sky-600]="weatherService.settings().windUnit === 'mph'"
+              class="px-2.5 py-1 rounded-md font-semibold transition-all"
+            >
+              {{ i18n.dict().navbar.unitMph }}
+            </button>
+          </div>
+        </div>
+
+        <!-- Pressure Units -->
+        <div class="flex items-center gap-2">
+          <span class="text-slate-500 dark:text-slate-400 font-medium">{{
+            i18n.dict().navbar.pressureLabel
+          }}</span>
+          <div
+            class="inline-flex rounded-lg p-0.5 bg-slate-200/80 dark:bg-slate-900/80 border border-slate-300/50 dark:border-slate-700"
+          >
+            <button
+              type="button"
+              (click)="setPressureUnit('mmHg')"
+              [class.bg-white]="weatherService.settings().pressureUnit === 'mmHg'"
+              [class.dark:bg-slate-800]="weatherService.settings().pressureUnit === 'mmHg'"
+              [class.shadow-sm]="weatherService.settings().pressureUnit === 'mmHg'"
+              [class.text-sky-600]="weatherService.settings().pressureUnit === 'mmHg'"
+              class="px-2.5 py-1 rounded-md font-semibold transition-all"
+            >
+              {{ i18n.dict().navbar.unitMmHg }}
+            </button>
+            <button
+              type="button"
+              (click)="setPressureUnit('hPa')"
+              [class.bg-white]="weatherService.settings().pressureUnit === 'hPa'"
+              [class.dark:bg-slate-800]="weatherService.settings().pressureUnit === 'hPa'"
+              [class.shadow-sm]="weatherService.settings().pressureUnit === 'hPa'"
+              [class.text-sky-600]="weatherService.settings().pressureUnit === 'hPa'"
+              class="px-2.5 py-1 rounded-md font-semibold transition-all"
+            >
+              {{ i18n.dict().navbar.unitHpa }}
+            </button>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          (click)="toggleSettings()"
+          class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+        >
+          <i class="pi pi-times"></i>
+        </button>
+      </div>
+    }
+  </div>
+</header>

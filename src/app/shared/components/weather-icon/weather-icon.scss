@@ -1,0 +1,361 @@
+:host {
+  display: inline-flex;
+  vertical-align: middle;
+}
+
+/* ==========================================================================
+   Weather Icon Micro-Animations
+   ========================================================================== */
+
+/* Sun: continuous rotation & pulse */
+.anim-sun-rays {
+  transform-origin: 32px 32px;
+  animation: sun-rays-rotate 24s linear infinite;
+}
+
+@keyframes sun-rays-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.anim-sun-core {
+  transform-origin: 32px 32px;
+  animation: sun-pulse 4s ease-in-out infinite alternate;
+}
+
+@keyframes sun-pulse {
+  from {
+    transform: scale(0.96);
+  }
+  to {
+    transform: scale(1.04);
+  }
+}
+
+/* Moon Glow & Star Twinkling */
+.anim-moon-glow {
+  transform-origin: 38px 32px;
+  animation: moon-glow-pulse 4s ease-in-out infinite alternate;
+}
+
+@keyframes moon-glow-pulse {
+  from {
+    opacity: 0.9;
+    filter: drop-shadow(0 0 3px rgba(129, 140, 248, 0.4));
+  }
+  to {
+    opacity: 1;
+    filter: drop-shadow(0 0 8px rgba(165, 180, 252, 0.8));
+  }
+}
+
+.anim-star-twinkle-1,
+.anim-star-twinkle-2,
+.anim-star-twinkle-3 {
+  animation: star-twinkle 2.5s ease-in-out infinite alternate;
+}
+
+.anim-star-twinkle-1 {
+  transform-origin: 18px 19px;
+}
+.anim-star-twinkle-2 {
+  transform-origin: 14px 41px;
+  animation-delay: 0.8s;
+}
+.anim-star-twinkle-3 {
+  transform-origin: 46px 19px;
+  animation-delay: 1.5s;
+}
+
+@keyframes star-twinkle {
+  0% {
+    opacity: 0.25;
+    transform: scale(0.7);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+  100% {
+    opacity: 0.35;
+    transform: scale(0.8);
+  }
+}
+
+/* Clouds Floating */
+.anim-cloud-float {
+  animation: cloud-float 4.5s ease-in-out infinite alternate;
+}
+
+@keyframes cloud-float {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-2.5px);
+  }
+}
+
+.anim-cloud-float-slow {
+  animation: cloud-float-slow 6s ease-in-out infinite alternate;
+}
+
+@keyframes cloud-float-slow {
+  from {
+    transform: translateY(-1px);
+  }
+  to {
+    transform: translateY(1.5px);
+  }
+}
+
+/* Rain & Drizzle */
+.anim-drizzle-1,
+.anim-drizzle-2,
+.anim-drizzle-3 {
+  animation: drizzle-fall 1.6s linear infinite;
+}
+.anim-drizzle-2 {
+  animation-delay: 0.5s;
+}
+.anim-drizzle-3 {
+  animation-delay: 1s;
+}
+
+@keyframes drizzle-fall {
+  0% {
+    transform: translateY(-4px);
+    opacity: 0;
+  }
+  30%,
+  80% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(5px);
+    opacity: 0;
+  }
+}
+
+.anim-rain-drop-1,
+.anim-rain-drop-2,
+.anim-rain-drop-3,
+.anim-sleet-drop {
+  animation: rain-fall 1.2s cubic-bezier(0.4, 0, 1, 1) infinite;
+}
+.anim-rain-drop-2 {
+  animation-delay: 0.4s;
+}
+.anim-rain-drop-3 {
+  animation-delay: 0.8s;
+}
+
+@keyframes rain-fall {
+  0% {
+    transform: translateY(-5px);
+    opacity: 0;
+  }
+  20%,
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(6px);
+    opacity: 0;
+  }
+}
+
+/* Heavy Torrential Rain */
+.anim-heavy-rain-1,
+.anim-heavy-rain-2,
+.anim-heavy-rain-3,
+.anim-heavy-rain-4,
+.anim-heavy-rain-5 {
+  animation: heavy-rain-fall 0.7s linear infinite;
+}
+.anim-heavy-rain-2 {
+  animation-delay: 0.15s;
+}
+.anim-heavy-rain-3 {
+  animation-delay: 0.3s;
+}
+.anim-heavy-rain-4 {
+  animation-delay: 0.45s;
+}
+.anim-heavy-rain-5 {
+  animation-delay: 0.6s;
+}
+
+@keyframes heavy-rain-fall {
+  0% {
+    transform: translate(2px, -6px);
+    opacity: 0;
+  }
+  25%,
+  85% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-3px, 8px);
+    opacity: 0;
+  }
+}
+
+/* Snow & Sleet */
+.anim-snow-flake-1,
+.anim-snow-flake-3 {
+  animation: snow-drift 2.8s ease-in-out infinite;
+}
+.anim-snow-flake-2 {
+  animation: snow-drift 3.2s ease-in-out 0.9s infinite reverse;
+}
+.anim-snow-flake-3 {
+  animation-delay: 1.6s;
+}
+
+@keyframes snow-drift {
+  0% {
+    transform: translate(0, -5px) rotate(0deg);
+    opacity: 0;
+  }
+  25% {
+    opacity: 1;
+  }
+  50% {
+    transform: translate(2px, 1px) rotate(45deg);
+  }
+  80% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate(-1px, 6px) rotate(90deg);
+    opacity: 0;
+  }
+}
+
+.anim-blizzard-wind {
+  animation: blizzard-wind-surge 2s ease-in-out infinite alternate;
+}
+
+@keyframes blizzard-wind-surge {
+  from {
+    transform: translateX(-3px);
+    opacity: 0.6;
+  }
+  to {
+    transform: translateX(3px);
+    opacity: 1;
+  }
+}
+
+.anim-blizzard-flake-1,
+.anim-blizzard-flake-2 {
+  animation: blizzard-flake 1.2s cubic-bezier(0.2, 0.8, 0.4, 1) infinite;
+}
+.anim-blizzard-flake-2 {
+  animation-delay: 0.5s;
+}
+
+@keyframes blizzard-flake {
+  0% {
+    transform: translate(8px, -5px) rotate(0deg);
+    opacity: 0;
+  }
+  25%,
+  80% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate(-10px, 8px) rotate(180deg);
+    opacity: 0;
+  }
+}
+
+.anim-sleet-pellet {
+  animation: sleet-pellet-bounce 1.4s ease-in infinite;
+}
+
+@keyframes sleet-pellet-bounce {
+  0% {
+    transform: translateY(-6px);
+    opacity: 0;
+  }
+  25% {
+    opacity: 1;
+  }
+  75% {
+    transform: translateY(4px);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateY(6px);
+    opacity: 0;
+  }
+}
+
+/* Lightning */
+.anim-lightning {
+  animation: lightning-flash 3.5s ease-in-out infinite;
+}
+
+@keyframes lightning-flash {
+  0%,
+  88%,
+  96%,
+  100% {
+    opacity: 0.15;
+    filter: drop-shadow(0 0 2px rgba(251, 191, 36, 0.3));
+    transform: scale(0.97);
+  }
+  89%,
+  93% {
+    opacity: 1;
+    filter: drop-shadow(0 0 12px rgba(253, 224, 71, 0.95))
+      drop-shadow(0 0 20px rgba(245, 158, 11, 0.8));
+    transform: scale(1.04);
+  }
+  91% {
+    opacity: 0.4;
+  }
+  94% {
+    opacity: 0.85;
+  }
+}
+
+/* Wind Streams */
+.anim-wind-flow {
+  animation: wind-gust 3s ease-in-out infinite alternate;
+}
+
+@keyframes wind-gust {
+  from {
+    transform: translateX(-2px) scaleX(0.97);
+    opacity: 0.75;
+  }
+  to {
+    transform: translateX(3px) scaleX(1.03);
+    opacity: 1;
+  }
+}
+
+/* Fog Waves */
+.anim-fog-wave {
+  animation: fog-drift 5s ease-in-out infinite alternate;
+}
+
+@keyframes fog-drift {
+  from {
+    transform: translateX(-3px);
+  }
+  to {
+    transform: translateX(3px);
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  [class*='anim-'] {
+    animation: none !important;
+  }
+}

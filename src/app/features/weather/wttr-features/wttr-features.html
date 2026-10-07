@@ -1,0 +1,129 @@
+<div
+  class="rounded-3xl p-6 bg-white/70 dark:bg-slate-900/70 border border-slate-200/80 dark:border-slate-800/80 backdrop-blur-xl shadow-lg"
+>
+  <!-- Tabs Navigation Header -->
+  <div
+    class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-slate-100 dark:border-slate-800"
+  >
+    <div class="flex items-center gap-2">
+      <div
+        class="w-8 h-8 rounded-xl bg-purple-500/10 dark:bg-purple-500/20 text-purple-600 dark:text-purple-400 flex items-center justify-center"
+      >
+        <i class="pi pi-code text-sm"></i>
+      </div>
+      <div>
+        <h3 class="text-base font-bold text-slate-900 dark:text-white">
+          {{ i18n.dict().features.title }}
+        </h3>
+        <p class="text-xs text-slate-500 dark:text-slate-400">
+          {{ i18n.dict().features.subtitle }}
+        </p>
+      </div>
+    </div>
+
+    <!-- Tab Switcher -->
+    <div
+      class="inline-flex rounded-xl p-1 bg-slate-100 dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700/60 text-xs"
+    >
+      <button
+        type="button"
+        (click)="selectTab('web')"
+        [class.bg-white]="activeFeatureTab() === 'web'"
+        [class.dark:bg-slate-700]="activeFeatureTab() === 'web'"
+        [class.text-purple-600]="activeFeatureTab() === 'web'"
+        [class.dark:text-purple-300]="activeFeatureTab() === 'web'"
+        [class.shadow-sm]="activeFeatureTab() === 'web'"
+        [class.text-slate-600]="activeFeatureTab() !== 'web'"
+        [class.dark:text-slate-400]="activeFeatureTab() !== 'web'"
+        class="px-3 py-1.5 rounded-lg font-semibold transition-all flex items-center gap-1.5 cursor-pointer"
+      >
+        <i class="pi pi-globe text-xs"></i> {{ i18n.dict().features.tabWeb }}
+      </button>
+
+      <button
+        type="button"
+        (click)="selectTab('terminal')"
+        [class.bg-white]="activeFeatureTab() === 'terminal'"
+        [class.dark:bg-slate-700]="activeFeatureTab() === 'terminal'"
+        [class.text-purple-600]="activeFeatureTab() === 'terminal'"
+        [class.dark:text-purple-300]="activeFeatureTab() === 'terminal'"
+        [class.shadow-sm]="activeFeatureTab() === 'terminal'"
+        [class.text-slate-600]="activeFeatureTab() !== 'terminal'"
+        [class.dark:text-slate-400]="activeFeatureTab() !== 'terminal'"
+        class="px-3 py-1.5 rounded-lg font-semibold transition-all flex items-center gap-1.5 cursor-pointer"
+      >
+        <i class="pi pi-code text-xs"></i> {{ i18n.dict().features.tabTerminal }}
+      </button>
+
+      <button
+        type="button"
+        (click)="selectTab('png')"
+        [class.bg-white]="activeFeatureTab() === 'png'"
+        [class.dark:bg-slate-700]="activeFeatureTab() === 'png'"
+        [class.text-purple-600]="activeFeatureTab() === 'png'"
+        [class.dark:text-purple-300]="activeFeatureTab() === 'png'"
+        [class.shadow-sm]="activeFeatureTab() === 'png'"
+        [class.text-slate-600]="activeFeatureTab() !== 'png'"
+        [class.dark:text-slate-400]="activeFeatureTab() !== 'png'"
+        class="px-3 py-1.5 rounded-lg font-semibold transition-all flex items-center gap-1.5 cursor-pointer"
+      >
+        <i class="pi pi-image text-xs"></i> {{ i18n.dict().features.tabPng }}
+      </button>
+
+      <button
+        type="button"
+        (click)="selectTab('oneline')"
+        [class.bg-white]="activeFeatureTab() === 'oneline'"
+        [class.dark:bg-slate-700]="activeFeatureTab() === 'oneline'"
+        [class.text-purple-600]="activeFeatureTab() === 'oneline'"
+        [class.dark:text-purple-300]="activeFeatureTab() === 'oneline'"
+        [class.shadow-sm]="activeFeatureTab() === 'oneline'"
+        [class.text-slate-600]="activeFeatureTab() !== 'oneline'"
+        [class.dark:text-slate-400]="activeFeatureTab() !== 'oneline'"
+        class="px-3 py-1.5 rounded-lg font-semibold transition-all flex items-center gap-1.5 cursor-pointer"
+      >
+        <i class="pi pi-align-left text-xs"></i> {{ i18n.dict().features.tabOneline }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Tab Content (Modular Components) -->
+  <div class="mt-4">
+    @switch (activeFeatureTab()) {
+      @case ('web') {
+        <app-tab-web
+          [query]="weatherService.currentQuery()"
+          [isLoading]="weatherService.isWebLoading()"
+          [htmlContent]="weatherService.webHtml()"
+          [error]="weatherService.webError()"
+          [loadingSeconds]="loadingSeconds()"
+          [statusText]="loadingStatusText()"
+          (reload)="weatherService.fetchWebHtml(weatherService.currentQuery(), true)"
+          (copyUrl)="copyToClipboard($event)"
+        />
+      }
+
+      @case ('terminal') {
+        <app-tab-terminal
+          [query]="weatherService.currentQuery()"
+          [isLoading]="weatherService.isTerminalLoading()"
+          [terminalOutput]="weatherService.terminalOutput()"
+          [loadingSeconds]="loadingSeconds()"
+          (retry)="weatherService.fetchTerminalOutput(weatherService.currentQuery())"
+          (copyCommand)="copyToClipboard($event)"
+        />
+      }
+
+      @case ('png') {
+        <app-tab-png [query]="weatherService.currentQuery()" (copyLink)="copyToClipboard($event)" />
+      }
+
+      @case ('oneline') {
+        <app-tab-oneline
+          [query]="weatherService.currentQuery()"
+          (copyCommand)="copyToClipboard($event)"
+        />
+      }
+    }
+  </div>
+</div>

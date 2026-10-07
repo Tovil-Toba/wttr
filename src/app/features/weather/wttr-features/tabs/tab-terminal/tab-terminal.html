@@ -1,0 +1,60 @@
+<div class="space-y-3">
+  <!-- Bash Command Bar -->
+  <div
+    class="flex items-center justify-between gap-2 px-4 py-2.5 rounded-xl bg-slate-900 text-slate-200 font-mono text-xs border border-slate-800 shadow-inner"
+  >
+    <div class="flex items-center gap-2 overflow-x-auto">
+      <span class="text-emerald-400 select-none">$</span>
+      <span class="text-sky-300">{{ curlCommand() }}</span>
+    </div>
+    <div class="flex items-center gap-2 shrink-0">
+      <button
+        type="button"
+        (click)="retry.emit()"
+        [disabled]="isLoading()"
+        [title]="i18n.dict().features.terminalRefreshTitle"
+        class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 disabled:opacity-50 text-slate-300 hover:text-white transition-colors flex items-center gap-1 text-[11px] whitespace-nowrap cursor-pointer disabled:cursor-not-allowed"
+      >
+        <i class="pi pi-refresh" [class.animate-spin]="isLoading()"></i>
+        <span>{{ i18n.dict().features.refreshBtn }}</span>
+      </button>
+      <button
+        type="button"
+        (click)="onCopy()"
+        class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors flex items-center gap-1 text-[11px] whitespace-nowrap cursor-pointer"
+      >
+        <i [class]="copied() ? 'pi pi-check text-emerald-400' : 'pi pi-copy'"></i>
+        {{ copied() ? i18n.dict().common.copied : i18n.dict().common.copy }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Live Terminal Output Window -->
+  <div
+    class="relative rounded-2xl bg-black border border-slate-800 p-4 font-mono text-xs overflow-x-auto min-h-[300px] max-h-[460px] shadow-2xl text-slate-300 leading-relaxed no-scrollbar"
+  >
+    <!-- Terminal Header -->
+    <div class="flex items-center gap-2 pb-3 mb-2 border-b border-zinc-800/80 select-none">
+      <i class="pi pi-terminal text-emerald-400 text-xs"></i>
+      <span class="text-[10px] text-zinc-400 font-sans">{{
+        i18n.dict().features.terminalHeader
+      }}</span>
+    </div>
+
+    @if (isLoading()) {
+      <div class="py-12 flex items-center justify-center">
+        <app-loader
+          [title]="i18n.dict().features.terminalLoaderTitle"
+          [status]="i18n.dict().features.terminalLoaderStatus"
+          [seconds]="loadingSeconds()"
+          accent="emerald"
+          (retry)="retry.emit()"
+        />
+      </div>
+    } @else {
+      <pre class="whitespace-pre font-mono text-[12px] leading-tight text-emerald-400">{{
+        terminalOutput()
+      }}</pre>
+    }
+  </div>
+</div>

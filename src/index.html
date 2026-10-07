@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ru" class="dark">
+  <head>
+    <meta charset="utf-8" />
+    <title>wttr.app — Современный прогноз погоды (wttr.in API)</title>
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Современное SPA приложение с прогнозом погоды на базе wttr.in API, Angular 22, PrimeNG 22 и Tailwind CSS. Поддержка светлой и тёмной темы."
+    />
+    <meta name="color-scheme" content="dark light" />
+    <link rel="icon" type="image/jpeg" href="logo.jpg" />
+    <link rel="apple-touch-icon" href="logo.jpg" />
+
+    <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Prevent FOUC Theme & Language Script (Modern Web Guidance) -->
+    <script>
+      (function () {
+        try {
+          const savedLang = localStorage.getItem('wttr_lang');
+          if (savedLang) {
+            document.documentElement.lang = savedLang;
+          }
+          const savedTheme = localStorage.getItem('wttr_theme');
+          const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          const theme = savedTheme || (prefersDark ? 'dark' : 'light');
+          if (theme === 'dark') {
+            document.documentElement.classList.add('dark');
+            document.documentElement.style.colorScheme = 'dark';
+          } else {
+            document.documentElement.classList.remove('dark');
+            document.documentElement.style.colorScheme = 'light';
+          }
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body
+    class="bg-slate-50 dark:bg-slate-950 font-sans antialiased text-slate-900 dark:text-slate-100 min-h-screen"
+  >
+    <app-root></app-root>
+  </body>
+</html>

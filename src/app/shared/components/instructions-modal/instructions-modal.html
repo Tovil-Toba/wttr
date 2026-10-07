@@ -1,0 +1,604 @@
+<div
+  class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md animate-in fade-in duration-200"
+  (click)="close.emit()"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="instructions-modal-title"
+>
+  <!-- Modal Card -->
+  <div
+    class="relative w-full max-w-3xl rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 shadow-2xl overflow-hidden flex flex-col max-h-[88vh] animate-in zoom-in-95 duration-200"
+    (click)="$event.stopPropagation()"
+  >
+    <!-- Header -->
+    <div
+      class="flex items-center justify-between px-6 py-4 border-b border-slate-100 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-950/40 select-none shrink-0"
+    >
+      <div class="flex items-center gap-3">
+        <div
+          class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-sky-500 to-indigo-600 text-white flex items-center justify-center shadow-md shadow-sky-500/20"
+        >
+          <i class="pi pi-compass text-base"></i>
+        </div>
+        <div>
+          <h3
+            id="instructions-modal-title"
+            class="text-base font-bold text-slate-900 dark:text-white leading-tight"
+          >
+            {{ i18n.dict().modals.instructionsTitle }}
+          </h3>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+            {{ i18n.dict().modals.instructionsSubtitle }}
+          </p>
+        </div>
+      </div>
+
+      <button
+        type="button"
+        (click)="close.emit()"
+        [title]="i18n.dict().common.close + ' (Esc)'"
+        class="w-9 h-9 rounded-xl border border-slate-200 dark:border-slate-800 bg-white/70 dark:bg-slate-800 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors flex items-center justify-center cursor-pointer shadow-xs"
+      >
+        <i class="pi pi-times text-sm"></i>
+      </button>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div
+      class="flex items-center gap-1.5 px-6 py-2.5 bg-slate-100/60 dark:bg-slate-950/60 border-b border-slate-200/60 dark:border-slate-800 overflow-x-auto no-scrollbar shrink-0 text-xs"
+    >
+      <button
+        type="button"
+        (click)="setSection('search')"
+        [class.bg-white]="activeSection() === 'search'"
+        [class.dark:bg-slate-800]="activeSection() === 'search'"
+        [class.text-sky-600]="activeSection() === 'search'"
+        [class.dark:text-sky-400]="activeSection() === 'search'"
+        [class.shadow-xs]="activeSection() === 'search'"
+        [class.text-slate-600]="activeSection() !== 'search'"
+        [class.dark:text-slate-400]="activeSection() !== 'search'"
+        class="px-3 py-1.5 rounded-lg font-semibold transition-all flex items-center gap-1.5 whitespace-nowrap cursor-pointer"
+      >
+        <i class="pi pi-search text-xs"></i>
+        <span>{{ i18n.dict().instructions.tabSearch }}</span>
+      </button>
+
+      <button
+        type="button"
+        (click)="setSection('settings')"
+        [class.bg-white]="activeSection() === 'settings'"
+        [class.dark:bg-slate-800]="activeSection() === 'settings'"
+        [class.text-sky-600]="activeSection() === 'settings'"
+        [class.dark:text-sky-400]="activeSection() === 'settings'"
+        [class.shadow-xs]="activeSection() === 'settings'"
+        [class.text-slate-600]="activeSection() !== 'settings'"
+        [class.dark:text-slate-400]="activeSection() !== 'settings'"
+        class="px-3 py-1.5 rounded-lg font-semibold transition-all flex items-center gap-1.5 whitespace-nowrap cursor-pointer"
+      >
+        <i class="pi pi-sliders-h text-xs"></i>
+        <span>{{ i18n.dict().instructions.tabSettings }}</span>
+      </button>
+
+      <button
+        type="button"
+        (click)="setSection('features')"
+        [class.bg-white]="activeSection() === 'features'"
+        [class.dark:bg-slate-800]="activeSection() === 'features'"
+        [class.text-sky-600]="activeSection() === 'features'"
+        [class.dark:text-sky-400]="activeSection() === 'features'"
+        [class.shadow-xs]="activeSection() === 'features'"
+        [class.text-slate-600]="activeSection() !== 'features'"
+        [class.dark:text-slate-400]="activeSection() !== 'features'"
+        class="px-3 py-1.5 rounded-lg font-semibold transition-all flex items-center gap-1.5 whitespace-nowrap cursor-pointer"
+      >
+        <i class="pi pi-code text-xs"></i>
+        <span>{{ i18n.dict().instructions.tabFeatures }}</span>
+      </button>
+
+      <button
+        type="button"
+        (click)="setSection('curl')"
+        [class.bg-white]="activeSection() === 'curl'"
+        [class.dark:bg-slate-800]="activeSection() === 'curl'"
+        [class.text-sky-600]="activeSection() === 'curl'"
+        [class.dark:text-sky-400]="activeSection() === 'curl'"
+        [class.shadow-xs]="activeSection() === 'curl'"
+        [class.text-slate-600]="activeSection() !== 'curl'"
+        [class.dark:text-slate-400]="activeSection() !== 'curl'"
+        class="px-3 py-1.5 rounded-lg font-semibold transition-all flex items-center gap-1.5 whitespace-nowrap cursor-pointer"
+      >
+        <i class="pi pi-terminal text-xs"></i>
+        <span>{{ i18n.dict().instructions.tabCurl }}</span>
+      </button>
+    </div>
+
+    <!-- Scrollable Body Content -->
+    <div
+      class="flex-1 overflow-y-auto overscroll-contain p-6 space-y-6 text-slate-700 dark:text-slate-300 text-sm"
+    >
+      <!-- Section 1: Поиск и форматы локаций -->
+      @if (activeSection() === 'search') {
+        <div class="space-y-4 animate-in fade-in duration-150">
+          <div class="space-y-1">
+            <h4 class="font-bold text-base text-slate-900 dark:text-white flex items-center gap-2">
+              <i class="pi pi-search text-sky-500"></i>
+              {{ i18n.dict().instructions.searchTitle }}
+            </h4>
+            <p class="text-xs text-slate-500 dark:text-slate-400">
+              {{ i18n.dict().instructions.searchSubtitle }}
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+            <!-- Города -->
+            <div
+              class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-800 space-y-1.5"
+            >
+              <div class="font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
+                <i class="pi pi-map-marker text-rose-500"></i>
+                {{ i18n.dict().instructions.cityTitle }}
+              </div>
+              <p class="text-slate-500 dark:text-slate-400">
+                {{ i18n.dict().instructions.cityDesc }}
+              </p>
+              <div class="flex flex-wrap gap-1 pt-1">
+                <code
+                  class="px-2 py-0.5 rounded bg-slate-200/70 dark:bg-slate-900 font-mono text-[11px] text-sky-600 dark:text-sky-400"
+                  >Москва</code
+                >
+                <code
+                  class="px-2 py-0.5 rounded bg-slate-200/70 dark:bg-slate-900 font-mono text-[11px] text-sky-600 dark:text-sky-400"
+                  >Обнинск</code
+                >
+                <code
+                  class="px-2 py-0.5 rounded bg-slate-200/70 dark:bg-slate-900 font-mono text-[11px] text-sky-600 dark:text-sky-400"
+                  >Tokyo</code
+                >
+                <code
+                  class="px-2 py-0.5 rounded bg-slate-200/70 dark:bg-slate-900 font-mono text-[11px] text-sky-600 dark:text-sky-400"
+                  >New York</code
+                >
+              </div>
+            </div>
+
+            <!-- Аэропорты -->
+            <div
+              class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-800 space-y-1.5"
+            >
+              <div class="font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
+                <i class="pi pi-send text-indigo-500"></i>
+                {{ i18n.dict().instructions.airportTitle }}
+              </div>
+              <p class="text-slate-500 dark:text-slate-400">
+                {{ i18n.dict().instructions.airportDesc }}
+              </p>
+              <div class="flex flex-wrap gap-1 pt-1">
+                <code
+                  class="px-2 py-0.5 rounded bg-slate-200/70 dark:bg-slate-900 font-mono text-[11px] text-indigo-600 dark:text-indigo-400"
+                  >SVO</code
+                >
+                <span class="text-[11px] text-slate-400"
+                  >({{ i18n.dict().instructions.airportSheremetyevo }})</span
+                >
+                <code
+                  class="px-2 py-0.5 rounded bg-slate-200/70 dark:bg-slate-900 font-mono text-[11px] text-indigo-600 dark:text-indigo-400"
+                  >DME</code
+                >
+                <span class="text-[11px] text-slate-400"
+                  >({{ i18n.dict().instructions.airportDomodedovo }})</span
+                >
+                <code
+                  class="px-2 py-0.5 rounded bg-slate-200/70 dark:bg-slate-900 font-mono text-[11px] text-indigo-600 dark:text-indigo-400"
+                  >JFK</code
+                >
+              </div>
+            </div>
+
+            <!-- Координаты -->
+            <div
+              class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-800 space-y-1.5"
+            >
+              <div class="font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
+                <i class="pi pi-compass text-emerald-500"></i>
+                {{ i18n.dict().instructions.coordsTitle }}
+              </div>
+              <p class="text-slate-500 dark:text-slate-400">
+                {{ i18n.dict().instructions.coordsDesc }}
+              </p>
+              <code
+                class="inline-block px-2 py-0.5 rounded bg-slate-200/70 dark:bg-slate-900 font-mono text-[11px] text-emerald-600 dark:text-emerald-400"
+                >55.09,36.61</code
+              >
+            </div>
+
+            <!-- Достопримечательности -->
+            <div
+              class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-800 space-y-1.5"
+            >
+              <div class="font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
+                <i class="pi pi-flag text-amber-500"></i> {{ i18n.dict().instructions.sightTitle }}
+              </div>
+              <p class="text-slate-500 dark:text-slate-400">
+                {{ i18n.dict().instructions.sightDesc }}
+              </p>
+              <div class="flex flex-wrap gap-1">
+                <code
+                  class="px-2 py-0.5 rounded bg-slate-200/70 dark:bg-slate-900 font-mono text-[11px] text-amber-600 dark:text-amber-400"
+                  >Eiffel+tower</code
+                >
+                <code
+                  class="px-2 py-0.5 rounded bg-slate-200/70 dark:bg-slate-900 font-mono text-[11px] text-amber-600 dark:text-amber-400"
+                  >{{ i18n.dict().instructions.sightRedSquare }}</code
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Автоопределение -->
+          <div
+            class="p-4 rounded-2xl bg-sky-50/80 dark:bg-sky-950/30 border border-sky-200/70 dark:border-sky-900/60 flex items-start gap-3"
+          >
+            <div
+              class="w-8 h-8 rounded-xl bg-sky-500/10 text-sky-600 dark:text-sky-400 flex items-center justify-center shrink-0 mt-0.5"
+            >
+              <i class="pi pi-map-marker text-sm"></i>
+            </div>
+            <div class="text-xs space-y-1">
+              <h5 class="font-bold text-sky-900 dark:text-sky-300">
+                {{ i18n.dict().instructions.autoLocationTitle }}
+              </h5>
+              <p class="text-sky-800/80 dark:text-sky-300/80">
+                {{ i18n.dict().instructions.autoLocationDesc }}
+              </p>
+            </div>
+          </div>
+        </div>
+      }
+
+      <!-- Section 2: Настройки и Избранное -->
+      @if (activeSection() === 'settings') {
+        <div class="space-y-4 animate-in fade-in duration-150">
+          <div class="space-y-1">
+            <h4 class="font-bold text-base text-slate-900 dark:text-white flex items-center gap-2">
+              <i class="pi pi-sliders-h text-purple-500"></i>
+              {{ i18n.dict().instructions.settingsTitle }}
+            </h4>
+            <p class="text-xs text-slate-500 dark:text-slate-400">
+              {{ i18n.dict().instructions.settingsSubtitle }}
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+            <div
+              class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-800 space-y-1.5"
+            >
+              <span class="font-bold text-slate-900 dark:text-white block"
+                >🌡️ {{ i18n.dict().instructions.tempTitle }}</span
+              >
+              <p class="text-slate-500 dark:text-slate-400">
+                {{ i18n.dict().instructions.tempDesc }}
+              </p>
+            </div>
+
+            <div
+              class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-800 space-y-1.5"
+            >
+              <span class="font-bold text-slate-900 dark:text-white block"
+                >💨 {{ i18n.dict().instructions.windTitle }}</span
+              >
+              <p class="text-slate-500 dark:text-slate-400">
+                {{ i18n.dict().instructions.windDesc }}
+              </p>
+            </div>
+
+            <div
+              class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-800 space-y-1.5"
+            >
+              <span class="font-bold text-slate-900 dark:text-white block"
+                >⏱️ {{ i18n.dict().instructions.pressureTitle }}</span
+              >
+              <p class="text-slate-500 dark:text-slate-400">
+                {{ i18n.dict().instructions.pressureDesc }}
+              </p>
+            </div>
+          </div>
+
+          <!-- Избранное, тема и выбор языка -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs pt-1">
+            <div
+              class="p-4 rounded-2xl bg-amber-50/70 dark:bg-amber-950/20 border border-amber-200/70 dark:border-amber-900/40 space-y-1.5"
+            >
+              <div class="font-bold text-amber-900 dark:text-amber-300 flex items-center gap-1.5">
+                <i class="pi pi-star text-amber-500"></i>
+                {{ i18n.dict().instructions.favoritesTitle }}
+              </div>
+              <p class="text-amber-800/80 dark:text-amber-300/80">
+                {{ i18n.dict().instructions.favoritesDesc }}
+              </p>
+            </div>
+
+            <div
+              class="p-4 rounded-2xl bg-indigo-50/70 dark:bg-indigo-950/20 border border-indigo-200/70 dark:border-indigo-900/40 space-y-1.5"
+            >
+              <div class="font-bold text-indigo-900 dark:text-indigo-300 flex items-center gap-1.5">
+                <i class="pi pi-moon text-indigo-500"></i> {{ i18n.dict().instructions.themeTitle }}
+              </div>
+              <p class="text-indigo-800/80 dark:text-indigo-300/80">
+                {{ i18n.dict().instructions.themeDesc }}
+              </p>
+            </div>
+
+            <div
+              class="p-4 rounded-2xl bg-sky-50/70 dark:bg-sky-950/20 border border-sky-200/70 dark:border-sky-900/40 space-y-1.5"
+            >
+              <div class="font-bold text-sky-900 dark:text-sky-300 flex items-center gap-1.5">
+                <i class="pi pi-globe text-sky-500"></i> {{ i18n.dict().instructions.langTitle }}
+              </div>
+              <p class="text-sky-800/80 dark:text-sky-300/80">
+                {{ i18n.dict().instructions.langDesc }}
+              </p>
+            </div>
+          </div>
+        </div>
+      }
+
+      <!-- Section 3: Вкладки API -->
+      @if (activeSection() === 'features') {
+        <div class="space-y-4 animate-in fade-in duration-150">
+          <div class="space-y-1">
+            <h4 class="font-bold text-base text-slate-900 dark:text-white flex items-center gap-2">
+              <i class="pi pi-code text-purple-500"></i>
+              {{ i18n.dict().instructions.featuresTitle }}
+            </h4>
+            <p class="text-xs text-slate-500 dark:text-slate-400">
+              {{ i18n.dict().instructions.featuresSubtitle }}
+            </p>
+          </div>
+
+          <div class="space-y-3 text-xs">
+            <div
+              class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-800 flex gap-3"
+            >
+              <div
+                class="w-8 h-8 rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center shrink-0"
+              >
+                <i class="pi pi-globe text-sm"></i>
+              </div>
+              <div class="space-y-1">
+                <h5 class="font-bold text-slate-900 dark:text-white">
+                  {{ i18n.dict().instructions.webTitle }}
+                </h5>
+                <p class="text-slate-500 dark:text-slate-400">
+                  {{ i18n.dict().instructions.webDesc }}
+                </p>
+              </div>
+            </div>
+
+            <div
+              class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-800 flex gap-3"
+            >
+              <div
+                class="w-8 h-8 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0"
+              >
+                <i class="pi pi-code text-sm"></i>
+              </div>
+              <div class="space-y-1">
+                <h5 class="font-bold text-slate-900 dark:text-white">
+                  {{ i18n.dict().instructions.terminalTitle }}
+                </h5>
+                <p class="text-slate-500 dark:text-slate-400">
+                  {{ i18n.dict().instructions.terminalDesc }}
+                </p>
+              </div>
+            </div>
+
+            <div
+              class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-800 flex gap-3"
+            >
+              <div
+                class="w-8 h-8 rounded-xl bg-sky-500/10 text-sky-600 dark:text-sky-400 flex items-center justify-center shrink-0"
+              >
+                <i class="pi pi-image text-sm"></i>
+              </div>
+              <div class="space-y-1">
+                <h5 class="font-bold text-slate-900 dark:text-white">
+                  {{ i18n.dict().instructions.pngTitle }}
+                </h5>
+                <p class="text-slate-500 dark:text-slate-400">
+                  {{ i18n.dict().instructions.pngDesc }}
+                </p>
+              </div>
+            </div>
+
+            <div
+              class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-800 flex gap-3"
+            >
+              <div
+                class="w-8 h-8 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0"
+              >
+                <i class="pi pi-align-left text-sm"></i>
+              </div>
+              <div class="space-y-1">
+                <h5 class="font-bold text-slate-900 dark:text-white">
+                  {{ i18n.dict().instructions.onelineTitle }}
+                </h5>
+                <p class="text-slate-500 dark:text-slate-400">
+                  {{ i18n.dict().instructions.onelineDesc }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+
+      <!-- Section 4: Команды консоли (curl) -->
+      @if (activeSection() === 'curl') {
+        <div class="space-y-4 animate-in fade-in duration-150">
+          <div class="space-y-1">
+            <h4 class="font-bold text-base text-slate-900 dark:text-white flex items-center gap-2">
+              <i class="pi pi-terminal text-emerald-500"></i>
+              {{ i18n.dict().instructions.curlTitle }}
+            </h4>
+            <p class="text-xs text-slate-500 dark:text-slate-400">
+              {{ i18n.dict().instructions.curlSubtitle }}
+            </p>
+          </div>
+
+          <div class="space-y-2.5 text-xs">
+            <!-- Command 1 -->
+            <div
+              class="p-3 rounded-2xl bg-slate-900 border border-slate-800 text-slate-200 font-mono flex items-center justify-between gap-3"
+            >
+              <div>
+                <span class="text-emerald-400 select-none">$ </span>
+                <span class="text-sky-300">curl wttr.in</span>
+                <span class="text-slate-500 font-sans block text-[11px] mt-0.5">{{
+                  i18n.dict().instructions.cmd1Desc
+                }}</span>
+              </div>
+              <button
+                type="button"
+                (click)="copyText('curl wttr.in')"
+                class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors text-[11px] shrink-0 cursor-pointer"
+              >
+                <i
+                  [class]="
+                    copiedCommand() === 'curl wttr.in'
+                      ? 'pi pi-check text-emerald-400'
+                      : 'pi pi-copy'
+                  "
+                ></i>
+              </button>
+            </div>
+
+            <!-- Command 2 -->
+            <div
+              class="p-3 rounded-2xl bg-slate-900 border border-slate-800 text-slate-200 font-mono flex items-center justify-between gap-3"
+            >
+              <div>
+                <span class="text-emerald-400 select-none">$ </span>
+                <span class="text-sky-300">curl wttr.in/Moscow?lang={{ i18n.currentLang() }}</span>
+                <span class="text-slate-500 font-sans block text-[11px] mt-0.5">{{
+                  i18n.dict().instructions.cmd2Desc
+                }}</span>
+              </div>
+              <button
+                type="button"
+                (click)="copyText('curl wttr.in/Moscow?lang=' + i18n.currentLang())"
+                class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors text-[11px] shrink-0 cursor-pointer"
+              >
+                <i
+                  [class]="
+                    copiedCommand() === 'curl wttr.in/Moscow?lang=' + i18n.currentLang()
+                      ? 'pi pi-check text-emerald-400'
+                      : 'pi pi-copy'
+                  "
+                ></i>
+              </button>
+            </div>
+
+            <!-- Command 3 -->
+            <div
+              class="p-3 rounded-2xl bg-slate-900 border border-slate-800 text-slate-200 font-mono flex items-center justify-between gap-3"
+            >
+              <div>
+                <span class="text-emerald-400 select-none">$ </span>
+                <span class="text-sky-300">curl wttr.in/SVO?M</span>
+                <span class="text-slate-500 font-sans block text-[11px] mt-0.5">{{
+                  i18n.dict().instructions.cmd3Desc
+                }}</span>
+              </div>
+              <button
+                type="button"
+                (click)="copyText('curl wttr.in/SVO?M')"
+                class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors text-[11px] shrink-0 cursor-pointer"
+              >
+                <i
+                  [class]="
+                    copiedCommand() === 'curl wttr.in/SVO?M'
+                      ? 'pi pi-check text-emerald-400'
+                      : 'pi pi-copy'
+                  "
+                ></i>
+              </button>
+            </div>
+
+            <!-- Command 4 -->
+            <div
+              class="p-3 rounded-2xl bg-slate-900 border border-slate-800 text-slate-200 font-mono flex items-center justify-between gap-3"
+            >
+              <div>
+                <span class="text-emerald-400 select-none">$ </span>
+                <span class="text-sky-300">curl wttr.in/moon</span>
+                <span class="text-slate-500 font-sans block text-[11px] mt-0.5">{{
+                  i18n.dict().instructions.cmd4Desc
+                }}</span>
+              </div>
+              <button
+                type="button"
+                (click)="copyText('curl wttr.in/moon')"
+                class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors text-[11px] shrink-0 cursor-pointer"
+              >
+                <i
+                  [class]="
+                    copiedCommand() === 'curl wttr.in/moon'
+                      ? 'pi pi-check text-emerald-400'
+                      : 'pi pi-copy'
+                  "
+                ></i>
+              </button>
+            </div>
+
+            <!-- Command 5 -->
+            <div
+              class="p-3 rounded-2xl bg-slate-900 border border-slate-800 text-slate-200 font-mono flex items-center justify-between gap-3"
+            >
+              <div>
+                <span class="text-emerald-400 select-none">$ </span>
+                <span class="text-sky-300">curl 'wttr.in/Moscow?format=3'</span>
+                <span class="text-slate-500 font-sans block text-[11px] mt-0.5">{{
+                  i18n.dict().instructions.cmd5Desc
+                }}</span>
+              </div>
+              <button
+                type="button"
+                (click)="copyText('curl \'wttr.in/Moscow?format=3\'')"
+                class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors text-[11px] shrink-0 cursor-pointer"
+              >
+                <i
+                  [class]="
+                    copiedCommand() === 'curl \'wttr.in/Moscow?format=3\''
+                      ? 'pi pi-check text-emerald-400'
+                      : 'pi pi-copy'
+                  "
+                ></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Footer of Modal -->
+    <div
+      class="flex items-center justify-between px-6 py-4 border-t border-slate-100 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-950/40 select-none shrink-0"
+    >
+      <div
+        class="text-[11px] text-slate-400 dark:text-slate-500 hidden sm:flex items-center gap-1.5"
+      >
+        <kbd class="px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-800 font-mono text-[10px]"
+          >Esc</kbd
+        >
+        <span>{{ i18n.dict().instructions.escHint }}</span>
+      </div>
+
+      <button
+        type="button"
+        (click)="close.emit()"
+        class="px-5 py-2 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-semibold text-xs transition-colors shadow-sm ml-auto cursor-pointer"
+      >
+        {{ i18n.dict().common.close }}
+      </button>
+    </div>
+  </div>
+</div>

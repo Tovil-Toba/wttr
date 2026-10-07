@@ -1,0 +1,108 @@
+<div class="space-y-4">
+  <div class="flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <div
+        class="w-8 h-8 rounded-xl bg-indigo-500/10 dark:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 flex items-center justify-center"
+      >
+        <i class="pi pi-calendar text-sm"></i>
+      </div>
+      <div>
+        <h3 class="text-base font-bold text-slate-900 dark:text-white">
+          {{ i18n.dict().daily.title }}
+        </h3>
+        <p class="text-xs text-slate-500 dark:text-slate-400">
+          {{ i18n.dict().daily.subtitle }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    @for (day of weatherService.threeDaysForecast(); track day.date; let idx = $index) {
+      @let meta = formatDateRu(day.date, idx);
+      @let cond = getMiddayCondition(day);
+      @let moon = getMoonInfo(day);
+
+      <div
+        class="rounded-3xl p-5 bg-white/70 dark:bg-slate-900/70 border border-slate-200/80 dark:border-slate-800/80 backdrop-blur-xl shadow-lg flex flex-col justify-between hover:border-indigo-500/30 transition-all group"
+      >
+        <!-- Day Header -->
+        <div
+          class="flex items-start justify-between pb-3 border-b border-slate-100 dark:border-slate-800"
+        >
+          <div>
+            <span class="text-sm font-extrabold text-slate-900 dark:text-white block">
+              {{ meta.dayLabel }}
+            </span>
+            <span class="text-xs text-slate-400 capitalize">
+              {{ meta.fullDate }}
+            </span>
+          </div>
+
+          <div
+            class="w-10 h-10 rounded-2xl bg-indigo-500/10 dark:bg-indigo-500/20 flex items-center justify-center group-hover:scale-105 transition-transform"
+          >
+            <app-weather-icon [condition]="cond.theme.conditionType" size="sm" />
+          </div>
+        </div>
+
+        <!-- Temperature Range & Condition -->
+        <div class="py-4">
+          <div class="flex items-baseline justify-between mb-2">
+            <div>
+              <span class="text-2xl font-black text-slate-900 dark:text-white">
+                {{ weatherService.formatTemp(day.maxtempC, day.maxtempF) }}
+              </span>
+              <span class="text-sm font-semibold text-slate-400 ml-1.5">
+                / {{ weatherService.formatTemp(day.mintempC, day.mintempF) }}
+              </span>
+            </div>
+            <span class="text-xs font-semibold text-slate-500 dark:text-slate-300">
+              {{ cond.descRu }}
+            </span>
+          </div>
+
+          <!-- Temp Bar -->
+          <div class="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden flex">
+            <div
+              class="bg-gradient-to-r from-blue-400 via-emerald-400 to-amber-400 h-full w-full rounded-full"
+            ></div>
+          </div>
+        </div>
+
+        <!-- Astronomy Details (Sun & Moon) -->
+        <div class="pt-3 border-t border-slate-100 dark:border-slate-800 space-y-2 text-xs">
+          <!-- Sun info -->
+          <div class="flex items-center justify-between text-slate-600 dark:text-slate-300">
+            <span class="flex items-center gap-1.5 text-slate-400">
+              <i class="pi pi-sun text-amber-500 text-[11px]"></i> {{ i18n.dict().daily.sun }}
+            </span>
+            <span class="font-mono font-medium text-[11px]">
+              ↑ {{ weatherService.formatTo24Hour(day.astronomy[0]?.sunrise) }} • ↓
+              {{ weatherService.formatTo24Hour(day.astronomy[0]?.sunset) }}
+            </span>
+          </div>
+
+          <!-- Moon info -->
+          <div class="flex items-center justify-between text-slate-600 dark:text-slate-300">
+            <span class="flex items-center gap-1.5 text-slate-400">
+              <span class="text-sm">{{ moon.icon }}</span> {{ moon.nameRu }}
+            </span>
+            <span class="font-medium text-[11px] text-indigo-500 dark:text-indigo-400">
+              {{ day.astronomy[0]?.moon_illumination }}%
+            </span>
+          </div>
+
+          <!-- Sun hours & UV -->
+          <div class="flex items-center justify-between text-[11px] text-slate-400 pt-1">
+            <span
+              >{{ i18n.dict().daily.sunHours }}: {{ day.sunHour
+              }}{{ i18n.dict().common.hours }}</span
+            >
+            <span>UV: {{ day.uvIndex }}</span>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>

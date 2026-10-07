@@ -1,0 +1,240 @@
+@if (current(); as cur) {
+  <div
+    class="relative overflow-hidden rounded-3xl p-6 sm:p-8 bg-gradient-to-br border border-white/20 dark:border-white/10 shadow-2xl backdrop-blur-2xl transition-all duration-500"
+    [class]="weatherTheme().gradient"
+  >
+    <!-- Top row: Location & Favorite Toggle -->
+    <div class="flex flex-wrap items-start justify-between gap-4 relative z-10">
+      <div>
+        <div class="flex items-center gap-2">
+          <h1
+            class="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight"
+          >
+            {{ cityName() }}
+          </h1>
+          <button
+            type="button"
+            (click)="toggleFavorite()"
+            [pTooltip]="
+              weatherService.isCurrentFavorite()
+                ? i18n.dict().hero.removeFavorite
+                : i18n.dict().hero.addFavorite
+            "
+            tooltipPosition="bottom"
+            [showDelay]="500"
+            [attr.aria-label]="
+              weatherService.isCurrentFavorite()
+                ? i18n.dict().hero.removeFavorite
+                : i18n.dict().hero.addFavorite
+            "
+            class="w-10 h-10 aspect-square rounded-2xl border border-slate-200/80 dark:border-white/15 bg-white/70 dark:bg-slate-800/70 hover:bg-white dark:hover:bg-slate-700 shadow-xs hover:shadow backdrop-blur-md transition-all duration-200 hover:scale-105 active:scale-95 flex items-center justify-center shrink-0 cursor-pointer"
+          >
+            @if (weatherService.isCurrentFavorite()) {
+              <i class="pi pi-star-fill text-amber-500 text-lg"></i>
+            } @else {
+              <i
+                class="pi pi-star text-slate-400 dark:text-slate-300 text-lg hover:text-amber-500 transition-colors"
+              ></i>
+            }
+          </button>
+        </div>
+
+        <div
+          class="flex flex-wrap items-center gap-2 mt-1 text-xs sm:text-sm text-slate-600 dark:text-slate-300 font-medium"
+        >
+          @if (area()?.region?.[0]?.value) {
+            <span>{{ area()?.region?.[0]?.value }},</span>
+          }
+          @if (countryName()) {
+            <span>{{ countryName() }}</span>
+          }
+          <span class="opacity-40">•</span>
+          <span class="font-mono text-[11px] opacity-80">
+            GPS: {{ area()?.latitude }}, {{ area()?.longitude }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Time & Observation Badge -->
+      <div class="flex flex-col items-end gap-1.5">
+        <p-tag
+          [value]="weatherDesc()"
+          [severity]="weatherTheme().badgeSeverity"
+          [rounded]="true"
+          class="px-3 py-1 font-semibold text-xs tracking-wide"
+        >
+        </p-tag>
+        <span class="text-[11px] text-slate-500 dark:text-slate-400 font-mono">
+          {{ i18n.dict().common.updated }}:
+          {{ weatherService.formatTo24Hour(cur.observation_time) }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Center row: Temperature & Hero Condition Icon -->
+    <div
+      class="my-8 flex flex-col sm:flex-row items-center sm:items-end justify-between gap-6 relative z-10"
+    >
+      <!-- Big Temp -->
+      <div class="flex items-baseline gap-4">
+        <span
+          class="text-6xl sm:text-8xl font-black text-slate-900 dark:text-white tracking-tighter leading-none"
+        >
+          {{ weatherService.formatTemp(cur.temp_C, cur.temp_F) }}
+        </span>
+        <div class="flex flex-col gap-1">
+          <span class="text-sm sm:text-base font-semibold text-slate-700 dark:text-slate-200">
+            {{ i18n.dict().hero.feelsLike }}
+            {{ weatherService.formatTemp(cur.FeelsLikeC, cur.FeelsLikeF) }}
+          </span>
+          @if (day0(); as d) {
+            <span class="text-xs text-slate-500 dark:text-slate-400">
+              {{ i18n.dict().hero.max }} {{ weatherService.formatTemp(d.maxtempC, d.maxtempF) }} •
+              {{ i18n.dict().hero.min }}
+              {{ weatherService.formatTemp(d.mintempC, d.mintempF) }}
+            </span>
+          }
+        </div>
+      </div>
+
+      <!-- Big Weather Icon & Animation -->
+      <div class="flex items-center justify-center shrink-0">
+        <div
+          class="w-24 h-24 sm:w-28 sm:h-28 rounded-3xl bg-white/20 dark:bg-white/10 backdrop-blur-md flex items-center justify-center shadow-lg border border-white/30 dark:border-white/10"
+        >
+          <app-weather-icon [condition]="weatherTheme().conditionType" size="xl" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom row: Metrics container (Flexbox wrapping layout) -->
+    <div
+      class="flex flex-wrap gap-2.5 sm:gap-3 pt-6 border-t border-slate-900/10 dark:border-white/10 relative z-10"
+    >
+      <!-- Humidity -->
+      <div
+        class="flex-1 min-w-[125px] sm:min-w-[135px] p-3 sm:p-3.5 rounded-2xl bg-white/40 dark:bg-slate-900/40 backdrop-blur-md border border-white/30 dark:border-white/5 flex flex-col justify-between"
+      >
+        <span
+          class="text-[11px] font-medium text-slate-500 dark:text-slate-400 flex items-center gap-1.5 whitespace-nowrap"
+        >
+          <i class="pi pi-tint text-sky-500 text-xs shrink-0"></i>
+          <span>{{ i18n.dict().hero.humidity }}</span>
+        </span>
+        <span
+          class="text-base sm:text-lg font-bold text-slate-900 dark:text-white mt-1.5 whitespace-nowrap"
+        >
+          {{ cur.humidity }}%
+        </span>
+      </div>
+
+      <!-- Wind -->
+      <div
+        class="flex-1 min-w-[125px] sm:min-w-[135px] p-3 sm:p-3.5 rounded-2xl bg-white/40 dark:bg-slate-900/40 backdrop-blur-md border border-white/30 dark:border-white/5 flex flex-col justify-between"
+      >
+        <span
+          class="text-[11px] font-medium text-slate-500 dark:text-slate-400 flex items-center gap-1.5 whitespace-nowrap"
+        >
+          <i class="pi pi-compass text-teal-500 text-xs shrink-0"></i>
+          <span>{{ i18n.dict().hero.wind }}</span>
+        </span>
+        <div
+          class="text-base sm:text-lg font-bold text-slate-900 dark:text-white mt-1.5 flex items-baseline gap-1.5 flex-wrap"
+        >
+          <span class="whitespace-nowrap">{{ weatherService.formatWind(cur.windspeedKmph) }}</span>
+          <span class="text-[10px] text-slate-500 dark:text-slate-400 font-mono uppercase">{{
+            cur.winddir16Point
+          }}</span>
+        </div>
+      </div>
+
+      <!-- Pressure -->
+      <div
+        class="flex-1 min-w-[125px] sm:min-w-[135px] p-3 sm:p-3.5 rounded-2xl bg-white/40 dark:bg-slate-900/40 backdrop-blur-md border border-white/30 dark:border-white/5 flex flex-col justify-between"
+      >
+        <span
+          class="text-[11px] font-medium text-slate-500 dark:text-slate-400 flex items-center gap-1.5 whitespace-nowrap"
+        >
+          <i class="pi pi-gauge text-indigo-500 text-xs shrink-0"></i>
+          <span>{{ i18n.dict().hero.pressure }}</span>
+        </span>
+        <span
+          class="text-base sm:text-lg font-bold text-slate-900 dark:text-white mt-1.5 whitespace-nowrap"
+        >
+          {{ weatherService.formatPressure(cur.pressure) }}
+        </span>
+      </div>
+
+      <!-- UV Index -->
+      <div
+        class="flex-1 min-w-[125px] sm:min-w-[135px] p-3 sm:p-3.5 rounded-2xl bg-white/40 dark:bg-slate-900/40 backdrop-blur-md border border-white/30 dark:border-white/5 flex flex-col justify-between"
+      >
+        <span
+          class="text-[11px] font-medium text-slate-500 dark:text-slate-400 flex items-center gap-1.5 whitespace-nowrap"
+        >
+          <i class="pi pi-sun text-amber-500 text-xs shrink-0"></i>
+          <span>{{ i18n.dict().hero.uvIndex }}</span>
+        </span>
+        <div class="flex items-baseline gap-1.5 mt-1.5 whitespace-nowrap">
+          <span class="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
+            {{ cur.uvIndex }}
+          </span>
+          <span class="text-[11px] font-semibold" [class]="uvRiskLevel().color">
+            {{ uvRiskLevel().label }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Cloudcover -->
+      <div
+        class="flex-1 min-w-[125px] sm:min-w-[135px] p-3 sm:p-3.5 rounded-2xl bg-white/40 dark:bg-slate-900/40 backdrop-blur-md border border-white/30 dark:border-white/5 flex flex-col justify-between"
+      >
+        <span
+          class="text-[11px] font-medium text-slate-500 dark:text-slate-400 flex items-center gap-1.5 whitespace-nowrap"
+        >
+          <i class="pi pi-cloud text-blue-400 text-xs shrink-0"></i>
+          <span>{{ i18n.dict().hero.cloudcover }}</span>
+        </span>
+        <span
+          class="text-base sm:text-lg font-bold text-slate-900 dark:text-white mt-1.5 whitespace-nowrap"
+        >
+          {{ cur.cloudcover }}%
+        </span>
+      </div>
+
+      <!-- Precipitation -->
+      <div
+        class="flex-1 min-w-[125px] sm:min-w-[135px] p-3 sm:p-3.5 rounded-2xl bg-white/40 dark:bg-slate-900/40 backdrop-blur-md border border-white/30 dark:border-white/5 flex flex-col justify-between"
+      >
+        <span
+          class="text-[11px] font-medium text-slate-500 dark:text-slate-400 flex items-center gap-1.5 whitespace-nowrap"
+        >
+          <i class="pi pi-cloud-download text-blue-500 text-xs shrink-0"></i>
+          <span>{{ i18n.dict().hero.precipitation }}</span>
+        </span>
+        <span
+          class="text-base sm:text-lg font-bold text-slate-900 dark:text-white mt-1.5 whitespace-nowrap"
+        >
+          {{ cur.precipMM }} {{ i18n.dict().common.mm }}
+        </span>
+      </div>
+
+      <!-- Visibility -->
+      <div
+        class="flex-1 min-w-[125px] sm:min-w-[135px] p-3 sm:p-3.5 rounded-2xl bg-white/40 dark:bg-slate-900/40 backdrop-blur-md border border-white/30 dark:border-white/5 flex flex-col justify-between"
+      >
+        <span
+          class="text-[11px] font-medium text-slate-500 dark:text-slate-400 flex items-center gap-1.5 whitespace-nowrap"
+        >
+          <i class="pi pi-eye text-emerald-500 text-xs shrink-0"></i>
+          <span>{{ i18n.dict().hero.visibility }}</span>
+        </span>
+        <span
+          class="text-base sm:text-lg font-bold text-slate-900 dark:text-white mt-1.5 whitespace-nowrap"
+        >
+          {{ cur.visibility }} {{ i18n.dict().common.km }}
+        </span>
+      </div>
+    </div>
+  </div>
+}

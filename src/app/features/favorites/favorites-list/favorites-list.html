@@ -1,0 +1,86 @@
+<div
+  class="rounded-3xl p-6 bg-white/70 dark:bg-slate-900/70 border border-slate-200/80 dark:border-slate-800/80 backdrop-blur-xl shadow-lg space-y-6"
+>
+  <!-- Favorites Section -->
+  <div>
+    <div class="flex items-center justify-between mb-3">
+      <div class="flex items-center gap-2">
+        <i class="pi pi-star-fill text-amber-400 text-sm"></i>
+        <h4 class="text-sm font-bold text-slate-900 dark:text-white">
+          {{ i18n.dict().favorites.title }}
+        </h4>
+      </div>
+      <span class="text-xs text-slate-400 font-mono">
+        {{ weatherService.favorites().length }}
+      </span>
+    </div>
+
+    @if (weatherService.favorites().length === 0) {
+      <p
+        class="text-xs text-slate-400 py-3 text-center bg-slate-50 dark:bg-slate-800/40 rounded-xl"
+      >
+        {{ i18n.dict().favorites.empty }}
+      </p>
+    } @else {
+      <div class="flex flex-col gap-1.5">
+        @for (fav of weatherService.favorites(); track fav.query) {
+          <div
+            (click)="selectLocation(fav.query)"
+            class="flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/80 cursor-pointer transition-colors group border border-transparent hover:border-slate-200 dark:hover:border-slate-700/60"
+          >
+            <div class="flex items-center gap-2.5">
+              <i
+                class="pi pi-map-marker text-slate-400 group-hover:text-sky-500 transition-colors text-xs"
+              ></i>
+              <div>
+                <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">
+                  {{ i18n.translateCity(fav.query, fav.name) }}
+                </span>
+                @if (fav.country) {
+                  <span class="text-[10px] text-slate-400 block">{{
+                    i18n.translateCountry(fav.country, fav.query)
+                  }}</span>
+                }
+              </div>
+            </div>
+
+            <button
+              type="button"
+              (click)="removeFavorite($event, fav.query)"
+              [pTooltip]="i18n.dict().favorites.deleteTooltip"
+              tooltipPosition="left"
+              [showDelay]="500"
+              class="opacity-0 group-hover:opacity-100 p-1.5 rounded-lg hover:bg-rose-500/10 text-slate-400 hover:text-rose-500 transition-all text-xs"
+            >
+              <i class="pi pi-trash"></i>
+            </button>
+          </div>
+        }
+      </div>
+    }
+  </div>
+
+  <!-- Search History Section -->
+  <div class="pt-4 border-t border-slate-100 dark:border-slate-800">
+    <div class="flex items-center justify-between mb-3">
+      <div class="flex items-center gap-2">
+        <i class="pi pi-history text-slate-400 text-sm"></i>
+        <h4 class="text-sm font-bold text-slate-900 dark:text-white">
+          {{ i18n.dict().favorites.recentTitle }}
+        </h4>
+      </div>
+    </div>
+
+    <div class="flex flex-wrap gap-1.5">
+      @for (item of weatherService.searchHistory(); track item) {
+        <button
+          type="button"
+          (click)="selectLocation(item)"
+          class="px-2.5 py-1 rounded-lg text-xs bg-slate-100 dark:bg-slate-800 hover:bg-sky-500/10 hover:text-sky-600 dark:hover:text-sky-400 text-slate-600 dark:text-slate-300 font-medium transition-colors"
+        >
+          {{ i18n.translateCity(item) }}
+        </button>
+      }
+    </div>
+  </div>
+</div>

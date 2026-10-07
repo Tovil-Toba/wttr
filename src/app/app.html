@@ -1,0 +1,189 @@
+<div
+  class="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col transition-colors duration-300 antialiased selection:bg-sky-500 selection:text-white"
+>
+  <!-- Top Navigation -->
+  <app-navbar></app-navbar>
+
+  <!-- Main Container -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+    <!-- Error State Alert -->
+    @if (weatherService.errorMessage(); as err) {
+      <div
+        class="p-4 rounded-2xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900/60 text-rose-800 dark:text-rose-200 flex items-center justify-between gap-4 shadow-sm animate-in fade-in duration-200"
+      >
+        <div class="flex items-center gap-3">
+          <i class="pi pi-exclamation-triangle text-xl text-rose-500 shrink-0"></i>
+          <div>
+            <h4 class="font-bold text-sm">{{ i18n.dict().common.errorTitle }}</h4>
+            <p class="text-xs opacity-90">{{ err }}</p>
+          </div>
+        </div>
+        <button
+          type="button"
+          (click)="retryFetch()"
+          class="px-3 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold shadow-sm transition-colors whitespace-nowrap"
+        >
+          {{ i18n.dict().common.retry }}
+        </button>
+      </div>
+    }
+
+    <!-- Loading State: Skeletons -->
+    @if (weatherService.isLoading() && !weatherService.weatherData()) {
+      <div class="space-y-6 animate-pulse opacity-40">
+        <div class="h-72 rounded-3xl bg-slate-200 dark:bg-slate-800/60"></div>
+        <div class="h-44 rounded-3xl bg-slate-200 dark:bg-slate-800/60"></div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="h-48 rounded-3xl bg-slate-200 dark:bg-slate-800/60"></div>
+          <div class="h-48 rounded-3xl bg-slate-200 dark:bg-slate-800/60"></div>
+          <div class="h-48 rounded-3xl bg-slate-200 dark:bg-slate-800/60"></div>
+        </div>
+      </div>
+    }
+
+    <!-- Main Content Grid -->
+    @if (weatherService.weatherData()) {
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- Left Main Column (8 Cols) -->
+        <div class="lg:col-span-8 space-y-6">
+          <!-- Hero Section -->
+          <app-weather-hero></app-weather-hero>
+
+          <!-- Hourly Timeline -->
+          <app-hourly-forecast></app-hourly-forecast>
+
+          <!-- 3-Day Forecast -->
+          <app-daily-forecast></app-daily-forecast>
+
+          <!-- Native wttr.in Features (Terminal, PNG, One-line) -->
+          <app-wttr-features></app-wttr-features>
+        </div>
+
+        <!-- Right Sidebar Column (4 Cols) -->
+        <div class="lg:col-span-4 space-y-6">
+          <!-- Favorites & Recent Searches -->
+          <app-favorites-list></app-favorites-list>
+
+          <!-- wttr.in Quick Cheatsheet Card -->
+          <div
+            class="rounded-3xl p-6 bg-white/70 dark:bg-slate-900/70 border border-slate-200/80 dark:border-slate-800/80 backdrop-blur-xl shadow-lg space-y-4"
+          >
+            <div class="flex items-center gap-2">
+              <div
+                class="w-8 h-8 rounded-xl bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center"
+              >
+                <i class="pi pi-book text-sm"></i>
+              </div>
+              <div>
+                <h4 class="text-sm font-bold text-slate-900 dark:text-white">
+                  {{ i18n.dict().cheatsheet.title }}
+                </h4>
+                <p class="text-[11px] text-slate-400">{{ i18n.dict().cheatsheet.subtitle }}</p>
+              </div>
+            </div>
+
+            <div class="space-y-2.5 text-xs text-slate-600 dark:text-slate-300">
+              <div
+                class="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/60 dark:border-slate-700/60 flex flex-col gap-1"
+              >
+                <span class="font-mono text-sky-600 dark:text-sky-400 font-bold"
+                  >curl wttr.in/Москва</span
+                >
+                <span class="text-[11px] text-slate-500 dark:text-slate-400">{{
+                  i18n.dict().cheatsheet.cityDesc
+                }}</span>
+              </div>
+
+              <div
+                class="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/60 dark:border-slate-700/60 flex flex-col gap-1"
+              >
+                <span class="font-mono text-sky-600 dark:text-sky-400 font-bold"
+                  >curl wttr.in/svo?M</span
+                >
+                <span class="text-[11px] text-slate-500 dark:text-slate-400">{{
+                  i18n.dict().cheatsheet.airportDesc
+                }}</span>
+              </div>
+
+              <div
+                class="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/60 dark:border-slate-700/60 flex flex-col gap-1"
+              >
+                <span class="font-mono text-sky-600 dark:text-sky-400 font-bold"
+                  >curl wttr.in/moon</span
+                >
+                <span class="text-[11px] text-slate-500 dark:text-slate-400">{{
+                  i18n.dict().cheatsheet.moonDesc
+                }}</span>
+              </div>
+
+              <div
+                class="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/60 dark:border-slate-700/60 flex flex-col gap-1"
+              >
+                <span class="font-mono text-sky-600 dark:text-sky-400 font-bold">curl wttr.is</span>
+                <span class="text-[11px] text-slate-500 dark:text-slate-400">{{
+                  i18n.dict().cheatsheet.mirrorDesc
+                }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+  </main>
+
+  <!-- Modern Footer -->
+  <footer
+    class="border-t border-slate-200 dark:border-slate-800/80 bg-white/50 dark:bg-slate-900/50 backdrop-blur-md py-6 transition-colors"
+  >
+    <div
+      class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-400"
+    >
+      <div class="flex items-center gap-2">
+        <span class="font-bold text-slate-700 dark:text-slate-300">wttr.app</span>
+        <span>•</span>
+        <div class="flex flex-wrap items-center gap-1.5">
+          <span>{{ i18n.dict().footer.dataProvidedBy }}</span>
+          <a
+            href="https://github.com/chubin/wttr.in"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group inline-flex items-center gap-1 font-medium text-sky-600 dark:text-sky-400 hover:text-sky-500 dark:hover:text-sky-300 transition-colors"
+          >
+            <i class="pi pi-github text-xs"></i>
+            <span class="group-hover:underline">wttr.in</span>
+          </a>
+          <span>(Игорь Чубин)</span>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <button
+          type="button"
+          (click)="isInstructionsOpen.set(true)"
+          class="hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer flex items-center gap-1.5 font-medium"
+        >
+          <i class="pi pi-question-circle text-xs text-sky-500"></i>
+          <span>{{ i18n.dict().footer.help }}</span>
+        </button>
+        <button
+          type="button"
+          (click)="isAboutOpen.set(true)"
+          class="hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer flex items-center gap-1.5 font-medium"
+        >
+          <i class="pi pi-info-circle text-xs text-sky-500"></i>
+          <span>{{ i18n.dict().footer.about }}</span>
+        </button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Instructions Modal Dialog -->
+  @if (isInstructionsOpen()) {
+    <app-instructions-modal (close)="isInstructionsOpen.set(false)" />
+  }
+
+  <!-- About Modal Dialog -->
+  @if (isAboutOpen()) {
+    <app-about-modal (close)="isAboutOpen.set(false)" />
+  }
+</div>

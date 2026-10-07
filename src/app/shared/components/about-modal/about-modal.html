@@ -1,0 +1,274 @@
+<div
+  class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md animate-in fade-in duration-200"
+  (click)="close.emit()"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="about-modal-title"
+>
+  <!-- Modal Card -->
+  <div
+    class="relative w-full max-w-2xl rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 shadow-2xl overflow-hidden flex flex-col max-h-[90vh] animate-in zoom-in-95 duration-200"
+    (click)="$event.stopPropagation()"
+  >
+    <!-- Header -->
+    <div
+      class="flex items-center justify-between px-6 py-4 border-b border-slate-100 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-950/40 select-none shrink-0"
+    >
+      <div class="flex items-center gap-3">
+        <div
+          class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-sky-500 to-indigo-600 text-white flex items-center justify-center shadow-md shadow-sky-500/20"
+        >
+          <i class="pi pi-info-circle text-base"></i>
+        </div>
+        <div>
+          <h3
+            id="about-modal-title"
+            class="text-base font-bold text-slate-900 dark:text-white leading-tight"
+          >
+            {{ i18n.dict().modals.aboutTitle }}
+          </h3>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+            {{ i18n.dict().modals.aboutSubtitle }}
+          </p>
+        </div>
+      </div>
+
+      <button
+        type="button"
+        (click)="close.emit()"
+        [title]="i18n.dict().common.close + ' (Esc)'"
+        class="w-9 h-9 rounded-xl border border-slate-200 dark:border-slate-800 bg-white/70 dark:bg-slate-800 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors flex items-center justify-center cursor-pointer shadow-xs"
+      >
+        <i class="pi pi-times text-sm"></i>
+      </button>
+    </div>
+
+    <!-- Body / Scrollable Content -->
+    <div
+      class="p-6 overflow-y-auto overscroll-contain space-y-6 text-sm text-slate-600 dark:text-slate-300"
+    >
+      <!-- AI Collaboration & Antigravity Banner -->
+      <div
+        class="rounded-3xl p-5 bg-gradient-to-br from-indigo-50/80 via-sky-50/50 to-purple-50/60 dark:from-indigo-950/50 dark:via-slate-900/80 dark:to-slate-900 border border-indigo-200/70 dark:border-indigo-800/50 space-y-3.5 shadow-xs"
+      >
+        <div class="flex flex-wrap items-center gap-2">
+          <span
+            class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-indigo-600 text-white font-semibold text-xs shadow-xs"
+          >
+            <i class="pi pi-sparkles text-[10px]"></i>
+            <span>Google Antigravity 2.0</span>
+          </span>
+          <span
+            class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-sky-100 dark:bg-sky-950/80 text-sky-700 dark:text-sky-300 font-semibold text-xs border border-sky-200 dark:border-sky-800/60"
+          >
+            <i class="pi pi-bolt text-[10px]"></i>
+            <span>Gemini 3.8 Flash (High Thinking)</span>
+          </span>
+          <span
+            class="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-mono text-xs border border-slate-200 dark:border-slate-700"
+          >
+            2026
+          </span>
+        </div>
+
+        <div>
+          <h4 class="text-base font-bold text-slate-900 dark:text-white leading-snug">
+            {{ i18n.dict().about.aiBannerTitle }}
+          </h4>
+          <p
+            class="text-xs leading-relaxed text-slate-600 dark:text-slate-300 mt-1.5"
+            [innerHTML]="i18n.dict().about.aiBannerP1"
+          ></p>
+        </div>
+
+        <div
+          class="text-xs leading-relaxed text-slate-600 dark:text-slate-300 space-y-2 pt-1 border-t border-indigo-100 dark:border-indigo-900/50"
+        >
+          <p [innerHTML]="i18n.dict().about.aiBannerP2"></p>
+        </div>
+      </div>
+
+      <!-- Tech Stack Section (migrated from main page) -->
+      <div
+        class="rounded-3xl p-5 bg-gradient-to-br from-slate-100 to-slate-200/60 dark:from-slate-900/90 dark:to-slate-800/60 border border-slate-200 dark:border-slate-800 space-y-3.5"
+      >
+        <div class="flex items-center justify-between">
+          <span
+            class="font-extrabold text-slate-800 dark:text-slate-200 uppercase tracking-wider text-[11px] flex items-center gap-1.5"
+          >
+            <i class="pi pi-code text-xs text-sky-500"></i>
+            <span>{{ i18n.dict().about.techStackTitle }}</span>
+          </span>
+          <span class="text-[11px] text-slate-500 dark:text-slate-400">{{
+            i18n.dict().about.techStackSubtitle
+          }}</span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+          <div
+            class="p-2.5 rounded-xl bg-white dark:bg-slate-800/90 border border-slate-200/80 dark:border-slate-700/80 space-y-1 shadow-2xs"
+          >
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-slate-900 dark:text-white">Angular 22</span>
+              <span
+                class="px-1.5 py-0.5 rounded font-mono text-[10px] bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 font-semibold"
+                >Core</span
+              >
+            </div>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-snug">
+              {{ i18n.dict().about.techAngularDesc }}
+            </p>
+          </div>
+
+          <div
+            class="p-2.5 rounded-xl bg-white dark:bg-slate-800/90 border border-slate-200/80 dark:border-slate-700/80 space-y-1 shadow-2xs"
+          >
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-slate-900 dark:text-white">PrimeNG 22 & PrimeIcons</span>
+              <span
+                class="px-1.5 py-0.5 rounded font-mono text-[10px] bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 font-semibold"
+                >UI Kit</span
+              >
+            </div>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-snug">
+              {{ i18n.dict().about.techPrimengDesc }}
+            </p>
+          </div>
+
+          <div
+            class="p-2.5 rounded-xl bg-white dark:bg-slate-800/90 border border-slate-200/80 dark:border-slate-700/80 space-y-1 shadow-2xs"
+          >
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-slate-900 dark:text-white">Tailwind CSS 3.4</span>
+              <span
+                class="px-1.5 py-0.5 rounded font-mono text-[10px] bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 font-semibold"
+                >Styling</span
+              >
+            </div>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-snug">
+              {{ i18n.dict().about.techTailwindDesc }}
+            </p>
+          </div>
+
+          <div
+            class="p-2.5 rounded-xl bg-white dark:bg-slate-800/90 border border-slate-200/80 dark:border-slate-700/80 space-y-1 shadow-2xs"
+          >
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-slate-900 dark:text-white">Dart Sass (SCSS)</span>
+              <span
+                class="px-1.5 py-0.5 rounded font-mono text-[10px] bg-pink-50 dark:bg-pink-950/60 text-pink-600 dark:text-pink-400 font-semibold"
+                >Styles</span
+              >
+            </div>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-snug">
+              {{ i18n.dict().about.techSassDesc }}
+            </p>
+          </div>
+
+          <div
+            class="p-2.5 rounded-xl bg-white dark:bg-slate-800/90 border border-slate-200/80 dark:border-slate-700/80 space-y-1 shadow-2xs"
+          >
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-slate-900 dark:text-white">Vitest</span>
+              <span
+                class="px-1.5 py-0.5 rounded font-mono text-[10px] bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 font-semibold"
+                >Testing</span
+              >
+            </div>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-snug">
+              {{ i18n.dict().about.techVitestDesc }}
+            </p>
+          </div>
+
+          <div
+            class="p-2.5 rounded-xl bg-white dark:bg-slate-800/90 border border-slate-200/80 dark:border-slate-700/80 space-y-1 shadow-2xs"
+          >
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-slate-900 dark:text-white">wttr.in Weather API</span>
+              <span
+                class="px-1.5 py-0.5 rounded font-mono text-[10px] bg-cyan-50 dark:bg-cyan-950/60 text-cyan-600 dark:text-cyan-400 font-semibold"
+                >Data</span
+              >
+            </div>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-snug">
+              {{ i18n.dict().about.techApiDesc }}
+            </p>
+          </div>
+
+          <div
+            class="p-2.5 rounded-xl bg-white dark:bg-slate-800/90 border border-slate-200/80 dark:border-slate-700/80 space-y-1 shadow-2xs"
+          >
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-slate-900 dark:text-white">Reactive i18n (Signals)</span>
+              <span
+                class="px-1.5 py-0.5 rounded font-mono text-[10px] bg-teal-50 dark:bg-teal-950/60 text-teal-600 dark:text-teal-400 font-semibold"
+                >i18n</span
+              >
+            </div>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-snug">
+              {{ i18n.dict().about.techI18nDesc }}
+            </p>
+          </div>
+
+          <div
+            class="p-2.5 rounded-xl bg-white dark:bg-slate-800/90 border border-slate-200/80 dark:border-slate-700/80 space-y-1 shadow-2xs"
+          >
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-slate-900 dark:text-white">TypeScript 5.8</span>
+              <span
+                class="px-1.5 py-0.5 rounded font-mono text-[10px] bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 font-semibold"
+                >Types</span
+              >
+            </div>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-snug">
+              {{ i18n.dict().about.techTsDesc }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Links and Authorship -->
+      <div
+        class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs"
+      >
+        <div class="flex items-center gap-1.5 flex-wrap">
+          <span class="font-semibold text-slate-700 dark:text-slate-300">{{
+            i18n.dict().about.authorLabel
+          }}</span>
+          <span class="text-slate-500 dark:text-slate-400">{{ i18n.dict().about.authorName }}</span>
+        </div>
+
+        <div class="flex items-center gap-1.5 flex-wrap">
+          <span class="font-semibold text-slate-700 dark:text-slate-300">{{
+            i18n.dict().about.sourceLabel
+          }}</span>
+          <a
+            href="https://github.com/chubin/wttr.in"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group inline-flex items-center gap-1 font-medium text-sky-600 dark:text-sky-400 hover:text-sky-500 dark:hover:text-sky-300 transition-colors"
+          >
+            <i class="pi pi-github text-xs"></i>
+            <span class="group-hover:underline">wttr.in</span>
+          </a>
+          <span class="text-slate-500 dark:text-slate-400">{{
+            i18n.dict().about.sourceAuthor
+          }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div
+      class="flex items-center justify-end px-6 py-3.5 border-t border-slate-100 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-950/40 shrink-0"
+    >
+      <button
+        type="button"
+        (click)="close.emit()"
+        class="px-5 py-2 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-medium text-xs shadow-md shadow-sky-600/20 transition-all cursor-pointer"
+      >
+        {{ i18n.dict().common.close }}
+      </button>
+    </div>
+  </div>
+</div>

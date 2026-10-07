@@ -1,0 +1,255 @@
+import { TranslationDictionary } from '../i18n.model';
+
+export const enTranslations: TranslationDictionary = {
+  common: {
+    searchPlaceholder: 'Search city, IATA code (SVO, LHR) or coordinates...',
+    searchBtn: 'Search',
+    locateMe: 'Locate my position (GPS/IP)',
+    retry: 'Retry',
+    errorTitle: 'Error fetching weather data',
+    close: 'Close',
+    copy: 'Copy',
+    copied: 'Copied!',
+    updated: 'Updated',
+    hours: 'h',
+    km: 'km',
+    mm: 'mm',
+  },
+  navbar: {
+    subtitle: 'Real-time weather forecast',
+    quick: 'Quick:',
+    settingsTooltip: 'Measurement units',
+    themeLightTooltip: 'Switch to light theme',
+    themeDarkTooltip: 'Switch to dark theme',
+    langTooltip: 'Choose language',
+    langHeader: 'Language',
+    tempLabel: 'Temperature:',
+    windLabel: 'Wind:',
+    pressureLabel: 'Pressure:',
+    unitMs: 'm/s',
+    unitKmh: 'km/h',
+    unitMph: 'mph',
+    unitMmHg: 'mmHg',
+    unitHpa: 'hPa',
+  },
+  hero: {
+    feelsLike: 'Feels like',
+    max: 'Max:',
+    min: 'Min:',
+    humidity: 'Humidity',
+    wind: 'Wind',
+    pressure: 'Pressure',
+    uvIndex: 'UV Index',
+    cloudcover: 'Cloud cover',
+    precipitation: 'Precipitation',
+    visibility: 'Visibility',
+    addFavorite: 'Add to favorites',
+    removeFavorite: 'Remove from favorites',
+    uvLow: 'Low',
+    uvModerate: 'Moderate',
+    uvHigh: 'High',
+    uvVeryHigh: 'Very High',
+    uvExtreme: 'Extreme',
+  },
+  hourly: {
+    title: 'Hourly Forecast',
+    subtitle: '3-hour intervals with precipitation probability',
+    feelsLikeShort: 'Feels',
+    rain: 'Rain',
+    scrollLeft: 'Scroll left',
+    scrollRight: 'Scroll right',
+  },
+  daily: {
+    title: '3-Day Forecast & Astronomy',
+    subtitle: 'Temperature overview, sunrise, sunset & moon phase',
+    sun: 'Sun',
+    sunHours: 'Sun hours',
+    today: 'Today',
+    tomorrow: 'Tomorrow',
+    afterTomorrow: 'Day after tomorrow',
+  },
+  moon: {
+    newMoon: 'New Moon',
+    waxingCrescent: 'Waxing Crescent',
+    firstQuarter: 'First Quarter',
+    waxingGibbous: 'Waxing Gibbous',
+    fullMoon: 'Full Moon',
+    waningGibbous: 'Waning Gibbous',
+    lastQuarter: 'Last Quarter',
+    waningCrescent: 'Waning Crescent',
+  },
+  features: {
+    title: 'wttr.in API Features',
+    subtitle: 'Direct terminal integration, PNG infographics & one-line outputs',
+    tabWeb: 'WEB Version',
+    tabTerminal: 'Terminal (ASCII)',
+    tabPng: 'PNG Infographics',
+    tabOneline: 'One-line',
+
+    refreshBtn: 'Refresh',
+    refreshTitle: 'Refresh web page',
+    copyLink: 'Copy link',
+    copyCommand: 'Copy command',
+    openNewTab: 'Open in new tab',
+    loading: 'Loading...',
+
+    webReportTitle: 'wttr.in — Weather report web page',
+    webInteractiveFrame: 'Interactive HTML frame',
+    webLoaderTitle: 'Loading WEB version from wttr.in server',
+    webIframeTitle: 'Interactive wttr.in web view',
+
+    terminalHeader: 'wttr.in — ANSI terminal output',
+    terminalLoaderTitle: 'Fetching ANSI terminal output',
+    terminalLoaderStatus: 'Connecting to wttr.in for report summary...',
+    terminalRefreshTitle: 'Refresh terminal output',
+
+    pngTransparent: 'Transparent background (t)',
+    pngBorder: 'Border (p)',
+    pngCurrentOnly: 'Current only (0)',
+    pngDownload: 'Download PNG',
+    pngLoaderTitle: 'Generating PNG infographics',
+    pngLoaderStatus: 'wttr.in server is generating image...',
+    pngEmbedCode: 'HTML embed code:',
+
+    onelineSelectFormat: 'Select one-line format:',
+    onelineFormat: 'Format',
+    onelinePreviewTitle: 'Output preview:',
+    onelinePreviewFor: 'For status bar, tmux, conky, weechat',
+    onelineTmux: 'tmux integration',
+    onelinePowerShell: 'PowerShell integration',
+
+    statusConnecting: 'Connecting to wttr.in server...',
+    statusGenerating: 'Server is preparing detailed weather report...',
+    statusProcessing: 'Processing data (high service load)...',
+    statusDelay: 'wttr.in server responds with delay, maintaining connection...',
+  },
+  favorites: {
+    title: 'Favorite Locations',
+    empty: 'Click the star icon next to a city to save it to favorites.',
+    recentTitle: 'Recent Queries',
+    deleteTooltip: 'Delete',
+  },
+  cheatsheet: {
+    title: 'wttr.in Cheatsheet',
+    subtitle: 'Useful CLI API parameters in terminal',
+    cityDesc: 'Weather for any city (Unicode supported)',
+    airportDesc: 'Airport code, wind in m/s (?M)',
+    moonDesc: 'Current moon phase & illumination',
+    mirrorDesc: 'Fault-tolerant backup mirror service',
+  },
+  footer: {
+    dataProvidedBy: 'Data provided by service',
+    help: 'Help',
+    about: 'About',
+  },
+  modals: {
+    aboutTitle: 'About Project',
+    aboutSubtitle: 'wttr.app — architecture, tech stack & artificial intelligence',
+    instructionsTitle: 'wttr.in Reference & CLI',
+    instructionsSubtitle: 'Comprehensive guide for terminal & web usage',
+  },
+  instructions: {
+    tabSearch: '1. Search & Locations',
+    tabSettings: '2. Settings & Favorites',
+    tabFeatures: '3. API Features',
+    tabCurl: '4. CLI Commands (curl)',
+
+    // Search
+    searchTitle: 'Search Query Formats',
+    searchSubtitle: 'The service supports flexible location query formats in the search bar:',
+    cityTitle: 'City Name',
+    cityDesc: 'Supports names in English, Russian, and any other spoken language.',
+    airportTitle: 'Airport Code (IATA)',
+    airportDesc: 'Three-letter international code of any major airport worldwide:',
+    airportSheremetyevo: 'Sheremetyevo',
+    airportDomodedovo: 'Domodedovo',
+    coordsTitle: 'Geographic Coordinates',
+    coordsDesc: 'Exact latitude and longitude separated by comma for remote locations:',
+    sightTitle: 'Points of Interest',
+    sightDesc: 'Popular landmarks and locations (use + or space for multi-word queries):',
+    sightRedSquare: 'Red Square',
+    autoLocationTitle: 'Auto-detect your location',
+    autoLocationDesc:
+      'Click the circular geolocation button 📍 inside the search bar. The app requests browser coordinates or detects your region via IP address.',
+
+    // Settings
+    settingsTitle: 'Customization & Measurement Units',
+    settingsSubtitle: 'Click the square settings button in the top right header to adjust units:',
+    tempTitle: 'Temperature',
+    tempDesc:
+      'Toggle between °C (Celsius) and °F (Fahrenheit). All forecast cards recalculate on the fly.',
+    windTitle: 'Wind Speed',
+    windDesc:
+      'Choose units: km/h (kilometers per hour), m/s (meters per second), or mph (miles per hour).',
+    pressureTitle: 'Pressure',
+    pressureDesc: 'Choose units: mmHg (millimeters of mercury), hPa / mbar, or psi.',
+    favoritesTitle: 'Saving to Favorites',
+    favoritesDesc:
+      'Click the gold star next to the location name in the hero card. The city is saved to local storage and accessible with one click in the sidebar.',
+    themeTitle: 'Dark & Light Themes',
+    themeDesc:
+      'The moon/sun button in the top right switches themes. Your preferences are saved and applied automatically on your next visit.',
+    langTitle: 'Language Selection',
+    langDesc:
+      'The language button (RU, EN, etc.) in the top right header opens the selection menu. Switching instantly translates the entire UI and passes the &lang= parameter to all wttr.in requests, links, and commands.',
+
+    // Features
+    featuresTitle: 'wttr.in Integration Capabilities',
+    featuresSubtitle:
+      'The "wttr.in API Features" section below the forecast allows using weather data in any project:',
+    webTitle: 'WEB Version',
+    webDesc:
+      'Full interactive weather report page inside an isolated HTML iframe. "Refresh" fetches fresh data, and "Copy link" provides a direct URL to share.',
+    terminalTitle: 'Terminal (ASCII)',
+    terminalDesc:
+      'Original text output with wind arrows and colored ANSI graphics in your browser. Copy the ready-made command to run in your Linux/macOS terminal.',
+    pngTitle: 'PNG Infographics',
+    pngDesc:
+      'Render a weather image file. Checkboxes allow enabling transparent background (t), border (p), and current weather only (0). An HTML snippet is provided for embedding.',
+    onelineTitle: 'One-line Output',
+    onelineDesc:
+      'Concise single-line forecast with weather emojis and temperature. 4 formats available for status bars (tmux, i3blocks, polybar) or PowerShell scripts.',
+
+    // Curl
+    curlTitle: 'Terminal Commands Cheatsheet (curl)',
+    curlSubtitle: 'Commands to run in your Bash, Zsh, Command Prompt, or PowerShell terminal:',
+    cmd1Desc: 'Weather in current location by IP address',
+    cmd2Desc: 'Detailed forecast for Moscow in the selected language',
+    cmd3Desc: 'Airport weather with wind speed in m/s (?M)',
+    cmd4Desc: 'Current astronomical Moon phase and illumination',
+    cmd5Desc: 'Short single-line forecast for status bars',
+
+    // Footer
+    escHint: 'to quickly close',
+  },
+  about: {
+    aiBannerTitle: 'Built with Google Antigravity and Gemini',
+    aiBannerP1:
+      'This project is the result of an open and progressive collaboration between a human developer and an autonomous AI assistant. Designed and developed within <strong class="text-indigo-600 dark:text-indigo-400">Google Antigravity</strong> (built by the <em>Advanced Agentic Coding team at Google DeepMind</em>), powered by the flagship cognitive model <strong class="text-sky-600 dark:text-sky-400">Gemini</strong>.',
+    aiBannerP2:
+      'We deliberately highlight the project origin: the entire codebase — from clean reactive architecture with Signals and resilient weather fetching to polished micro-interactions, dark/light themes, and 100% unit test coverage — was created in continuous <em>vibe coding</em> and AI Pair Programming under the author’s guidance.',
+
+    // Tech Stack
+    techStackTitle: 'Project Tech Stack',
+    techStackSubtitle: 'Architecture & Tooling',
+    techAngularDesc: 'Zoneless Change Detection, Signals, modern control flow syntax (@if, @for).',
+    techPrimengDesc: 'Rich component library, custom Aura theme, tooltips with 500ms delay.',
+    techTailwindDesc:
+      'Glassmorphism styling, responsive layout for all screens, smooth dark/light transitions.',
+    techSassDesc: 'Scoped component styles and flexible preprocessor mixins.',
+    techVitestDesc:
+      'Blazing-fast test runner, full unit tests for services and components (100+ tests).',
+    techApiDesc:
+      'Multi-format weather forecast service with automatic fallback to wttr.is mirror on failures.',
+    techI18nDesc:
+      'Custom reactive multilingual engine on Angular Signals (computed) with smart cascade fallback and zero runtime overhead.',
+    techTsDesc:
+      'Strict static typing for weather API models, measurement units, settings, and translation dictionaries.',
+
+    // Authorship
+    authorLabel: 'Project Author:',
+    authorName: 'Ilya Kondratyev',
+    sourceLabel: 'Data Source:',
+    sourceAuthor: '(Igor Chubin)',
+  },
+};
