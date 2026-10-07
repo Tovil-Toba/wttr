@@ -204,6 +204,12 @@
 
 /* Snow & Sleet */
 .anim-snow-flake-1,
+.anim-snow-flake-2,
+.anim-snow-flake-3 {
+  transform-origin: 0 0;
+}
+
+.anim-snow-flake-1,
 .anim-snow-flake-3 {
   animation: snow-drift 2.8s ease-in-out infinite;
 }
@@ -251,6 +257,7 @@
 
 .anim-blizzard-flake-1,
 .anim-blizzard-flake-2 {
+  transform-origin: 0 0;
   animation: blizzard-flake 1.2s cubic-bezier(0.2, 0.8, 0.4, 1) infinite;
 }
 .anim-blizzard-flake-2 {

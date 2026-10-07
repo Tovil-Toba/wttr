@@ -76,4 +76,32 @@ describe('WeatherIconComponent', () => {
     const animRays = element.querySelector('.anim-sun-rays');
     expect(animRays).toBeNull();
   });
+
+  it('should render structured positioned snowflakes for snow and blizzard', async () => {
+    fixture.componentRef.setInput('condition', 'snow');
+    fixture.componentRef.setInput('animated', true);
+    await fixture.whenStable();
+
+    const flake1 = element.querySelector('.anim-snow-flake-1');
+    const flake2 = element.querySelector('.anim-snow-flake-2');
+    const flake3 = element.querySelector('.anim-snow-flake-3');
+    expect(flake1).toBeTruthy();
+    expect(flake2).toBeTruthy();
+    expect(flake3).toBeTruthy();
+
+    // Verify parent group has translate positioning
+    expect(flake1?.parentElement?.getAttribute('transform')).toContain('translate(20, 47)');
+    expect(flake2?.parentElement?.getAttribute('transform')).toContain('translate(32, 50)');
+    expect(flake3?.parentElement?.getAttribute('transform')).toContain('translate(44, 47)');
+
+    fixture.componentRef.setInput('condition', 'blizzard');
+    await fixture.whenStable();
+
+    const blizzFlake1 = element.querySelector('.anim-blizzard-flake-1');
+    const blizzFlake2 = element.querySelector('.anim-blizzard-flake-2');
+    expect(blizzFlake1).toBeTruthy();
+    expect(blizzFlake2).toBeTruthy();
+    expect(blizzFlake1?.parentElement?.getAttribute('transform')).toContain('translate(24, 46)');
+    expect(blizzFlake2?.parentElement?.getAttribute('transform')).toContain('translate(42, 43)');
+  });
 });
