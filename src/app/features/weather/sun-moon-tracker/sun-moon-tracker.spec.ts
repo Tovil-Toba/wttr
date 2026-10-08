@@ -151,4 +151,19 @@ describe('SunMoonTrackerComponent', () => {
     expect(element.textContent).toContain('Solar Trajectory');
     expect(element.textContent).toContain('Lunar Phase & Cycle');
   });
+
+  it('should adapt to French and Italian languages without falling back to English', async () => {
+    weatherService.setLanguage('fr');
+    await fixture.whenStable();
+    expect(element.textContent).toContain('Astronomie : soleil et lune');
+    expect(element.textContent).toContain('Trajectoire solaire');
+    expect(element.textContent).toContain('Phase et cycle lunaire');
+
+    weatherService.setLanguage('it');
+    await fixture.whenStable();
+    expect(element.textContent).toContain('Astronomia: sole e luna');
+    expect(element.textContent).toContain('Traiettoria solare');
+    expect(element.textContent).toContain('Fase e ciclo lunare');
+  });
 });
+
