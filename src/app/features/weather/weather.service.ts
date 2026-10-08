@@ -137,10 +137,11 @@ export class WeatherService {
 
     // Register online/offline connectivity listeners
     if (this.window) {
-      // Restore session or persistent fallback state if previously triggered without VPN
+      // Restore session or persistent fallback state if previously triggered without VPN in direct client mode
       if (
-        this.window.sessionStorage?.getItem('wttr_fallback_active') === 'true' ||
-        this.window.localStorage?.getItem('wttr_fallback_active') === 'true'
+        !this.useServerProxy &&
+        (this.window.sessionStorage?.getItem('wttr_fallback_active') === 'true' ||
+          this.window.localStorage?.getItem('wttr_fallback_active') === 'true')
       ) {
         this.wttrBlockedInSession = true;
         this.isFallbackMirror.set(true);
@@ -219,6 +220,17 @@ export class WeatherService {
           );
           this.isFallbackMirror.set(false);
           this.fallbackSourceName.set('wttr.in');
+          this.wttrBlockedInSession = false;
+          if (this.window?.localStorage) {
+            try {
+              this.window.localStorage.removeItem('wttr_fallback_active');
+            } catch {}
+          }
+          if (this.window?.sessionStorage) {
+            try {
+              this.window.sessionStorage.removeItem('wttr_fallback_active');
+            } catch {}
+          }
         } catch (proxyErr) {
           console.warn(
             '[WeatherService] Proxy fetch failed, attempting direct fallback:',

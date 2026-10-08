@@ -27,28 +27,6 @@
       rel="stylesheet"
     />
 
-    <!-- Immediate Service Worker Cleanup to prevent fetch interception on mobile -->
-    <script>
-      (function () {
-        try {
-          if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.getRegistrations().then(function (registrations) {
-              for (var i = 0; i < registrations.length; i++) {
-                registrations[i].unregister();
-              }
-            });
-          }
-          if ('caches' in window) {
-            caches.keys().then(function (names) {
-              for (var i = 0; i < names.length; i++) {
-                caches.delete(names[i]);
-              }
-            });
-          }
-        } catch (e) {}
-      })();
-    </script>
-
     <!-- Prevent FOUC Theme & Language Script (Modern Web Guidance) -->
     <script>
       (function () {
