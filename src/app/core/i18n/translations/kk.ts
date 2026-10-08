@@ -227,4 +227,11 @@ export const kkTranslations: RecursivePartial<TranslationDictionary> = {
     rainChance: 'Жауын-шашын қаупі',
     summaryFooter: 'wttr.app ауа райы болжамы',
   },
+  searchChips: {
+    recent: 'Соңғы іздеулер',
+    popular: 'Танымал қалалар',
+    clearRecent: 'Тарихты тазалау',
+    noMatches: 'Сөздіктен сәйкес қала табылмады',
+    pressEnter: 'wttr.in арқылы бүкіл әлем бойынша іздеу үшін Enter басыңыз',
+  },
 };

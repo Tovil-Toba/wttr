@@ -225,4 +225,11 @@ export const itTranslations: RecursivePartial<TranslationDictionary> = {
     rainChance: 'Probabilità di pioggia',
     summaryFooter: 'Previsioni meteo su wttr.app',
   },
+  searchChips: {
+    recent: 'Ricerche recenti',
+    popular: 'Città popolari',
+    clearRecent: 'Cancella cronologia',
+    noMatches: 'Nessuna città trovata nel dizionario',
+    pressEnter: 'Premi Invio per cercare in tutto il mondo su wttr.in',
+  },
 };

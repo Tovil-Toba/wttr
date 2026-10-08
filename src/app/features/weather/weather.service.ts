@@ -893,6 +893,22 @@ export class WeatherService {
     } catch {}
   }
 
+  clearHistory(): void {
+    this.searchHistory.set([]);
+    try {
+      this.window?.localStorage?.removeItem(this.historyKey);
+    } catch {}
+  }
+
+  removeFromHistory(query: string): void {
+    const q = query.trim().toLowerCase();
+    const updated = this.searchHistory().filter((item) => item.toLowerCase() !== q);
+    this.searchHistory.set(updated);
+    try {
+      this.window?.localStorage?.setItem(this.historyKey, JSON.stringify(updated));
+    } catch {}
+  }
+
   detectSystemLanguage(): string | null {
     if (!this.window?.navigator) return null;
     const candidates: string[] = [];

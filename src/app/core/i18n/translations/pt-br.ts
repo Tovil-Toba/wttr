@@ -225,4 +225,11 @@ export const ptBrTranslations: RecursivePartial<TranslationDictionary> = {
     rainChance: 'Probabilidade de chuva',
     summaryFooter: 'Previsão do tempo no wttr.app',
   },
+  searchChips: {
+    recent: 'Buscas recentes',
+    popular: 'Cidades populares',
+    clearRecent: 'Limpar histórico',
+    noMatches: 'Nenhuma cidade encontrada no dicionário',
+    pressEnter: 'Pressione Enter para buscar no mundo todo pelo wttr.in',
+  },
 };

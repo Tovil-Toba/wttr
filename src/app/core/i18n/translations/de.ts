@@ -348,4 +348,11 @@ export const deTranslations: RecursivePartial<TranslationDictionary> = {
     rainChance: 'Niederschlag',
     summaryFooter: 'Wetterbericht auf wttr.app',
   },
+  searchChips: {
+    recent: 'Letzte Suchanfragen',
+    popular: 'Beliebte Städte',
+    clearRecent: 'Verlauf löschen',
+    noMatches: 'Keine Städte im Wörterbuch gefunden',
+    pressEnter: 'Eingabetaste drücken für weltweite wttr.in-Suche',
+  },
 };

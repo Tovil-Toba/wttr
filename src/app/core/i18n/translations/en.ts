@@ -374,4 +374,11 @@ export const enTranslations: TranslationDictionary = {
     rainChance: 'Precipitation',
     summaryFooter: 'Weather forecast on wttr.app',
   },
+  searchChips: {
+    recent: 'Recent Searches',
+    popular: 'Popular Cities',
+    clearRecent: 'Clear history',
+    noMatches: 'No cities found in dictionary',
+    pressEnter: 'Press Enter to search worldwide on wttr.in',
+  },
 };

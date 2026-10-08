@@ -227,4 +227,11 @@ export const trTranslations: RecursivePartial<TranslationDictionary> = {
     rainChance: 'Yağış ihtimali',
     summaryFooter: 'wttr.app hava durumu tahmini',
   },
+  searchChips: {
+    recent: 'Son Aramalar',
+    popular: 'Popüler Şehirler',
+    clearRecent: 'Geçmişi temizle',
+    noMatches: 'Sözlükte eşleşen şehir bulunamadı',
+    pressEnter: 'wttr.in üzerinden dünya çapında aramak için Enter tuşuna basın',
+  },
 };

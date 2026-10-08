@@ -45,6 +45,9 @@
               autocorrect="off"
               autocapitalize="off"
               spellcheck="false"
+              (focus)="openSuggestions()"
+              (input)="openSuggestions()"
+              (keydown.escape)="closeSuggestions()"
               [placeholder]="i18n.dict().common.searchPlaceholder"
               class="w-full pl-10 pr-28 py-2.5 rounded-full text-sm bg-slate-100 dark:bg-slate-800/90 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 border border-transparent focus:border-sky-500 dark:focus:border-sky-400 focus:bg-white dark:focus:bg-slate-900 focus:outline-none focus:ring-4 focus:ring-sky-500/10 transition-all duration-200 shadow-inner"
             />
@@ -74,6 +77,154 @@
                 {{ i18n.dict().common.searchBtn }}
               </button>
             </div>
+
+            <!-- Quick City Chips & Search Suggestions Dropdown -->
+            @if (isSuggestionsOpen()) {
+              <!-- Backdrop -->
+              <div class="fixed inset-0 z-40" (click)="closeSuggestions()"></div>
+
+              <div
+                class="absolute left-0 right-0 top-full mt-2 rounded-2xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-slate-200/90 dark:border-slate-800 shadow-2xl z-50 p-3.5 space-y-3 animate-in fade-in zoom-in-95 duration-150 max-h-[75vh] overflow-y-auto"
+                (click)="$event.stopPropagation()"
+              >
+                <!-- If user typed in search query, show filtered dictionary suggestions -->
+                @if (searchQuery().trim()) {
+                  <div class="space-y-1.5">
+                    <div
+                      class="flex items-center justify-between text-[11px] font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider px-1"
+                    >
+                      <span class="flex items-center gap-1.5">
+                        <i class="pi pi-search text-sky-500"></i>
+                        {{ i18n.dict().searchChips.popular }}
+                      </span>
+                      <span class="font-mono text-[10px]">{{ matchingCities().length }}</span>
+                    </div>
+
+                    @if (matchingCities().length > 0) {
+                      <div class="space-y-1">
+                        @for (match of matchingCities(); track match.query) {
+                          <button
+                            type="button"
+                            (click)="selectCity(match.query)"
+                            class="w-full px-3 py-2 rounded-xl text-left flex items-center justify-between hover:bg-slate-100 dark:hover:bg-slate-800/80 transition-colors cursor-pointer group"
+                          >
+                            <div class="flex items-center gap-2.5">
+                              <span
+                                class="w-6 h-5 rounded flex items-center justify-center text-[10px] font-bold font-mono tracking-wider bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 uppercase shrink-0"
+                              >
+                                {{ match.countryCode }}
+                              </span>
+                              <div class="flex flex-col">
+                                <span
+                                  class="text-xs font-semibold text-slate-900 dark:text-white group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors"
+                                >
+                                  {{ match.displayName }}
+                                </span>
+                                <span class="text-[10px] text-slate-400 font-mono">
+                                  {{ match.query }}
+                                </span>
+                              </div>
+                            </div>
+                            <i
+                              class="pi pi-arrow-right text-[10px] text-slate-300 dark:text-slate-600 group-hover:text-sky-500 transition-colors"
+                            ></i>
+                          </button>
+                        }
+                      </div>
+                    } @else {
+                      <div
+                        class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800/80 text-center space-y-1"
+                      >
+                        <p class="text-xs text-slate-600 dark:text-slate-400">
+                          {{ i18n.dict().searchChips.noMatches }}
+                        </p>
+                        <p class="text-[11px] text-sky-600 dark:text-sky-400 font-medium">
+                          {{ i18n.dict().searchChips.pressEnter }}
+                        </p>
+                      </div>
+                    }
+                  </div>
+                } @else {
+                  <!-- 1. Recent Searches Section -->
+                  @if (recentSearches().length > 0) {
+                    <div class="space-y-1.5">
+                      <div
+                        class="flex items-center justify-between text-[11px] font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider px-1"
+                      >
+                        <span class="flex items-center gap-1.5">
+                          <i class="pi pi-history text-sky-500"></i>
+                          {{ i18n.dict().searchChips.recent }}
+                        </span>
+                        <button
+                          type="button"
+                          (click)="clearRecentHistory($event)"
+                          class="hover:text-rose-500 transition-colors text-[10px] lowercase cursor-pointer"
+                        >
+                          {{ i18n.dict().searchChips.clearRecent }}
+                        </button>
+                      </div>
+
+                      <div class="flex flex-wrap gap-1.5">
+                        @for (city of recentSearches(); track city) {
+                          <div
+                            class="group inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800/80 hover:bg-sky-50 dark:hover:bg-sky-950/40 border border-slate-200/80 dark:border-slate-700/80 hover:border-sky-300 dark:hover:border-sky-800 transition-all cursor-pointer text-xs"
+                            (click)="selectCity(city)"
+                          >
+                            <i
+                              class="pi pi-clock text-[10px] text-slate-400 group-hover:text-sky-500"
+                            ></i>
+                            <span
+                              class="font-medium text-slate-700 dark:text-slate-200 group-hover:text-sky-600 dark:group-hover:text-sky-400"
+                            >
+                              {{ i18n.translateCity(city) }}
+                            </span>
+                            <button
+                              type="button"
+                              (click)="removeRecentItem(city, $event)"
+                              class="text-slate-400 hover:text-rose-500 p-0.5 rounded transition-colors ml-0.5 cursor-pointer"
+                              title="Удалить"
+                            >
+                              <i class="pi pi-times text-[9px]"></i>
+                            </button>
+                          </div>
+                        }
+                      </div>
+                    </div>
+
+                    <div class="border-t border-slate-100 dark:border-slate-800/80"></div>
+                  }
+
+                  <!-- 2. Popular Cities Chips -->
+                  <div class="space-y-2">
+                    <div
+                      class="flex items-center justify-between text-[11px] font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider px-1"
+                    >
+                      <span class="flex items-center gap-1.5">
+                        <i class="pi pi-compass text-amber-500"></i>
+                        {{ i18n.dict().searchChips.popular }}
+                      </span>
+                    </div>
+
+                    <div class="flex flex-wrap gap-1.5">
+                      @for (item of popularCityPresets; track item.query) {
+                        <button
+                          type="button"
+                          (click)="selectCity(item.query)"
+                          class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-slate-50 dark:bg-slate-800/50 hover:bg-sky-500 hover:text-white dark:hover:bg-sky-600 border border-slate-200/80 dark:border-slate-700/80 hover:border-sky-500 transition-all duration-150 cursor-pointer text-xs font-medium text-slate-700 dark:text-slate-200 shadow-2xs hover:shadow-xs group hover:scale-[1.02] active:scale-[0.98]"
+                        >
+                          <span
+                            class="px-1 py-0.2 rounded text-[9px] font-mono font-bold bg-white dark:bg-slate-900 group-hover:bg-white/20 text-slate-500 dark:text-slate-400 group-hover:text-white border border-slate-200 dark:border-slate-700 group-hover:border-transparent uppercase"
+                          >
+                            {{ item.countryCode }}
+                          </span>
+                          <span>{{ i18n.translateCity(item.query) }}</span>
+                        </button>
+                      }
+                    </div>
+                  </div>
+                }
+              </div>
+            }
           </div>
         </form>
       </div>

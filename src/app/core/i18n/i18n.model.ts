@@ -359,6 +359,13 @@ export interface TranslationDictionary {
     rainChance: string;
     summaryFooter: string;
   };
+  searchChips: {
+    recent: string;
+    popular: string;
+    clearRecent: string;
+    noMatches: string;
+    pressEnter: string;
+  };
 }
 
 export type RecursivePartial<T> = {

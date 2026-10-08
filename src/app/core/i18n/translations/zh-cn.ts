@@ -225,4 +225,11 @@ export const zhCnTranslations: RecursivePartial<TranslationDictionary> = {
     rainChance: '降水概率',
     summaryFooter: 'wttr.app 天气预报',
   },
+  searchChips: {
+    recent: '最近搜索',
+    popular: '热门城市',
+    clearRecent: '清除历史',
+    noMatches: '词典中未找到匹配城市',
+    pressEnter: '按 Enter 键在 wttr.in 全球搜索',
+  },
 };

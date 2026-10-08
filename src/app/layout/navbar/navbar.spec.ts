@@ -194,4 +194,69 @@ describe('NavbarComponent', () => {
     expect(element.textContent).toContain('Sankt Petersburg');
     expect(element.textContent).toContain('Tokio');
   });
+
+  describe('Quick City Chips & Search Suggestions (Phase 3.4)', () => {
+    it('should open and close suggestions dropdown', async () => {
+      expect(component.isSuggestionsOpen()).toBe(false);
+
+      component.openSuggestions();
+      await fixture.whenStable();
+      expect(component.isSuggestionsOpen()).toBe(true);
+
+      const dropdown = element.querySelector('.shadow-2xl');
+      expect(dropdown).toBeTruthy();
+      expect(element.textContent).toContain('Популярные города');
+
+      component.closeSuggestions();
+      await fixture.whenStable();
+      expect(component.isSuggestionsOpen()).toBe(false);
+    });
+
+    it('should select popular city and trigger fetchWeather', async () => {
+      const fetchSpy = vi.spyOn(weatherService, 'fetchWeather');
+      component.openSuggestions();
+      await fixture.whenStable();
+
+      component.selectCity('Dubai');
+      expect(fetchSpy).toHaveBeenCalledWith('Dubai');
+      expect(component.searchQuery()).toBe('');
+      expect(component.isSuggestionsOpen()).toBe(false);
+    });
+
+    it('should display recent searches and allow clearing or removing items', async () => {
+      weatherService.searchHistory.set(['Sochi', 'London', 'Paris']);
+      component.openSuggestions();
+      await fixture.whenStable();
+
+      expect(element.textContent).toContain('Недавние поиски');
+      expect(element.textContent).toContain('Сочи');
+
+      // Remove single item
+      const stopPropagation = vi.fn();
+      component.removeRecentItem('Sochi', { stopPropagation } as unknown as MouseEvent);
+      expect(stopPropagation).toHaveBeenCalled();
+      expect(weatherService.searchHistory()).toEqual(['London', 'Paris']);
+
+      // Clear all
+      component.clearRecentHistory({ stopPropagation } as unknown as MouseEvent);
+      expect(weatherService.searchHistory()).toEqual([]);
+    });
+
+    it('should filter matching cities from dictionary when typing query', async () => {
+      component.openSuggestions();
+      component.searchQuery.set('лон'); // 'лон' matches 'London' in Russian aliases/names
+      await fixture.whenStable();
+
+      const matches = component.matchingCities();
+      expect(matches.length).toBeGreaterThan(0);
+      expect(matches[0].query).toBe('London');
+      expect(matches[0].displayName).toBe('Лондон');
+
+      // Empty match state
+      component.searchQuery.set('xyz123nonexistentcity');
+      await fixture.whenStable();
+      expect(component.matchingCities().length).toBe(0);
+      expect(element.textContent).toContain('Ничего не найдено в словаре');
+    });
+  });
 });

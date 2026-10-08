@@ -226,4 +226,11 @@ export const beTranslations: RecursivePartial<TranslationDictionary> = {
     rainChance: 'Верагоднасць ападкаў',
     summaryFooter: 'Прагноз надвор’я на wttr.app',
   },
+  searchChips: {
+    recent: 'Нядаўнія пошукі',
+    popular: 'Папулярныя гарады',
+    clearRecent: 'Ачысціць гісторыю',
+    noMatches: 'Нічога не знойдзена ў слоўніку',
+    pressEnter: 'Націсніце Enter для пошуку па ўсім свеце на wttr.in',
+  },
 };

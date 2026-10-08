@@ -262,4 +262,11 @@ export const frTranslations: RecursivePartial<TranslationDictionary> = {
     rainChance: 'Risque de pluie',
     summaryFooter: 'Prévisions météo sur wttr.app',
   },
+  searchChips: {
+    recent: 'Recherches récentes',
+    popular: 'Villes populaires',
+    clearRecent: "Effacer l'historique",
+    noMatches: 'Aucune ville trouvée dans le dictionnaire',
+    pressEnter: 'Appuyez sur Entrée pour rechercher dans le monde sur wttr.in',
+  },
 };

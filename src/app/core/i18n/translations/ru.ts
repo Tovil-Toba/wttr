@@ -377,4 +377,11 @@ export const ruTranslations: TranslationDictionary = {
     rainChance: 'Вероятность осадков',
     summaryFooter: 'Прогноз погоды на wttr.app',
   },
+  searchChips: {
+    recent: 'Недавние поиски',
+    popular: 'Популярные города',
+    clearRecent: 'Очистить историю',
+    noMatches: 'Ничего не найдено в словаре',
+    pressEnter: 'Нажмите Enter для поиска по всему миру на wttr.in',
+  },
 };

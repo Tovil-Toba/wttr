@@ -225,4 +225,11 @@ export const jaTranslations: RecursivePartial<TranslationDictionary> = {
     rainChance: '降水確率',
     summaryFooter: 'wttr.app の天気予報',
   },
+  searchChips: {
+    recent: '最近の検索',
+    popular: '人気の都市',
+    clearRecent: '履歴を消去',
+    noMatches: '一致する都市が見つかりません',
+    pressEnter: 'Enterキーを押してwttr.inで世界中を検索',
+  },
 };
