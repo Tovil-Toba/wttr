@@ -209,4 +209,19 @@ describe('ComfortIndicesComponent', () => {
     expect(element.textContent).toContain('UV Index');
     expect(element.textContent).toContain('Wind & Gusts');
   });
+
+  it('should adapt to German and Spanish languages without falling back to English', async () => {
+    weatherService.setLanguage('de');
+    await fixture.whenStable();
+    expect(element.textContent).toContain('Komfort- und Sicherheitsindizes');
+    expect(element.textContent).toContain('Wind und Böen');
+    expect(element.textContent).toContain('Niederschlag und Gewitter');
+
+    weatherService.setLanguage('es');
+    await fixture.whenStable();
+    expect(element.textContent).toContain('Índices de confort y seguridad');
+    expect(element.textContent).toContain('Viento y ráfagas');
+    expect(element.textContent).toContain('Precipitación y tormentas');
+  });
 });
+
