@@ -58,6 +58,11 @@ export const ruTranslations: TranslationDictionary = {
     rain: 'Дождь',
     scrollLeft: 'Прокрутить назад',
     scrollRight: 'Прокрутить вперед',
+    cardsView: 'Карточки',
+    chartView: 'График',
+    precipitationChance: 'Вероятность осадков',
+    temperature: 'Температура',
+    chartHint: 'Наведите или коснитесь точки для просмотра деталей',
   },
   daily: {
     title: 'Прогноз на 3 дня & Астрономия',

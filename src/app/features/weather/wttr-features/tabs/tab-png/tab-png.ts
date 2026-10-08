@@ -37,29 +37,23 @@ export class TabPngComponent {
 
   constructor() {
     // Whenever url changes, reset loading state
-    effect(
-      () => {
-        this.pngUrl();
-        this.imageLoading.set(true);
-      },
-      { allowSignalWrites: true },
-    );
+    effect(() => {
+      this.pngUrl();
+      this.imageLoading.set(true);
+    });
 
     // Live timer while loading PNG
-    effect(
-      (onCleanup: (cleanupFn: () => void) => void) => {
-        if (this.imageLoading()) {
-          this.imageSeconds.set(0);
-          const interval = setInterval(() => {
-            this.imageSeconds.update((s) => s + 1);
-          }, 1000);
-          onCleanup(() => clearInterval(interval));
-        } else {
-          this.imageSeconds.set(0);
-        }
-      },
-      { allowSignalWrites: true },
-    );
+    effect((onCleanup: (cleanupFn: () => void) => void) => {
+      if (this.imageLoading()) {
+        this.imageSeconds.set(0);
+        const interval = setInterval(() => {
+          this.imageSeconds.update((s) => s + 1);
+        }, 1000);
+        onCleanup(() => clearInterval(interval));
+      } else {
+        this.imageSeconds.set(0);
+      }
+    });
   }
 
   onImageLoaded(): void {

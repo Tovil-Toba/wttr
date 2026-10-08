@@ -433,5 +433,65 @@ describe('WeatherService', () => {
       expect(service.isLoading()).toBe(false);
       expect(service.errorMessage()).toBeTruthy();
     });
+
+    it('should serve repeated requests from in-memory cache within TTL and allow force refresh', async () => {
+      const lang = service.currentLang();
+      
+      // 1. First fetch issues HTTP request
+      const firstFetch = service.fetchWeather('Madrid');
+      const req1 = httpMock.expectOne(`https://wttr.in/Madrid?format=j1&lang=${lang}`);
+      req1.flush(mockWeatherResponse);
+      const term1 = httpMock.expectOne(`https://wttr.in/Madrid?T&lang=${lang}`);
+      term1.flush('Terminal Madrid');
+      await firstFetch;
+
+      expect(service.weatherData()).toEqual(mockWeatherResponse);
+      expect(window.localStorage.getItem('wttr_last_city')).toBe('Madrid');
+
+      // 2. Second fetch for same city should resolve immediately from cache WITHOUT issuing HTTP request
+      await service.fetchWeather('Madrid');
+      httpMock.expectNone(`https://wttr.in/Madrid?format=j1&lang=${lang}`);
+      expect(service.weatherData()).toEqual(mockWeatherResponse);
+
+      // 3. Force refresh should bypass cache and issue HTTP request
+      const forceFetch = service.fetchWeather('Madrid', true);
+      const reqForce = httpMock.expectOne(`https://wttr.in/Madrid?format=j1&lang=${lang}`);
+      reqForce.flush(mockWeatherResponse);
+      const termForce = httpMock.expectOne(`https://wttr.in/Madrid?T&lang=${lang}`);
+      termForce.flush('Terminal Madrid 2');
+      await forceFetch;
+    });
+
+    it('should track fallback mirror state correctly', async () => {
+      const lang = service.currentLang();
+      expect(service.isFallbackMirror()).toBe(false);
+
+      // Trigger fallback
+      const fetchPromise = service.fetchWeather('Kyoto');
+      const termReq = httpMock.expectOne(`https://wttr.in/Kyoto?T&lang=${lang}`);
+      termReq.flush('Terminal');
+
+      const primaryReq = httpMock.expectOne(`https://wttr.in/Kyoto?format=j1&lang=${lang}`);
+      primaryReq.flush('Error', { status: 500, statusText: 'Server Error' });
+
+      await Promise.resolve();
+
+      const fallbackReq = httpMock.expectOne(`https://wttr.is/Kyoto?format=j1&lang=${lang}`);
+      fallbackReq.flush(mockWeatherResponse);
+
+      await fetchPromise;
+
+      expect(service.isFallbackMirror()).toBe(true);
+
+      // Next successful primary request resets fallback mirror to false
+      const nextFetch = service.fetchWeather('Rome');
+      const termNext = httpMock.expectOne(`https://wttr.in/Rome?T&lang=${lang}`);
+      termNext.flush('Terminal');
+      const primaryNext = httpMock.expectOne(`https://wttr.in/Rome?format=j1&lang=${lang}`);
+      primaryNext.flush(mockWeatherResponse);
+      await nextFetch;
+
+      expect(service.isFallbackMirror()).toBe(false);
+    });
   });
 });

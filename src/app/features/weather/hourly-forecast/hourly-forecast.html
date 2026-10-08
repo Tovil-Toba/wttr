@@ -1,7 +1,7 @@
 <div
   class="rounded-3xl p-6 bg-white/70 dark:bg-slate-900/70 border border-slate-200/80 dark:border-slate-800/80 backdrop-blur-xl shadow-lg transition-all"
 >
-  <!-- Header: Title & Day Switcher Tabs -->
+  <!-- Header: Title, Day Switcher & View Mode Switcher -->
   <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
     <div class="flex items-center gap-2">
       <div
@@ -19,130 +19,392 @@
       </div>
     </div>
 
-    <!-- Day Buttons -->
-    <div
-      class="inline-flex rounded-xl p-1 bg-slate-100 dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700/60"
-    >
-      @for (day of weatherService.threeDaysForecast(); track day.date; let idx = $index) {
+    <!-- Controls Row: Day Switcher & Mode Switcher -->
+    <div class="flex flex-wrap items-center gap-2">
+      <!-- Day Buttons -->
+      <div
+        class="inline-flex rounded-xl p-1 bg-slate-100 dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700/60"
+      >
+        @for (day of weatherService.threeDaysForecast(); track day.date; let idx = $index) {
+          <button
+            type="button"
+            (click)="selectDay(idx)"
+            [class.bg-white]="selectedDayIndex() === idx"
+            [class.dark:bg-slate-700]="selectedDayIndex() === idx"
+            [class.text-sky-600]="selectedDayIndex() === idx"
+            [class.dark:text-sky-300]="selectedDayIndex() === idx"
+            [class.shadow-sm]="selectedDayIndex() === idx"
+            [class.text-slate-600]="selectedDayIndex() !== idx"
+            [class.dark:text-slate-400]="selectedDayIndex() !== idx"
+            class="px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-150 cursor-pointer"
+          >
+            {{ getDayLabel(idx, day.date) }}
+          </button>
+        }
+      </div>
+
+      <!-- View Mode Buttons (Cards / Chart) -->
+      <div
+        class="inline-flex rounded-xl p-1 bg-slate-100 dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700/60"
+      >
         <button
           type="button"
-          (click)="selectDay(idx)"
-          [class.bg-white]="selectedDayIndex() === idx"
-          [class.dark:bg-slate-700]="selectedDayIndex() === idx"
-          [class.text-sky-600]="selectedDayIndex() === idx"
-          [class.dark:text-sky-300]="selectedDayIndex() === idx"
-          [class.shadow-sm]="selectedDayIndex() === idx"
-          [class.text-slate-600]="selectedDayIndex() !== idx"
-          [class.dark:text-slate-400]="selectedDayIndex() !== idx"
-          class="px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-150"
+          (click)="setViewMode('cards')"
+          [class.bg-white]="viewMode() === 'cards'"
+          [class.dark:bg-slate-700]="viewMode() === 'cards'"
+          [class.text-sky-600]="viewMode() === 'cards'"
+          [class.dark:text-sky-300]="viewMode() === 'cards'"
+          [class.shadow-sm]="viewMode() === 'cards'"
+          [class.text-slate-500]="viewMode() !== 'cards'"
+          [class.dark:text-slate-400]="viewMode() !== 'cards'"
+          class="px-2.5 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all duration-150 cursor-pointer"
+          [pTooltip]="i18n.dict().hourly.cardsView || 'Карточки'"
+          tooltipPosition="top"
+          aria-label="Cards view"
         >
-          {{ getDayLabel(idx, day.date) }}
+          <i class="pi pi-th-large text-xs"></i>
+          <span class="hidden sm:inline">{{ i18n.dict().hourly.cardsView || 'Карточки' }}</span>
+        </button>
+
+        <button
+          type="button"
+          (click)="setViewMode('chart')"
+          [class.bg-white]="viewMode() === 'chart'"
+          [class.dark:bg-slate-700]="viewMode() === 'chart'"
+          [class.text-sky-600]="viewMode() === 'chart'"
+          [class.dark:text-sky-300]="viewMode() === 'chart'"
+          [class.shadow-sm]="viewMode() === 'chart'"
+          [class.text-slate-500]="viewMode() !== 'chart'"
+          [class.dark:text-slate-400]="viewMode() !== 'chart'"
+          class="px-2.5 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all duration-150 cursor-pointer"
+          [pTooltip]="i18n.dict().hourly.chartView || 'График'"
+          tooltipPosition="top"
+          aria-label="Chart view"
+        >
+          <i class="pi pi-chart-line text-xs"></i>
+          <span class="hidden sm:inline">{{ i18n.dict().hourly.chartView || 'График' }}</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- VIEW 1: HORIZONTAL CARDS -->
+  @if (viewMode() === 'cards') {
+    <div class="relative animate-in fade-in duration-200">
+      <!-- Left Scroll Button -->
+      @if (canScrollLeft()) {
+        <button
+          type="button"
+          (click)="scrollLeft()"
+          class="absolute -left-2 sm:-left-3 top-1/2 -translate-y-1/2 z-20 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/95 dark:bg-slate-800/95 text-slate-700 dark:text-slate-200 hover:text-white hover:bg-sky-500 dark:hover:bg-sky-500 border border-slate-200/80 dark:border-slate-700/80 shadow-lg shadow-black/10 dark:shadow-black/40 backdrop-blur-md flex items-center justify-center transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer animate-in fade-in zoom-in-90 duration-150"
+          [pTooltip]="i18n.dict().hourly.scrollLeft"
+          tooltipPosition="top"
+          [showDelay]="500"
+          aria-label="Scroll left"
+        >
+          <i class="pi pi-chevron-left text-xs sm:text-sm"></i>
+        </button>
+      }
+
+      <!-- Hourly Cards Scroll Area -->
+      <div
+        #scrollContainer
+        (scroll)="checkScroll()"
+        class="flex gap-3 overflow-x-auto pb-4 pt-1 px-1 -mx-1 no-scrollbar scroll-smooth"
+      >
+        @for (hour of hourlyList(); track hour.time) {
+          <div
+            class="min-w-[130px] flex-1 p-4 rounded-2xl bg-slate-50/80 dark:bg-slate-800/50 border border-slate-200/60 dark:border-slate-700/50 flex flex-col items-center justify-between text-center hover:shadow-md hover:border-sky-500/30 transition-all duration-200 group"
+          >
+            <!-- Time -->
+            <span class="text-xs font-bold text-slate-500 dark:text-slate-400">
+              {{ formatHourTime(hour.time) }}
+            </span>
+
+            <!-- Icon -->
+            <div
+              class="my-3 w-12 h-12 rounded-2xl bg-white dark:bg-slate-700/60 flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform"
+            >
+              <app-weather-icon [condition]="getWeatherTheme(hour).conditionType" size="md" />
+            </div>
+
+            <!-- Temperature -->
+            <div class="mb-2">
+              <span class="text-xl font-extrabold text-slate-900 dark:text-white">
+                {{ weatherService.formatTemp(hour.tempC, hour.tempF) }}
+              </span>
+              <span class="block text-[10px] text-slate-400">
+                {{ i18n.dict().hourly.feelsLikeShort }}
+                {{ weatherService.formatTemp(hour.FeelsLikeC, hour.FeelsLikeF) }}
+              </span>
+            </div>
+
+            <!-- Condition description -->
+            <span
+              class="text-[11px] font-medium text-slate-600 dark:text-slate-300 line-clamp-1 mb-2"
+            >
+              {{ getDescriptionRu(hour) }}
+            </span>
+
+            <!-- Rain / Snow Chance Meter -->
+            <div
+              class="w-full pt-2 border-t border-slate-200/60 dark:border-slate-700/60 flex flex-col gap-1"
+            >
+              <div
+                class="flex items-center justify-between text-[10px] text-slate-500 dark:text-slate-400"
+              >
+                <span class="flex items-center gap-0.5">
+                  <i class="pi pi-tint text-sky-500 text-[9px]"></i> {{ i18n.dict().hourly.rain }}
+                </span>
+                <span class="font-bold text-sky-600 dark:text-sky-400">{{ hour.chanceofrain }}%</span>
+              </div>
+
+              <div class="w-full bg-slate-200 dark:bg-slate-700 h-1.5 rounded-full overflow-hidden">
+                <div
+                  class="bg-sky-500 h-full rounded-full transition-all"
+                  [style.width.%]="hour.chanceofrain"
+                ></div>
+              </div>
+
+              <div class="flex items-center justify-between text-[10px] text-slate-400 mt-1">
+                <span class="flex items-center gap-0.5">
+                  <i class="pi pi-compass text-[9px]"></i> {{ hour.winddir16Point }}
+                </span>
+                <span>{{ weatherService.formatWind(hour.windspeedKmph) }}</span>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Right Scroll Button -->
+      @if (canScrollRight()) {
+        <button
+          type="button"
+          (click)="scrollRight()"
+          class="absolute -right-2 sm:-right-3 top-1/2 -translate-y-1/2 z-20 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/95 dark:bg-slate-800/95 text-slate-700 dark:text-slate-200 hover:text-white hover:bg-sky-500 dark:hover:bg-sky-500 border border-slate-200/80 dark:border-slate-700/80 shadow-lg shadow-black/10 dark:shadow-black/40 backdrop-blur-md flex items-center justify-center transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer animate-in fade-in zoom-in-90 duration-150"
+          [pTooltip]="i18n.dict().hourly.scrollRight"
+          tooltipPosition="top"
+          [showDelay]="500"
+          aria-label="Scroll right"
+        >
+          <i class="pi pi-chevron-right text-xs sm:text-sm"></i>
         </button>
       }
     </div>
-  </div>
+  }
 
-  <!-- Relative Wrapper for Carousel and Scroll Buttons -->
-  <div class="relative">
-    <!-- Left Scroll Button -->
-    @if (canScrollLeft()) {
-      <button
-        type="button"
-        (click)="scrollLeft()"
-        class="absolute -left-2 sm:-left-3 top-1/2 -translate-y-1/2 z-20 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/95 dark:bg-slate-800/95 text-slate-700 dark:text-slate-200 hover:text-white hover:bg-sky-500 dark:hover:bg-sky-500 border border-slate-200/80 dark:border-slate-700/80 shadow-lg shadow-black/10 dark:shadow-black/40 backdrop-blur-md flex items-center justify-center transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer animate-in fade-in zoom-in-90 duration-150"
-        [pTooltip]="i18n.dict().hourly.scrollLeft"
-        tooltipPosition="top"
-        [showDelay]="500"
-        aria-label="Scroll left"
-      >
-        <i class="pi pi-chevron-left text-xs sm:text-sm"></i>
-      </button>
-    }
-
-    <!-- Hourly Cards Scroll Area -->
+  <!-- VIEW 2: INTERACTIVE SVG CURVE & PRECIPITATION CHART -->
+  @if (viewMode() === 'chart') {
     <div
-      #scrollContainer
-      (scroll)="checkScroll()"
-      class="flex gap-3 overflow-x-auto pb-4 pt-1 px-1 -mx-1 no-scrollbar scroll-smooth"
+      class="relative w-full overflow-hidden rounded-2xl bg-slate-50/70 dark:bg-slate-950/40 border border-slate-200/60 dark:border-slate-800/60 p-4 transition-all animate-in fade-in duration-200"
     >
-      @for (hour of hourlyList(); track hour.time) {
+      <!-- Active point details bar (hovered point or default point) -->
+      @let active = hoveredPoint() || chartPoints()[3] || chartPoints()[0];
+      @if (active) {
         <div
-          class="min-w-[130px] flex-1 p-4 rounded-2xl bg-slate-50/80 dark:bg-slate-800/50 border border-slate-200/60 dark:border-slate-700/50 flex flex-col items-center justify-between text-center hover:shadow-md hover:border-sky-500/30 transition-all duration-200 group"
+          class="flex flex-wrap items-center justify-between gap-3 mb-3 px-3 py-2 rounded-xl bg-white/80 dark:bg-slate-900/80 border border-slate-200/60 dark:border-slate-800/60 backdrop-blur-md shadow-xs"
         >
-          <!-- Time -->
-          <span class="text-xs font-bold text-slate-500 dark:text-slate-400">
-            {{ formatHourTime(hour.time) }}
-          </span>
-
-          <!-- Icon -->
-          <div
-            class="my-3 w-12 h-12 rounded-2xl bg-white dark:bg-slate-700/60 flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform"
-          >
-            <app-weather-icon [condition]="getWeatherTheme(hour).conditionType" size="md" />
+          <div class="flex items-center gap-3">
+            <span class="font-mono font-bold text-sm text-slate-800 dark:text-slate-100 flex items-center gap-1.5">
+              <i class="pi pi-clock text-xs text-sky-500"></i>
+              {{ active.time }}
+            </span>
+            <div class="w-7 h-7 rounded-lg bg-sky-500/10 flex items-center justify-center">
+              <app-weather-icon [condition]="active.theme.conditionType" size="sm" />
+            </div>
+            <span class="text-xs font-medium text-slate-600 dark:text-slate-300">{{ active.desc }}</span>
           </div>
 
-          <!-- Temperature -->
-          <div class="mb-2">
-            <span class="text-xl font-extrabold text-slate-900 dark:text-white">
-              {{ weatherService.formatTemp(hour.tempC, hour.tempF) }}
+          <div class="flex items-center gap-4 text-xs">
+            <span class="font-black text-slate-900 dark:text-white text-base font-mono">
+              {{ active.tempFormatted }}
             </span>
-            <span class="block text-[10px] text-slate-400">
-              {{ i18n.dict().hourly.feelsLikeShort }}
-              {{ weatherService.formatTemp(hour.FeelsLikeC, hour.FeelsLikeF) }}
+            <span class="text-slate-400">
+              {{ i18n.dict().hourly.feelsLikeShort }}:
+              <strong class="text-slate-700 dark:text-slate-200">{{ active.feelsLikeFormatted }}</strong>
             </span>
-          </div>
-
-          <!-- Condition description -->
-          <span
-            class="text-[11px] font-medium text-slate-600 dark:text-slate-300 line-clamp-1 mb-2"
-          >
-            {{ getDescriptionRu(hour) }}
-          </span>
-
-          <!-- Rain / Snow Chance Meter -->
-          <div
-            class="w-full pt-2 border-t border-slate-200/60 dark:border-slate-700/60 flex flex-col gap-1"
-          >
-            <div
-              class="flex items-center justify-between text-[10px] text-slate-500 dark:text-slate-400"
-            >
-              <span class="flex items-center gap-0.5">
-                <i class="pi pi-tint text-sky-500 text-[9px]"></i> {{ i18n.dict().hourly.rain }}
-              </span>
-              <span class="font-bold text-sky-600 dark:text-sky-400">{{ hour.chanceofrain }}%</span>
-            </div>
-
-            <div class="w-full bg-slate-200 dark:bg-slate-700 h-1.5 rounded-full overflow-hidden">
-              <div
-                class="bg-sky-500 h-full rounded-full transition-all"
-                [style.width.%]="hour.chanceofrain"
-              ></div>
-            </div>
-
-            <div class="flex items-center justify-between text-[10px] text-slate-400 mt-1">
-              <span class="flex items-center gap-0.5">
-                <i class="pi pi-compass text-[9px]"></i> {{ hour.winddir16Point }}
-              </span>
-              <span>{{ weatherService.formatWind(hour.windspeedKmph) }}</span>
-            </div>
+            <span class="flex items-center gap-1 font-semibold text-sky-600 dark:text-sky-400">
+              <i class="pi pi-cloud-download text-xs"></i>
+              {{ active.rainChance }}%
+            </span>
           </div>
         </div>
       }
-    </div>
 
-    <!-- Right Scroll Button -->
-    @if (canScrollRight()) {
-      <button
-        type="button"
-        (click)="scrollRight()"
-        class="absolute -right-2 sm:-right-3 top-1/2 -translate-y-1/2 z-20 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/95 dark:bg-slate-800/95 text-slate-700 dark:text-slate-200 hover:text-white hover:bg-sky-500 dark:hover:bg-sky-500 border border-slate-200/80 dark:border-slate-700/80 shadow-lg shadow-black/10 dark:shadow-black/40 backdrop-blur-md flex items-center justify-center transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer animate-in fade-in zoom-in-90 duration-150"
-        [pTooltip]="i18n.dict().hourly.scrollRight"
-        tooltipPosition="top"
-        [showDelay]="500"
-        aria-label="Scroll right"
+      <!-- Responsive SVG container with scroll on small devices -->
+      <div class="w-full overflow-x-auto pb-1">
+        <div class="min-w-[620px] sm:min-w-full">
+          <svg
+            data-testid="hourly-chart-svg"
+            viewBox="0 0 800 230"
+            class="w-full h-auto select-none overflow-visible"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <defs>
+              <!-- Temperature curve stroke gradient -->
+              <linearGradient id="tempStrokeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#38bdf8" />
+                <stop offset="35%" stop-color="#38bdf8" />
+                <stop offset="55%" stop-color="#f59e0b" />
+                <stop offset="85%" stop-color="#38bdf8" />
+              </linearGradient>
+
+              <!-- Filled area gradient -->
+              <linearGradient id="tempAreaGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.28" />
+                <stop offset="60%" stop-color="#38bdf8" stop-opacity="0.08" />
+                <stop offset="100%" stop-color="#38bdf8" stop-opacity="0.0" />
+              </linearGradient>
+
+              <!-- Rain bar gradient -->
+              <linearGradient id="rainBarGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#0284c7" stop-opacity="0.9" />
+                <stop offset="100%" stop-color="#38bdf8" stop-opacity="0.35" />
+              </linearGradient>
+            </defs>
+
+            <!-- Guide grid lines -->
+            <line
+              x1="40"
+              y1="152"
+              x2="760"
+              y2="152"
+              stroke="currentColor"
+              class="text-slate-200 dark:text-slate-800"
+              stroke-width="1"
+              stroke-dasharray="3,3"
+            />
+            <line
+              x1="40"
+              y1="196"
+              x2="760"
+              y2="196"
+              stroke="currentColor"
+              class="text-slate-200 dark:text-slate-800"
+              stroke-width="1"
+            />
+
+            <!-- Filled area under smooth curve -->
+            @if (smoothAreaPath(); as area) {
+              <path [attr.d]="area" fill="url(#tempAreaGradient)" />
+            }
+
+            <!-- Smooth Temperature Line -->
+            @if (smoothLinePath(); as line) {
+              <path
+                [attr.d]="line"
+                fill="none"
+                stroke="url(#tempStrokeGradient)"
+                stroke-width="3.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="filter drop-shadow-sm"
+              />
+            }
+
+            <!-- Hourly interactive columns & markers -->
+            @for (pt of chartPoints(); track pt.index) {
+              <!-- Vertical guideline on hover -->
+              @if (hoveredPointIndex() === pt.index) {
+                <line
+                  [attr.x1]="pt.x"
+                  y1="25"
+                  [attr.x2]="pt.x"
+                  y2="215"
+                  stroke="#38bdf8"
+                  stroke-width="1.5"
+                  stroke-dasharray="3,3"
+                  opacity="0.85"
+                />
+              }
+
+              <!-- Rain Probability Bar -->
+              @if (pt.rainChance > 0) {
+                <rect
+                  [attr.x]="pt.x - 12"
+                  [attr.y]="pt.barY"
+                  width="24"
+                  [attr.height]="pt.barHeight"
+                  rx="4"
+                  fill="url(#rainBarGradient)"
+                  class="transition-all duration-200"
+                />
+                <text
+                  [attr.x]="pt.x"
+                  [attr.y]="pt.barY - 4"
+                  text-anchor="middle"
+                  class="text-[10px] font-bold fill-sky-600 dark:fill-sky-400 font-mono"
+                >
+                  {{ pt.rainChance }}%
+                </text>
+              }
+
+              <!-- Temperature value above point -->
+              <text
+                [attr.x]="pt.x"
+                [attr.y]="pt.y - 12"
+                text-anchor="middle"
+                class="text-xs font-black fill-slate-800 dark:fill-slate-100 font-mono select-none"
+              >
+                {{ pt.tempFormatted }}
+              </text>
+
+              <!-- Circle Marker -->
+              <circle
+                [attr.cx]="pt.x"
+                [attr.cy]="pt.y"
+                [attr.r]="hoveredPointIndex() === pt.index ? 6 : 4"
+                fill="white"
+                stroke="#0284c7"
+                stroke-width="2.5"
+                class="transition-all duration-150 cursor-pointer"
+              />
+
+              <!-- Time Label below -->
+              <text
+                [attr.x]="pt.x"
+                y="218"
+                text-anchor="middle"
+                class="text-[11px] font-semibold fill-slate-500 dark:fill-slate-400 font-mono select-none"
+              >
+                {{ pt.time }}
+              </text>
+
+              <!-- Transparent full-height hit area for comfortable hover & tap -->
+              <rect
+                [attr.x]="pt.x - 45"
+                y="0"
+                width="90"
+                height="230"
+                fill="transparent"
+                class="cursor-pointer"
+                (mouseenter)="setHoveredPoint(pt.index)"
+                (touchstart)="setHoveredPoint(pt.index)"
+              />
+            }
+          </svg>
+        </div>
+      </div>
+
+      <!-- Chart legend & hint -->
+      <div
+        class="mt-2 pt-2 border-t border-slate-200/50 dark:border-slate-800/50 flex flex-wrap items-center justify-between text-[11px] text-slate-500 dark:text-slate-400"
       >
-        <i class="pi pi-chevron-right text-xs sm:text-sm"></i>
-      </button>
-    }
-  </div>
+        <div class="flex items-center gap-4">
+          <span class="flex items-center gap-1.5">
+            <span class="w-2.5 h-2.5 rounded-full bg-gradient-to-r from-sky-400 to-amber-400"></span>
+            {{ i18n.dict().hourly.temperature }}
+          </span>
+          <span class="flex items-center gap-1.5">
+            <span class="w-2.5 h-2.5 rounded bg-sky-500"></span>
+            {{ i18n.dict().hourly.precipitationChance }}
+          </span>
+        </div>
+        <span class="hidden sm:inline text-slate-400 dark:text-slate-500">
+          {{ i18n.dict().hourly.chartHint }}
+        </span>
+      </div>
+    </div>
+  }
 </div>

@@ -56,6 +56,11 @@ export interface TranslationDictionary {
     rain: string;
     scrollLeft: string;
     scrollRight: string;
+    cardsView: string;
+    chartView: string;
+    precipitationChance: string;
+    temperature: string;
+    chartHint: string;
   };
   daily: {
     title: string;

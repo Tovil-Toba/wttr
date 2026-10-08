@@ -58,6 +58,11 @@ export const enTranslations: TranslationDictionary = {
     rain: 'Rain',
     scrollLeft: 'Scroll left',
     scrollRight: 'Scroll right',
+    cardsView: 'Cards',
+    chartView: 'Chart',
+    precipitationChance: 'Precipitation Chance',
+    temperature: 'Temperature',
+    chartHint: 'Hover or tap a point to inspect details',
   },
   daily: {
     title: '3-Day Forecast & Astronomy',

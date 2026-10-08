@@ -127,4 +127,34 @@ describe('HourlyForecastComponent', () => {
     component.scrollRight();
     expect(Element.prototype.scrollBy).toHaveBeenCalledWith({ left: 280, behavior: 'smooth' });
   });
+
+  it('should toggle view mode between cards and chart and compute SVG chart points', async () => {
+    expect(component.viewMode()).toBe('cards');
+    expect(element.querySelector('[data-testid="hourly-chart-svg"]')).toBeNull();
+
+    component.setViewMode('chart');
+    await fixture.whenStable();
+
+    expect(component.viewMode()).toBe('chart');
+    expect(element.querySelector('[data-testid="hourly-chart-svg"]')).not.toBeNull();
+
+    // Verify computed chart points
+    const points = component.chartPoints();
+    expect(points.length).toBe(2);
+    expect(points[0].time).toBe('03:00');
+    expect(points[0].tempFormatted).toBe('+12°C');
+    expect(points[0].rainChance).toBe(15);
+    expect(points[1].time).toBe('12:00');
+    expect(points[1].tempFormatted).toBe('+19°C');
+    expect(points[1].rainChance).toBe(0);
+
+    // Verify smooth path generated
+    expect(component.smoothLinePath()).toContain('M ');
+    expect(component.smoothAreaPath()).toContain('L ');
+
+    // Test hovering
+    component.setHoveredPoint(1);
+    expect(component.hoveredPointIndex()).toBe(1);
+    expect(component.hoveredPoint()?.time).toBe('12:00');
+  });
 });

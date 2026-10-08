@@ -29,6 +29,14 @@ export class WeatherService {
   private readonly historyKey = 'wttr_history';
   private readonly settingsKey = 'wttr_settings';
   private readonly langKey = 'wttr_lang';
+  private readonly lastCityKey = 'wttr_last_city';
+
+  // In-memory weather cache (10 min TTL)
+  private readonly cache = new Map<string, { data: WttrResponse; timestamp: number }>();
+  readonly cacheTtlMs = 10 * 60 * 1000;
+
+  // Fallback mirror indicator
+  readonly isFallbackMirror = signal<boolean>(false);
 
   // Language State
   readonly supportedLanguages = SUPPORTED_LANGUAGES;
@@ -41,7 +49,7 @@ export class WeatherService {
   readonly weatherData = signal<WttrResponse | null>(null);
   readonly isLoading = signal<boolean>(false);
   readonly errorMessage = signal<string | null>(null);
-  readonly currentQuery = signal<string>('Obninsk');
+  readonly currentQuery = signal<string>(this.getInitialCity());
   readonly terminalOutput = signal<string>('');
   readonly isTerminalLoading = signal<boolean>(false);
   readonly terminalError = signal<string | null>(null);
@@ -93,15 +101,29 @@ export class WeatherService {
     this.fetchWeather(this.currentQuery());
   }
 
-  // Fetch weather data from wttr.in or fallback
-  async fetchWeather(query: string): Promise<void> {
-    const cleanQuery = query.trim() || 'Obninsk';
+  // Fetch weather data from wttr.in or fallback with TTL cache
+  async fetchWeather(query: string, force = false): Promise<void> {
+    const cleanQuery = query.trim() || this.getInitialCity();
+    const cacheKey = `${cleanQuery.toLowerCase()}_${this.currentLang()}`;
+
+    this.currentQuery.set(cleanQuery);
+    this.saveLastCity(cleanQuery);
+
+    // Fast return from in-memory cache if fresh
+    const cached = this.cache.get(cacheKey);
+    if (!force && cached && Date.now() - cached.timestamp < this.cacheTtlMs) {
+      this.weatherData.set(cached.data);
+      this.isLoading.set(false);
+      this.errorMessage.set(null);
+      this.fetchTerminalOutput(cleanQuery, false);
+      return;
+    }
+
     this.isLoading.set(true);
     this.errorMessage.set(null);
-    this.currentQuery.set(cleanQuery);
 
     // Fetch terminal/web output immediately in parallel
-    this.fetchTerminalOutput(cleanQuery);
+    this.fetchTerminalOutput(cleanQuery, force);
 
     try {
       // First attempt: Primary URL
@@ -110,6 +132,7 @@ export class WeatherService {
         `${this.fallbackBase}/${encodeURIComponent(cleanQuery)}?format=j1&lang=${this.currentLang()}`,
       );
 
+      this.cache.set(cacheKey, { data, timestamp: Date.now() });
       this.weatherData.set(data);
       this.addToHistory(cleanQuery);
     } catch (err: any) {
@@ -256,10 +279,14 @@ export class WeatherService {
   // Request with fallback helper
   private async requestWithFallback<T>(primaryUrl: string, fallbackUrl: string): Promise<T> {
     try {
-      return await firstValueFrom(this.http.get<T>(primaryUrl).pipe(timeout(6000)));
+      const result = await firstValueFrom(this.http.get<T>(primaryUrl).pipe(timeout(6000)));
+      this.isFallbackMirror.set(false);
+      return result;
     } catch {
       // Try fallback
-      return await firstValueFrom(this.http.get<T>(fallbackUrl).pipe(timeout(6000)));
+      const result = await firstValueFrom(this.http.get<T>(fallbackUrl).pipe(timeout(6000)));
+      this.isFallbackMirror.set(true);
+      return result;
     }
   }
 
@@ -845,5 +872,29 @@ export class WeatherService {
     }
 
     return 'ru';
+  }
+
+  private saveLastCity(city: string): void {
+    if (!city || !city.trim()) return;
+    try {
+      this.window?.localStorage?.setItem(this.lastCityKey, city.trim());
+    } catch {}
+  }
+
+  getInitialCity(): string {
+    if (!this.window) return 'Obninsk';
+    try {
+      const saved = this.window.localStorage?.getItem(this.lastCityKey)?.trim();
+      if (saved) return saved;
+    } catch {}
+    return 'Obninsk';
+  }
+
+  clearCache(): void {
+    this.cache.clear();
+  }
+
+  reloadWeather(): Promise<void> {
+    return this.fetchWeather(this.currentQuery(), true);
   }
 }

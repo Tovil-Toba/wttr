@@ -35,28 +35,23 @@ export class WttrFeaturesComponent {
             this.weatherService.fetchTerminalOutput(query);
           }
         }
-      },
-      { allowSignalWrites: true },
-    );
+      });
 
     // Live timer counting seconds during active loading
-    effect(
-      (onCleanup: (cleanupFn: () => void) => void) => {
-        const loading =
-          this.weatherService.isWebLoading() || this.weatherService.isTerminalLoading();
+    effect((onCleanup: (cleanupFn: () => void) => void) => {
+      const loading =
+        this.weatherService.isWebLoading() || this.weatherService.isTerminalLoading();
 
-        if (loading) {
-          this.loadingSeconds.set(0);
-          const interval = setInterval(() => {
-            this.loadingSeconds.update((s) => s + 1);
-          }, 1000);
-          onCleanup(() => clearInterval(interval));
-        } else {
-          this.loadingSeconds.set(0);
-        }
-      },
-      { allowSignalWrites: true },
-    );
+      if (loading) {
+        this.loadingSeconds.set(0);
+        const interval = setInterval(() => {
+          this.loadingSeconds.update((s) => s + 1);
+        }, 1000);
+        onCleanup(() => clearInterval(interval));
+      } else {
+        this.loadingSeconds.set(0);
+      }
+    });
   }
 
   readonly loadingStatusText = computed(() => {

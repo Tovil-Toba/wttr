@@ -68,6 +68,14 @@
           {{ i18n.dict().common.updated }}:
           {{ weatherService.formatTo24Hour(cur.observation_time) }}
         </span>
+        @if (weatherService.isFallbackMirror()) {
+          <span
+            class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20"
+          >
+            <i class="pi pi-shield text-[9px]"></i>
+            wttr.is
+          </span>
+        }
       </div>
     </div>
 
