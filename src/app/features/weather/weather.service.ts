@@ -122,8 +122,11 @@ export class WeatherService {
 
     // Register online/offline connectivity listeners
     if (this.window) {
-      // Restore session fallback state if previously triggered
-      if (this.window.sessionStorage?.getItem('wttr_fallback_active') === 'true') {
+      // Restore session or persistent fallback state if previously triggered without VPN
+      if (
+        this.window.sessionStorage?.getItem('wttr_fallback_active') === 'true' ||
+        this.window.localStorage?.getItem('wttr_fallback_active') === 'true'
+      ) {
         this.wttrBlockedInSession = true;
         this.isFallbackMirror.set(true);
         this.fallbackSourceName.set('Open-Meteo');
@@ -207,6 +210,11 @@ export class WeatherService {
           if (this.window?.sessionStorage) {
             try {
               this.window.sessionStorage.setItem('wttr_fallback_active', 'true');
+            } catch {}
+          }
+          if (this.window?.localStorage) {
+            try {
+              this.window.localStorage.setItem('wttr_fallback_active', 'true');
             } catch {}
           }
           data = await this.fetchOpenMeteoFallback(cleanQuery, this.currentLang());
@@ -386,13 +394,13 @@ export class WeatherService {
   // Request with fallback helper
   private async requestWithFallback<T>(primaryUrl: string, fallbackUrl: string): Promise<T> {
     try {
-      const result = await firstValueFrom(this.http.get<T>(primaryUrl).pipe(timeout(3500)));
+      const result = await firstValueFrom(this.http.get<T>(primaryUrl).pipe(timeout(2500)));
       this.isFallbackMirror.set(false);
       this.fallbackSourceName.set('wttr.in');
       return typeof result === 'string' ? JSON.parse(result) : result;
     } catch {
       // Try fallback
-      const result = await firstValueFrom(this.http.get<T>(fallbackUrl).pipe(timeout(3500)));
+      const result = await firstValueFrom(this.http.get<T>(fallbackUrl).pipe(timeout(2500)));
       this.isFallbackMirror.set(true);
       this.fallbackSourceName.set('wttr.is');
       return typeof result === 'string' ? JSON.parse(result) : result;
@@ -584,6 +592,11 @@ export class WeatherService {
     if (this.window?.sessionStorage) {
       try {
         this.window.sessionStorage.removeItem('wttr_fallback_active');
+      } catch {}
+    }
+    if (this.window?.localStorage) {
+      try {
+        this.window.localStorage.removeItem('wttr_fallback_active');
       } catch {}
     }
     const cur = this.currentQuery();
