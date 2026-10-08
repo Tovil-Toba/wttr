@@ -45,7 +45,9 @@ describe('NavbarComponent', () => {
 
   it('should create navbar and render search input and quick presets', () => {
     expect(component).toBeTruthy();
-    expect(element.querySelector('input[type="text"]')).toBeTruthy();
+    const input = element.querySelector('input[type="text"]') as HTMLInputElement;
+    expect(input).toBeTruthy();
+    expect(input.getAttribute('autocomplete')).toBe('off');
     expect(element.textContent).toContain('Обнинск');
     expect(element.textContent).toContain('Москва');
     expect(element.textContent).toContain('Шереметьево (SVO)');
