@@ -152,4 +152,12 @@ describe('WeatherHeroComponent', () => {
     expect(element.textContent).toContain('Moskau');
     expect(element.textContent).toContain('Russland');
   });
+
+  it('should trigger openCompare when compare button is clicked', () => {
+    const spy = vi.spyOn(weatherService, 'openCompare');
+    const compareBtn = element.querySelector('button[aria-label="Сравнить с другим городом"]') as HTMLButtonElement;
+    expect(compareBtn).toBeTruthy();
+    compareBtn.click();
+    expect(spy).toHaveBeenCalled();
+  });
 });

@@ -192,4 +192,9 @@
   @if (isAboutOpen()) {
     <app-about-modal (close)="isAboutOpen.set(false)" />
   }
+
+  <!-- Weather Comparison Modal Dialog -->
+  @if (weatherService.isCompareOpen()) {
+    <app-weather-compare-modal (close)="weatherService.closeCompare()" />
+  }
 </div>

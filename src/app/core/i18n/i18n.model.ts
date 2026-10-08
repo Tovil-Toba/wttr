@@ -295,6 +295,35 @@ export interface TranslationDictionary {
     sourceLabel: string;
     sourceAuthor: string;
   };
+  compare: {
+    title: string;
+    subtitle: string;
+    buttonTooltip: string;
+    compareWithThis: string;
+    city1Badge: string;
+    city2Badge: string;
+    searchPlaceholder: string;
+    searchBtn: string;
+    quickPick: string;
+    sameTemp: string;
+    warmerThan: string;
+    colderThan: string;
+    tempDifference: string;
+    feelsLikeDifference: string;
+    windDifference: string;
+    humidityDifference: string;
+    pressureDifference: string;
+    precipDifference: string;
+    calmerWind: string;
+    strongerWind: string;
+    moreRain: string;
+    lessRain: string;
+    swapBtn: string;
+    makePrimary: string;
+    loading: string;
+    error: string;
+    noComparisonData: string;
+  };
 }
 
 export type RecursivePartial<T> = {

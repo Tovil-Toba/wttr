@@ -23,4 +23,9 @@ export class FavoritesListComponent {
     e.stopPropagation();
     this.weatherService.removeFavorite(query);
   }
+
+  compareWith(e: Event, query: string): void {
+    e.stopPropagation();
+    this.weatherService.openCompare(query);
+  }
 }

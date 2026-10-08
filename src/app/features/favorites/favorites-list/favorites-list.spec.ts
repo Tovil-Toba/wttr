@@ -126,4 +126,17 @@ describe('FavoritesListComponent', () => {
     expect(element.textContent).toContain('London');
     expect(element.textContent).toContain('Vereinigtes Königreich');
   });
+
+  it('should call openCompare when clicking compare icon on favorite item', async () => {
+    weatherService.favorites.set([
+      { name: 'Сочи', query: 'Sochi', country: 'Россия', addedAt: Date.now() },
+    ]);
+    await fixture.whenStable();
+
+    const spy = vi.spyOn(weatherService, 'openCompare');
+    const compareBtn = element.querySelector('button[tooltipPosition="left"]') as HTMLButtonElement;
+    expect(compareBtn).toBeTruthy();
+    compareBtn.click();
+    expect(spy).toHaveBeenCalledWith('Sochi');
+  });
 });

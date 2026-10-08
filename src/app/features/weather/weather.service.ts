@@ -54,6 +54,10 @@ export class WeatherService {
   readonly isTerminalLoading = signal<boolean>(false);
   readonly terminalError = signal<string | null>(null);
 
+  // Comparison State
+  readonly isCompareOpen = signal<boolean>(false);
+  readonly compareTargetCity = signal<string>('');
+
   // Web View HTML State
   readonly webHtml = signal<string>('');
   readonly isWebLoading = signal<boolean>(false);
@@ -310,6 +314,35 @@ export class WeatherService {
     } else {
       await this.fetchWeather('');
     }
+  }
+
+  // Comparison Dialog Actions
+  openCompare(targetCity?: string): void {
+    if (targetCity) {
+      this.compareTargetCity.set(targetCity);
+    }
+    this.isCompareOpen.set(true);
+  }
+
+  closeCompare(): void {
+    this.isCompareOpen.set(false);
+  }
+
+  async fetchComparisonWeather(query: string): Promise<WttrResponse> {
+    const cleanQuery = query.trim() || 'Sochi';
+    const cacheKey = `compare_${cleanQuery.toLowerCase()}_${this.currentLang()}`;
+    const cached = this.cache.get(cacheKey);
+    if (cached && Date.now() - cached.timestamp < this.cacheTtlMs) {
+      return cached.data;
+    }
+
+    const data = await this.requestWithFallback<WttrResponse>(
+      `${this.primaryBase}/${encodeURIComponent(cleanQuery)}?format=j1&lang=${this.currentLang()}`,
+      `${this.fallbackBase}/${encodeURIComponent(cleanQuery)}?format=j1&lang=${this.currentLang()}`,
+    );
+
+    this.cache.set(cacheKey, { data, timestamp: Date.now() });
+    return data;
   }
 
   // Settings

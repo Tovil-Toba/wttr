@@ -44,16 +44,28 @@
               </div>
             </div>
 
-            <button
-              type="button"
-              (click)="removeFavorite($event, fav.query)"
-              [pTooltip]="i18n.dict().favorites.deleteTooltip"
-              tooltipPosition="left"
-              [showDelay]="500"
-              class="opacity-0 group-hover:opacity-100 p-1.5 rounded-lg hover:bg-rose-500/10 text-slate-400 hover:text-rose-500 transition-all text-xs"
-            >
-              <i class="pi pi-trash"></i>
-            </button>
+            <div class="flex items-center gap-1 shrink-0">
+              <button
+                type="button"
+                (click)="compareWith($event, fav.query)"
+                [pTooltip]="i18n.dict().compare.compareWithThis"
+                tooltipPosition="left"
+                [showDelay]="500"
+                class="opacity-0 group-hover:opacity-100 p-1.5 rounded-lg hover:bg-sky-500/10 text-slate-400 hover:text-sky-500 transition-all text-xs cursor-pointer"
+              >
+                <i class="pi pi-arrows-h"></i>
+              </button>
+              <button
+                type="button"
+                (click)="removeFavorite($event, fav.query)"
+                [pTooltip]="i18n.dict().favorites.deleteTooltip"
+                tooltipPosition="left"
+                [showDelay]="500"
+                class="opacity-0 group-hover:opacity-100 p-1.5 rounded-lg hover:bg-rose-500/10 text-slate-400 hover:text-rose-500 transition-all text-xs cursor-pointer"
+              >
+                <i class="pi pi-trash"></i>
+              </button>
+            </div>
           </div>
         }
       </div>

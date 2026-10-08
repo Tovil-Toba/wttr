@@ -13,6 +13,7 @@ import { WttrFeaturesComponent } from './features/weather/wttr-features/wttr-fea
 import { NavbarComponent } from './layout/navbar/navbar';
 import { AboutModalComponent } from './shared/components/about-modal/about-modal';
 import { InstructionsModalComponent } from './shared/components/instructions-modal/instructions-modal';
+import { WeatherCompareModalComponent } from './features/weather/weather-compare-modal/weather-compare-modal';
 
 @Component({
   selector: 'app-root',
@@ -27,6 +28,7 @@ import { InstructionsModalComponent } from './shared/components/instructions-mod
     FavoritesListComponent,
     InstructionsModalComponent,
     AboutModalComponent,
+    WeatherCompareModalComponent,
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss',
@@ -39,7 +41,9 @@ export class App {
   isInstructionsOpen = signal<boolean>(false);
   isAboutOpen = signal<boolean>(false);
 
-  readonly isAnyModalOpen = computed(() => this.isInstructionsOpen() || this.isAboutOpen());
+  readonly isAnyModalOpen = computed(
+    () => this.isInstructionsOpen() || this.isAboutOpen() || this.weatherService.isCompareOpen(),
+  );
 
   constructor() {
     effect(() => {
