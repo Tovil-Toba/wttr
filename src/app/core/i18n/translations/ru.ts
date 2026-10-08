@@ -118,7 +118,7 @@ export const ruTranslations: TranslationDictionary = {
     waningCrescent: 'Убывающий серп',
   },
   astro: {
-    title: 'Астрономия: Солнце и луна',
+    title: 'Астрономия: солнце и луна',
     subtitle: 'Траектория солнца, световой день и фаза лунного диска',
     sunTitle: 'Траектория солнца',
     moonTitle: 'Фаза и цикл луны',
