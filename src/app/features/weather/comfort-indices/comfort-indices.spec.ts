@@ -156,7 +156,18 @@ describe('ComfortIndicesComponent', () => {
     expect(uv.value).toBe(5);
     expect(uv.label).toBe('Умеренный');
     expect(uv.advice).toContain('SPF 15+');
-    expect(uv.percent).toBeGreaterThan(0);
+    expect(uv.percent).toBe(45);
+  });
+
+  it('should compute zero percent for UV index 0 without offset', () => {
+    const zeroUvResponse = JSON.parse(JSON.stringify(mockWeatherResponse)) as WttrResponse;
+    zeroUvResponse.current_condition[0].uvIndex = '0';
+    weatherService.weatherData.set(zeroUvResponse);
+
+    const uv = component.uvInfo();
+    expect(uv.value).toBe(0);
+    expect(uv.label).toBe('Низкий');
+    expect(uv.percent).toBe(0);
   });
 
   it('should compute wind gusts and warning', () => {

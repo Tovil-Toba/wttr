@@ -55,8 +55,8 @@
             <!-- Gradient Scale Bar with Pin -->
             <div class="relative w-full h-2 rounded-full bg-gradient-to-r from-emerald-500 via-amber-400 via-orange-500 via-rose-500 to-purple-600 mt-2.5">
               <div
-                class="absolute -top-1 w-4 h-4 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-900 dark:border-white shadow-sm -translate-x-1/2 transition-all duration-300"
-                [style.left.%]="uv.percent"
+                class="absolute -top-1 w-4 h-4 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-900 dark:border-white shadow-sm transition-all duration-300"
+                [style.left]="'calc(' + uv.percent + '% - ' + (uv.percent * 0.16) + 'px)'"
               ></div>
             </div>
           </div>

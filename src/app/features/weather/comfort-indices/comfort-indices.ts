@@ -115,7 +115,7 @@ export class ComfortIndicesComponent {
       badgeBg = 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20';
     }
 
-    const percent = Math.min(Math.max((val / 11) * 100, 4), 96);
+    const percent = Math.min(Math.max(Math.round((val / 11) * 100), 0), 100);
 
     return {
       value: val,
