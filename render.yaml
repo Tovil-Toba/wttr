@@ -1,11 +1,9 @@
 services:
-  - type: static
+  - type: web
+    runtime: static
     name: wttr
     buildCommand: npm run build
     staticPublishPath: ./dist/wttr/browser
-    envVars:
-      - key: NODE_VERSION
-        value: 22
     routes:
       - type: rewrite
         source: /*
