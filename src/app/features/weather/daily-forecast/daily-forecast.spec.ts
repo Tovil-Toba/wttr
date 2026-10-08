@@ -88,7 +88,7 @@ describe('DailyForecastComponent', () => {
 
   it('should create and render 3 forecast cards', () => {
     expect(component).toBeTruthy();
-    expect(element.textContent).toContain('Прогноз на 3 дня & Астрономия');
+    expect(element.textContent).toContain('Прогноз на 3 дня и астрономия');
     expect(element.textContent).toContain('Сегодня');
     expect(element.textContent).toContain('Завтра');
     expect(element.textContent).toContain('Послезавтра');

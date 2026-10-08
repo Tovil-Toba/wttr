@@ -102,7 +102,7 @@ describe('SunMoonTrackerComponent', () => {
 
   it('should create and render sun and moon tracker cards', () => {
     expect(component).toBeTruthy();
-    expect(element.textContent).toContain('Астрономия: Солнце & Луна');
+    expect(element.textContent).toContain('Астрономия: Солнце и луна');
     expect(element.textContent).toContain('Траектория солнца');
     expect(element.textContent).toContain('Фаза и цикл луны');
   });

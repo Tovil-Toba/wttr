@@ -100,7 +100,7 @@ export const enTranslations: TranslationDictionary = {
   },
   daily: {
     title: '3-Day Forecast & Astronomy',
-    subtitle: 'Temperature overview, sunrise, sunset & moon phase',
+    subtitle: 'Temperature overview, sunrise, sunset and moon phase',
     sun: 'Sun',
     sunHours: 'Sun hours',
     today: 'Today',
@@ -137,7 +137,7 @@ export const enTranslations: TranslationDictionary = {
   },
   features: {
     title: 'wttr.in API Features',
-    subtitle: 'Direct terminal integration, PNG infographics & one-line outputs',
+    subtitle: 'Direct terminal integration, PNG infographics and one-line outputs',
     tabWeb: 'WEB Version',
     tabTerminal: 'Terminal (ASCII)',
     tabPng: 'PNG Infographics',
@@ -191,7 +191,7 @@ export const enTranslations: TranslationDictionary = {
     subtitle: 'Useful CLI API parameters in terminal',
     cityDesc: 'Weather for any city (Unicode supported)',
     airportDesc: 'Airport code, wind in m/s (?M)',
-    moonDesc: 'Current moon phase & illumination',
+    moonDesc: 'Current moon phase and illumination',
     mirrorDesc: 'Fault-tolerant backup mirror service',
   },
   footer: {
@@ -201,9 +201,9 @@ export const enTranslations: TranslationDictionary = {
   },
   modals: {
     aboutTitle: 'About Project',
-    aboutSubtitle: 'wttr.app — architecture, tech stack & artificial intelligence',
+    aboutSubtitle: 'wttr.app — architecture, tech stack and artificial intelligence',
     instructionsTitle: 'wttr.in Reference & CLI',
-    instructionsSubtitle: 'Comprehensive guide for terminal & web usage',
+    instructionsSubtitle: 'Comprehensive guide for terminal and web usage',
   },
   instructions: {
     tabSearch: '1. Search & Locations',

@@ -60,7 +60,7 @@ export const ptBrTranslations: RecursivePartial<TranslationDictionary> = {
     scrollRight: 'Rolar para direita',
   },
   daily: {
-    title: 'Previsão de 3 dias & Astronomia',
+    title: 'Previsão de 3 dias e astronomia',
     subtitle: 'Resumo de temperaturas, nascer, pôr do sol e fases da lua',
     sun: 'Sol',
     sunHours: 'Horas de sol',

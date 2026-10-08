@@ -60,7 +60,7 @@ export const beTranslations: RecursivePartial<TranslationDictionary> = {
     scrollRight: 'Пракруціць наперад',
   },
   daily: {
-    title: 'Прагноз на 3 дні & Астраномія',
+    title: 'Прагноз на 3 дні і астраномія',
     subtitle: 'Зводка тэмператур, усход, захад і фазы Месяца',
     sun: 'Сонца',
     sunHours: 'Сонечных гадзін',

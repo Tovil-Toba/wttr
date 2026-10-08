@@ -60,7 +60,7 @@ export const itTranslations: RecursivePartial<TranslationDictionary> = {
     scrollRight: 'Scorri a destra',
   },
   daily: {
-    title: 'Previsioni a 3 giorni & Astronomia',
+    title: 'Previsioni a 3 giorni e astronomia',
     subtitle: 'Riepilogo temperature, alba, tramonto e fasi lunari',
     sun: 'Sole',
     sunHours: 'Ore di sole',
@@ -97,7 +97,7 @@ export const itTranslations: RecursivePartial<TranslationDictionary> = {
     subtitle: 'Parametri utili CLI nel terminale',
     cityDesc: 'Meteo per qualsiasi città (supporto Unicode)',
     airportDesc: 'Codice aeroporto, vento in m/s (?M)',
-    moonDesc: 'Fase lunare attuale & illuminazione',
+    moonDesc: 'Fase lunare attuale e illuminazione',
     mirrorDesc: 'Mirror di riserva resiliente',
   },
   footer: {

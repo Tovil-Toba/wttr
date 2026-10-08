@@ -61,8 +61,8 @@ export const deTranslations: RecursivePartial<TranslationDictionary> = {
     scrollRight: 'Nach rechts scrollen',
   },
   daily: {
-    title: '3-Tage-Vorhersage & Astronomie',
-    subtitle: 'Temperaturübersicht, Sonnenauf-/untergang & Mondphasen',
+    title: '3-Tage-Vorhersage und Astronomie',
+    subtitle: 'Temperaturübersicht, Sonnenauf-/untergang und Mondphasen',
     sun: 'Sonne',
     sunHours: 'Sonnenstunden',
     today: 'Heute',
@@ -80,10 +80,10 @@ export const deTranslations: RecursivePartial<TranslationDictionary> = {
     waningCrescent: 'Abnehmende Sichel',
   },
   astro: {
-    title: 'Astronomie: Sonne & Mond',
+    title: 'Astronomie: Sonne und Mond',
     subtitle: 'Sonnenbahn, Tageslichtdauer und Mondzyklus',
     sunTitle: 'Sonnenbahn',
-    moonTitle: 'Mondphase & Zyklus',
+    moonTitle: 'Mondphase und Zyklus',
     sunrise: 'Sonnenaufgang',
     sunset: 'Sonnenuntergang',
     daylight: 'Tageslicht',
@@ -99,7 +99,7 @@ export const deTranslations: RecursivePartial<TranslationDictionary> = {
   },
   features: {
     title: 'wttr.in API-Funktionen',
-    subtitle: 'Direkte Terminal-Integration, PNG-Grafiken & einzeilige Ausgaben',
+    subtitle: 'Direkte Terminal-Integration, PNG-Grafiken und einzeilige Ausgaben',
     tabWeb: 'WEB-Version',
     tabTerminal: 'Terminal (ASCII)',
     tabPng: 'PNG-Grafik',
@@ -153,7 +153,7 @@ export const deTranslations: RecursivePartial<TranslationDictionary> = {
     subtitle: 'Nützliche CLI-Parameter im Terminal',
     cityDesc: 'Wetter für eine Stadt (Unicode-Unterstützung)',
     airportDesc: 'Flughafencode, Wind in m/s (?M)',
-    moonDesc: 'Aktuelle Mondphase & Beleuchtung',
+    moonDesc: 'Aktuelle Mondphase und Beleuchtung',
     mirrorDesc: 'Ausfallsicherer Ausweichserver',
   },
   footer: {
@@ -162,8 +162,8 @@ export const deTranslations: RecursivePartial<TranslationDictionary> = {
     about: 'Über das Projekt',
   },
   instructions: {
-    tabSearch: '1. Suche & Standorte',
-    tabSettings: '2. Einstellungen & Favoriten',
+    tabSearch: '1. Suche und Standorte',
+    tabSettings: '2. Einstellungen und Favoriten',
     tabFeatures: '3. API-Funktionen',
     tabCurl: '4. CLI-Befehle (curl)',
 
@@ -183,7 +183,7 @@ export const deTranslations: RecursivePartial<TranslationDictionary> = {
     autoLocationTitle: 'Automatische Standortermittlung',
     autoLocationDesc: 'Klicken Sie auf das runde Geolokalisierungs-Symbol 📍 in der Suchleiste.',
 
-    settingsTitle: 'Personalisierung & Maßeinheiten',
+    settingsTitle: 'Personalisierung und Maßeinheiten',
     settingsSubtitle:
       'Klicken Sie auf das Einstellungen-Symbol oben rechts, um Einheiten anzupassen:',
     tempTitle: 'Temperatur',
@@ -194,7 +194,7 @@ export const deTranslations: RecursivePartial<TranslationDictionary> = {
     pressureDesc: 'Auswahl: mmHg, hPa / mbar oder psi.',
     favoritesTitle: 'Zu Favoriten hinzufügen',
     favoritesDesc: 'Klicken Sie auf den goldenen Stern neben dem Stadtnamen im Wetter-Banner.',
-    themeTitle: 'Dunkles & helles Design',
+    themeTitle: 'Dunkles und helles Design',
     themeDesc: 'Die Mond-/Sonne-Schaltfläche schaltet Designs um.',
     langTitle: 'Sprachauswahl',
     langDesc:
@@ -231,7 +231,7 @@ export const deTranslations: RecursivePartial<TranslationDictionary> = {
 
     // Tech Stack
     techStackTitle: 'Technologie-Stack des Projekts',
-    techStackSubtitle: 'Architektur & Werkzeuge',
+    techStackSubtitle: 'Architektur und Werkzeuge',
     techAngularDesc: 'Zoneless Change Detection, Signals, moderne Kontrollflusssyntax (@if, @for).',
     techPrimengDesc:
       'Umfangreiche Komponentenbibliothek, angepasstes Aura-Design, Tooltips mit 500ms Verzögerung.',

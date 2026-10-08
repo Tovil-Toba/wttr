@@ -99,7 +99,7 @@ export const ruTranslations: TranslationDictionary = {
     fogRisk: 'Риск тумана',
   },
   daily: {
-    title: 'Прогноз на 3 дня & Астрономия',
+    title: 'Прогноз на 3 дня и астрономия',
     subtitle: 'Сводка температур, восход, закат и лунный цикл',
     sun: 'Солнце',
     sunHours: 'Солнечных часов',
@@ -118,7 +118,7 @@ export const ruTranslations: TranslationDictionary = {
     waningCrescent: 'Убывающий серп',
   },
   astro: {
-    title: 'Астрономия: Солнце & Луна',
+    title: 'Астрономия: Солнце и луна',
     subtitle: 'Траектория солнца, световой день и фаза лунного диска',
     sunTitle: 'Траектория солнца',
     moonTitle: 'Фаза и цикл луны',

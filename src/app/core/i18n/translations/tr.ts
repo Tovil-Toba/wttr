@@ -60,7 +60,7 @@ export const trTranslations: RecursivePartial<TranslationDictionary> = {
     scrollRight: 'Sağa kaydır',
   },
   daily: {
-    title: '3 Günlük Tahmin & Astronomi',
+    title: '3 Günlük Tahmin ve Astronomi',
     subtitle: 'Sıcaklık özeti, gün doğumu, gün batımı ve ay evreleri',
     sun: 'Güneş',
     sunHours: 'Güneşli saatler',

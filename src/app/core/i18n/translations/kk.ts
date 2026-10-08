@@ -60,7 +60,7 @@ export const kkTranslations: RecursivePartial<TranslationDictionary> = {
     scrollRight: 'Оңға айналдыру',
   },
   daily: {
-    title: '3 күндік болжам & Астрономия',
+    title: '3 күндік болжам және астрономия',
     subtitle: 'Температура, күннің шығуы, батуы және ай фазалары',
     sun: 'Күн',
     sunHours: 'Күн сағаттары',
