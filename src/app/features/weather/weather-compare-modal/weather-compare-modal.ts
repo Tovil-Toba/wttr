@@ -175,6 +175,10 @@ export class WeatherCompareModalComponent implements OnInit {
     }
   }
 
+  isSelectedCity(cityName: string): boolean {
+    return this.compareCity().toLowerCase() === cityName.trim().toLowerCase();
+  }
+
   onSearch(event?: Event): void {
     if (event) {
       event.preventDefault();

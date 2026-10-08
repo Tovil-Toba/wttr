@@ -82,13 +82,18 @@
             <button
               type="button"
               (click)="loadCompareCity(s.name)"
-              [class.bg-sky-500]="compareCity().toLowerCase() === s.name.toLowerCase()"
-              [class.text-white]="compareCity().toLowerCase() === s.name.toLowerCase()"
-              [class.dark:bg-sky-600]="compareCity().toLowerCase() === s.name.toLowerCase()"
-              class="px-3 py-1 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800/70 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 transition-all font-medium flex items-center gap-1.5 cursor-pointer"
+              [class]="
+                isSelectedCity(s.name)
+                  ? 'px-3 py-1 rounded-xl bg-sky-600 dark:bg-sky-600 text-white font-semibold shadow-xs ring-1 ring-sky-500/50 flex items-center gap-1.5 cursor-pointer transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/50'
+                  : 'px-3 py-1 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800/70 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-medium flex items-center gap-1.5 cursor-pointer transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/50'
+              "
             >
               @if (s.isFav) {
-                <i class="pi pi-star-fill text-[10px] text-amber-500"></i>
+                <i
+                  class="pi pi-star-fill text-[10px]"
+                  [class.text-amber-300]="isSelectedCity(s.name)"
+                  [class.text-amber-500]="!isSelectedCity(s.name)"
+                ></i>
               }
               <span>{{ s.name }}</span>
             </button>
