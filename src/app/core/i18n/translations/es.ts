@@ -270,4 +270,11 @@ export const esTranslations: RecursivePartial<TranslationDictionary> = {
     noMatches: 'No se encontraron ciudades en el diccionario',
     pressEnter: 'Presiona Enter para buscar en todo el mundo en wttr.in',
   },
+  offline: {
+    badge: 'Modo sin conexión',
+    cachedDataTooltip: 'Datos cargados desde la caché local',
+    offlineBanner: 'Sin conexión a internet. Mostrando pronóstico guardado.',
+    reconnected: 'Conexión restaurada. Pronóstico actualizado.',
+    dataFrom: 'Datos de las',
+  },
 };

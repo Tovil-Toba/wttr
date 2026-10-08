@@ -381,4 +381,11 @@ export const enTranslations: TranslationDictionary = {
     noMatches: 'No cities found in dictionary',
     pressEnter: 'Press Enter to search worldwide on wttr.in',
   },
+  offline: {
+    badge: 'Offline mode',
+    cachedDataTooltip: 'Data loaded from local offline cache',
+    offlineBanner: 'No internet connection. Displaying cached forecast.',
+    reconnected: 'Connection restored. Forecast updated.',
+    dataFrom: 'Data as of',
+  },
 };

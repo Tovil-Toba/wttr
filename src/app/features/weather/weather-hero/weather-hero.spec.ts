@@ -185,5 +185,17 @@ describe('WeatherHeroComponent', () => {
     component.downloadPng();
     expect(component.isPngDownloading()).toBe(true);
   });
+
+  it('should display offline badge when weatherService.isOfflineData is true', async () => {
+    weatherService.isOfflineData.set(true);
+    weatherService.offlineDataTimestamp.set(new Date(2026, 9, 8, 14, 30).getTime());
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const badge = element.querySelector('.pi-wifi');
+    expect(badge).toBeTruthy();
+    expect(element.textContent).toContain('Офлайн-режим');
+    expect(element.textContent).toContain('14:30');
+  });
 });
 

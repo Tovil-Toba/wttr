@@ -232,4 +232,11 @@ export const ptBrTranslations: RecursivePartial<TranslationDictionary> = {
     noMatches: 'Nenhuma cidade encontrada no dicionário',
     pressEnter: 'Pressione Enter para buscar no mundo todo pelo wttr.in',
   },
+  offline: {
+    badge: 'Modo offline',
+    cachedDataTooltip: 'Dados carregados do cache local',
+    offlineBanner: 'Sem conexão com a internet. Exibindo previsão salva.',
+    reconnected: 'Conexão restaurada. Previsão atualizada.',
+    dataFrom: 'Dados de',
+  },
 };

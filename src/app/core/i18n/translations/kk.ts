@@ -234,4 +234,11 @@ export const kkTranslations: RecursivePartial<TranslationDictionary> = {
     noMatches: 'Сөздіктен сәйкес қала табылмады',
     pressEnter: 'wttr.in арқылы бүкіл әлем бойынша іздеу үшін Enter басыңыз',
   },
+  offline: {
+    badge: 'Офлайн режимі',
+    cachedDataTooltip: 'Деректер жергілікті кэштен жүктелді',
+    offlineBanner: 'Интернет байланысы жоқ. Сақталған болжам көрсетілуде.',
+    reconnected: 'Байланыс қалпына келтірілді. Болжам жаңартылды.',
+    dataFrom: 'Деректер уақыты',
+  },
 };

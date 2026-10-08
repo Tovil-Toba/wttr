@@ -523,5 +523,65 @@ describe('WeatherService', () => {
       await refreshPromise;
       expect(service.weatherData()).toEqual(mockWeatherResponse);
     });
+
+    describe('Offline Mode & Resilience', () => {
+      it('should save and load offline weather data correctly', () => {
+        service.saveOfflineData('rome_en', mockWeatherResponse);
+        const loaded = service.getOfflineData('rome_en');
+        expect(loaded).toBeTruthy();
+        expect(loaded?.data).toEqual(mockWeatherResponse);
+        expect(loaded?.timestamp).toBeTypeOf('number');
+      });
+
+      it('should format offline timestamp as HH:mm', () => {
+        const date = new Date(2026, 9, 8, 14, 35);
+        expect(service.formatOfflineTimestamp(date.getTime())).toBe('14:35');
+        expect(service.formatOfflineTimestamp(null)).toBe('');
+      });
+
+      it('should immediately serve offline cached data when offline', async () => {
+        service.saveOfflineData('berlin_en', mockWeatherResponse);
+        service.isOffline.set(true);
+
+        await service.fetchWeather('Berlin');
+
+        expect(service.weatherData()).toEqual(mockWeatherResponse);
+        expect(service.isOfflineData()).toBe(true);
+        expect(service.offlineDataTimestamp()).toBeTypeOf('number');
+        expect(service.errorMessage()).toBeNull();
+      });
+
+      it('should recover from offline cache if network request fails', async () => {
+        const lang = service.currentLang();
+        service.saveOfflineData('tokyo_en', mockWeatherResponse);
+
+        const fetchPromise = service.fetchWeather('Tokyo');
+
+        // Terminal fails
+        const termReq = httpMock.expectOne(`https://wttr.in/Tokyo?T&lang=${lang}`);
+        termReq.flush('Error', { status: 500, statusText: 'Server Error' });
+
+        // Primary fails
+        const primaryReq = httpMock.expectOne(`https://wttr.in/Tokyo?format=j1&lang=${lang}`);
+        primaryReq.flush('Primary failed', { status: 500, statusText: 'Server Error' });
+
+        await Promise.resolve();
+
+        // Fallback terminal fails
+        const fallbackTermReq = httpMock.expectOne(`https://wttr.is/Tokyo?T&lang=${lang}`);
+        fallbackTermReq.flush('Error', { status: 500, statusText: 'Server Error' });
+
+        // Fallback fails
+        const fallbackReq = httpMock.expectOne(`https://wttr.is/Tokyo?format=j1&lang=${lang}`);
+        fallbackReq.flush('Fallback failed', { status: 500, statusText: 'Server Error' });
+
+        await fetchPromise;
+
+        expect(service.weatherData()).toEqual(mockWeatherResponse);
+        expect(service.isOfflineData()).toBe(true);
+        expect(service.errorMessage()).toBeNull();
+      });
+    });
   });
 });
+

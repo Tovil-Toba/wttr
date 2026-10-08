@@ -30,6 +30,8 @@ export class WeatherService {
   private readonly settingsKey = 'wttr_settings';
   private readonly langKey = 'wttr_lang';
   private readonly lastCityKey = 'wttr_last_city';
+  private readonly offlineDataKeyPrefix = 'wttr_offline_data_';
+  private readonly offlineLatestKey = 'wttr_offline_latest';
 
   // In-memory weather cache (10 min TTL)
   private readonly cache = new Map<string, { data: WttrResponse; timestamp: number }>();
@@ -37,6 +39,13 @@ export class WeatherService {
 
   // Fallback mirror indicator
   readonly isFallbackMirror = signal<boolean>(false);
+
+  // Offline State Signals
+  readonly isOffline = signal<boolean>(
+    typeof navigator !== 'undefined' ? !navigator.onLine : false,
+  );
+  readonly isOfflineData = signal<boolean>(false);
+  readonly offlineDataTimestamp = signal<number | null>(null);
 
   // Language State
   readonly supportedLanguages = SUPPORTED_LANGUAGES;
@@ -104,14 +113,34 @@ export class WeatherService {
     if (this.document?.documentElement) {
       this.document.documentElement.lang = this.currentLang();
     }
+
+    // Register online/offline connectivity listeners
+    if (this.window) {
+      this.window.addEventListener('online', () => {
+        const wasOfflineState = this.isOffline() || this.isOfflineData();
+        this.isOffline.set(false);
+        if (wasOfflineState) {
+          // Auto-refresh forecast when connection is restored
+          this.refreshCurrentWeather();
+        }
+      });
+
+      this.window.addEventListener('offline', () => {
+        this.isOffline.set(true);
+      });
+    }
+
     // Initial fetch on service load
     this.fetchWeather(this.currentQuery());
   }
 
-  // Fetch weather data from wttr.in or fallback with TTL cache
+  // Fetch weather data from wttr.in or fallback with TTL cache and offline persistence
   async fetchWeather(query: string, force = false): Promise<void> {
     const cleanQuery = query.trim() || this.getInitialCity();
     const cacheKey = `${cleanQuery.toLowerCase()}_${this.currentLang()}`;
+    const isDefaultOrLastCity =
+      cleanQuery.toLowerCase() === this.getInitialCity().toLowerCase() ||
+      cleanQuery.toLowerCase() === 'obninsk';
 
     this.currentQuery.set(cleanQuery);
     this.saveLastCity(cleanQuery);
@@ -120,9 +149,22 @@ export class WeatherService {
     const cached = this.cache.get(cacheKey);
     if (!force && cached && Date.now() - cached.timestamp < this.cacheTtlMs) {
       this.weatherData.set(cached.data);
+      this.isOfflineData.set(false);
+      this.offlineDataTimestamp.set(null);
       this.isLoading.set(false);
       this.errorMessage.set(null);
       this.fetchTerminalOutput(cleanQuery, false);
+      return;
+    }
+
+    // If currently offline and we have saved offline data, load it immediately
+    const offlineItem = this.getOfflineData(cacheKey, isDefaultOrLastCity);
+    if (!force && this.isOffline() && offlineItem) {
+      this.weatherData.set(offlineItem.data);
+      this.isOfflineData.set(true);
+      this.offlineDataTimestamp.set(offlineItem.timestamp);
+      this.isLoading.set(false);
+      this.errorMessage.set(null);
       return;
     }
 
@@ -140,13 +182,25 @@ export class WeatherService {
       );
 
       this.cache.set(cacheKey, { data, timestamp: Date.now() });
+      this.saveOfflineData(cacheKey, data);
+      this.isOfflineData.set(false);
+      this.offlineDataTimestamp.set(null);
       this.weatherData.set(data);
       this.addToHistory(cleanQuery);
     } catch (err: any) {
       console.error('Weather fetch error:', err);
-      this.errorMessage.set(
-        'Не удалось получить данные о погоде. Проверьте подключение к интернету или правильность названия города.',
-      );
+      // Fallback to offline stored data if available
+      const offlineFallback = this.getOfflineData(cacheKey, isDefaultOrLastCity);
+      if (offlineFallback) {
+        this.weatherData.set(offlineFallback.data);
+        this.isOfflineData.set(true);
+        this.offlineDataTimestamp.set(offlineFallback.timestamp);
+        this.errorMessage.set(null);
+      } else {
+        this.errorMessage.set(
+          'Не удалось получить данные о погоде. Проверьте подключение к интернету или правильность названия города.',
+        );
+      }
     } finally {
       this.isLoading.set(false);
     }
@@ -975,6 +1029,37 @@ export class WeatherService {
 
   clearCache(): void {
     this.cache.clear();
+  }
+
+  // Offline data persistence & retrieval
+  saveOfflineData(cacheKey: string, data: WttrResponse): void {
+    if (!this.window?.localStorage) return;
+    try {
+      const payload = JSON.stringify({ data, timestamp: Date.now() });
+      this.window.localStorage.setItem(this.offlineDataKeyPrefix + cacheKey, payload);
+      this.window.localStorage.setItem(this.offlineLatestKey, payload);
+    } catch {}
+  }
+
+  getOfflineData(cacheKey: string, allowGeneralFallback = false): { data: WttrResponse; timestamp: number } | null {
+    if (!this.window?.localStorage) return null;
+    try {
+      const raw = this.window.localStorage.getItem(this.offlineDataKeyPrefix + cacheKey);
+      if (raw) return JSON.parse(raw);
+      if (allowGeneralFallback) {
+        const latest = this.window.localStorage.getItem(this.offlineLatestKey);
+        if (latest) return JSON.parse(latest);
+      }
+    } catch {}
+    return null;
+  }
+
+  formatOfflineTimestamp(timestamp: number | null): string {
+    if (!timestamp) return '';
+    const date = new Date(timestamp);
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    return `${hours}:${minutes}`;
   }
 
   reloadWeather(): Promise<void> {

@@ -232,4 +232,11 @@ export const itTranslations: RecursivePartial<TranslationDictionary> = {
     noMatches: 'Nessuna città trovata nel dizionario',
     pressEnter: 'Premi Invio per cercare in tutto il mondo su wttr.in',
   },
+  offline: {
+    badge: 'Modalità offline',
+    cachedDataTooltip: 'Dati caricati dalla cache locale',
+    offlineBanner: 'Nessuna connessione internet. Visualizzazione previsioni salvate.',
+    reconnected: 'Connessione ripristinata. Previsioni aggiornate.',
+    dataFrom: 'Dati delle ore',
+  },
 };

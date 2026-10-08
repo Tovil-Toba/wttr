@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json.schemastore.org/web-manifest-combined.json",
+  "name": "wttr.app — Современный прогноз погоды",
+  "short_name": "wttr.app",
+  "description": "Современное SPA приложение с прогнозом погоды на базе wttr.in API, поддержкой тем и офлайн-режима.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "theme_color": "#0284c7",
+  "background_color": "#020617",
+  "categories": ["weather", "utilities"],
+  "icons": [
+    {
+      "src": "/logo.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/logo-light.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any"
+    },
+    {
+      "src": "/logo-dark.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48 32x32 16x16",
+      "type": "image/x-icon"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Текущий прогноз",
+      "short_name": "Прогноз",
+      "description": "Посмотреть погоду в текущем городе",
+      "url": "/",
+      "icons": [{ "src": "/logo.jpg", "sizes": "512x512" }]
+    }
+  ]
+}

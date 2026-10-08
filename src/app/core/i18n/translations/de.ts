@@ -355,4 +355,11 @@ export const deTranslations: RecursivePartial<TranslationDictionary> = {
     noMatches: 'Keine Städte im Wörterbuch gefunden',
     pressEnter: 'Eingabetaste drücken für weltweite wttr.in-Suche',
   },
+  offline: {
+    badge: 'Offline-Modus',
+    cachedDataTooltip: 'Daten aus lokalem Offline-Cache geladen',
+    offlineBanner: 'Keine Internetverbindung. Gespeicherte Vorhersage wird angezeigt.',
+    reconnected: 'Verbindung wiederhergestellt. Vorhersage aktualisiert.',
+    dataFrom: 'Daten vom',
+  },
 };

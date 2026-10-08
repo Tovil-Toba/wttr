@@ -233,4 +233,11 @@ export const beTranslations: RecursivePartial<TranslationDictionary> = {
     noMatches: 'Нічога не знойдзена ў слоўніку',
     pressEnter: 'Націсніце Enter для пошуку па ўсім свеце на wttr.in',
   },
+  offline: {
+    badge: 'Афлайн-рэжым',
+    cachedDataTooltip: 'Даныя загружаныя з лакальнага кэшу',
+    offlineBanner: 'Няма падключэння да інтэрнэту. Паказваецца захаваны прагноз.',
+    reconnected: 'Падключэнне адноўлена. Прагноз абноўлены.',
+    dataFrom: 'Даныя на',
+  },
 };

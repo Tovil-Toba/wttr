@@ -49,6 +49,11 @@ export class App {
     () => this.isInstructionsOpen() || this.isAboutOpen() || this.weatherService.isCompareOpen(),
   );
 
+  readonly formatOfflineTime = computed(() => {
+    const ts = this.weatherService.offlineDataTimestamp();
+    return this.weatherService.formatOfflineTimestamp(ts);
+  });
+
   constructor() {
     effect(() => {
       if (typeof document !== 'undefined') {

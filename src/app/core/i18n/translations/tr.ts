@@ -234,4 +234,11 @@ export const trTranslations: RecursivePartial<TranslationDictionary> = {
     noMatches: 'Sözlükte eşleşen şehir bulunamadı',
     pressEnter: 'wttr.in üzerinden dünya çapında aramak için Enter tuşuna basın',
   },
+  offline: {
+    badge: 'Çevrimdışı mod',
+    cachedDataTooltip: 'Veriler yerel önbellekten yüklendi',
+    offlineBanner: 'İnternet bağlantısı yok. Kaydedilen hava durumu gösteriliyor.',
+    reconnected: 'Bağlantı kuruldu. Hava durumu güncellendi.',
+    dataFrom: 'Veri saati',
+  },
 };

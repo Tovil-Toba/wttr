@@ -232,4 +232,11 @@ export const jaTranslations: RecursivePartial<TranslationDictionary> = {
     noMatches: '一致する都市が見つかりません',
     pressEnter: 'Enterキーを押してwttr.inで世界中を検索',
   },
+  offline: {
+    badge: 'オフラインモード',
+    cachedDataTooltip: 'ローカルキャッシュから読み込まれたデータです',
+    offlineBanner: 'インターネット接続がありません。保存された予報を表示しています。',
+    reconnected: '接続が復元されました。予報を更新しました。',
+    dataFrom: 'データ取得時刻',
+  },
 };

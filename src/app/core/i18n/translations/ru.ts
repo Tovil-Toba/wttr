@@ -384,4 +384,11 @@ export const ruTranslations: TranslationDictionary = {
     noMatches: 'Ничего не найдено в словаре',
     pressEnter: 'Нажмите Enter для поиска по всему миру на wttr.in',
   },
+  offline: {
+    badge: 'Офлайн-режим',
+    cachedDataTooltip: 'Данные сохранены из локального кэша',
+    offlineBanner: 'Нет подключения к интернету. Показан сохранённый прогноз.',
+    reconnected: 'Подключение восстановлено. Прогноз обновлён.',
+    dataFrom: 'Данные на',
+  },
 };

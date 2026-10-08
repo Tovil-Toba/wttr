@@ -84,6 +84,11 @@ export class WeatherHeroComponent {
     return { label: d.uvExtreme, color: 'text-purple-600' };
   });
 
+  readonly formatOfflineTime = computed(() => {
+    const ts = this.weatherService.offlineDataTimestamp();
+    return this.weatherService.formatOfflineTimestamp(ts);
+  });
+
   toggleFavorite(): void {
     this.weatherService.toggleFavorite();
   }

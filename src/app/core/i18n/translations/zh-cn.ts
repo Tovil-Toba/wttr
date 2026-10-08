@@ -232,4 +232,11 @@ export const zhCnTranslations: RecursivePartial<TranslationDictionary> = {
     noMatches: '词典中未找到匹配城市',
     pressEnter: '按 Enter 键在 wttr.in 全球搜索',
   },
+  offline: {
+    badge: '离线模式',
+    cachedDataTooltip: '已从本地缓存加载天气数据',
+    offlineBanner: '无网络连接。正在显示已保存的天气预报。',
+    reconnected: '网络已恢复连接。天气预报已更新。',
+    dataFrom: '数据时间',
+  },
 };

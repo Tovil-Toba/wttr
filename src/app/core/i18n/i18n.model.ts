@@ -366,6 +366,13 @@ export interface TranslationDictionary {
     noMatches: string;
     pressEnter: string;
   };
+  offline: {
+    badge: string;
+    cachedDataTooltip: string;
+    offlineBanner: string;
+    reconnected: string;
+    dataFrom: string;
+  };
 }
 
 export type RecursivePartial<T> = {

@@ -204,5 +204,16 @@ describe('App', () => {
       expect(refreshSpy).not.toHaveBeenCalled();
       expect(themeSpy).not.toHaveBeenCalled();
     });
+
+    it('should display offline connectivity banner when offline', async () => {
+      const fixture = TestBed.createComponent(App);
+      const weatherService = TestBed.inject(WeatherService);
+      weatherService.isOffline.set(true);
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      const compiled = fixture.nativeElement as HTMLElement;
+      expect(compiled.textContent).toContain('Нет подключения к интернету');
+    });
   });
 });
