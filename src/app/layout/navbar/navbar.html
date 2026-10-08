@@ -45,13 +45,23 @@
               autocorrect="off"
               autocapitalize="off"
               spellcheck="false"
-              (focus)="openSuggestions()"
+              (focus)="onFocusSearch($event)"
               (input)="openSuggestions()"
               (keydown.escape)="closeSuggestions()"
               [placeholder]="i18n.dict().common.searchPlaceholder"
               class="w-full pl-10 pr-28 py-2.5 rounded-full text-sm bg-slate-100 dark:bg-slate-800/90 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 border border-transparent focus:border-sky-500 dark:focus:border-sky-400 focus:bg-white dark:focus:bg-slate-900 focus:outline-none focus:ring-4 focus:ring-sky-500/10 transition-all duration-200 shadow-inner"
             />
             <div class="absolute right-1.5 top-1/2 -translate-y-1/2 flex items-center gap-1.5">
+              @if (searchQuery().trim()) {
+                <button
+                  type="button"
+                  (click)="clearSearch($event)"
+                  class="w-6 h-6 rounded-full flex items-center justify-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-200/60 dark:hover:bg-slate-700/60 transition-colors cursor-pointer"
+                  title="Очистить"
+                >
+                  <i class="pi pi-times text-xs"></i>
+                </button>
+              }
               <kbd
                 class="hidden md:inline-flex items-center justify-center px-1.5 py-0.5 text-[10px] font-mono font-semibold text-slate-400 dark:text-slate-500 bg-white/80 dark:bg-slate-700/80 rounded border border-slate-200 dark:border-slate-600 select-none shadow-2xs"
                 [pTooltip]="i18n.dict().instructions.shortcutSlashDesc"
@@ -88,7 +98,7 @@
                 (click)="$event.stopPropagation()"
               >
                 <!-- If user typed in search query, show filtered dictionary suggestions -->
-                @if (searchQuery().trim()) {
+                @if (isFiltering()) {
                   <div class="space-y-1.5">
                     <div
                       class="flex items-center justify-between text-[11px] font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider px-1"

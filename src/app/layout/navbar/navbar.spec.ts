@@ -60,7 +60,7 @@ describe('NavbarComponent', () => {
     component.onSearch();
 
     expect(fetchSpy).toHaveBeenCalledWith('Владивосток');
-    expect(component.searchQuery()).toBe('');
+    expect(component.searchQuery()).toBe('Владивосток');
   });
 
   it('should not search if query is empty or whitespace', () => {
@@ -72,11 +72,12 @@ describe('NavbarComponent', () => {
     expect(fetchSpy).not.toHaveBeenCalled();
   });
 
-  it('should call fetchWeather when clicking quick preset chip', () => {
+  it('should call fetchWeather and fill search query when clicking quick preset chip', () => {
     const fetchSpy = vi.spyOn(weatherService, 'fetchWeather');
     component.selectPreset('Tokyo');
 
     expect(fetchSpy).toHaveBeenCalledWith('Tokyo');
+    expect(component.searchQuery()).toBe('Токио');
   });
 
   it('should trigger locateMe when clicking geolocation button', () => {
@@ -219,8 +220,15 @@ describe('NavbarComponent', () => {
 
       component.selectCity('Dubai');
       expect(fetchSpy).toHaveBeenCalledWith('Dubai');
-      expect(component.searchQuery()).toBe('');
+      expect(component.searchQuery()).toBe('Дубай');
       expect(component.isSuggestionsOpen()).toBe(false);
+    });
+
+    it('should clear search input when clicking clearSearch', () => {
+      component.searchQuery.set('Москва');
+      component.clearSearch();
+      expect(component.searchQuery()).toBe('');
+      expect(component.isSuggestionsOpen()).toBe(true);
     });
 
     it('should display recent searches and allow clearing or removing items', async () => {

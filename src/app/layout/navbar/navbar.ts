@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Tooltip } from 'primeng/tooltip';
 
@@ -41,9 +41,17 @@ export class NavbarComponent {
     return this.weatherService.searchHistory().slice(0, 5);
   });
 
-  readonly matchingCities = computed(() => {
+  readonly isFiltering = computed(() => {
     const q = this.searchQuery().trim().toLowerCase();
-    if (!q) return [];
+    if (!q) return false;
+    const cur = this.weatherService.currentQuery().toLowerCase();
+    const curTrans = this.i18n.translateCity(this.weatherService.currentQuery()).toLowerCase();
+    return q !== cur && q !== curTrans;
+  });
+
+  readonly matchingCities = computed(() => {
+    if (!this.isFiltering()) return [];
+    const q = this.searchQuery().trim().toLowerCase();
 
     const lang = this.weatherService.currentLang();
     const results: Array<{ query: string; displayName: string; countryCode: string }> = [];
@@ -67,6 +75,21 @@ export class NavbarComponent {
     return results;
   });
 
+  constructor() {
+    effect(() => {
+      const cur = this.weatherService.currentQuery();
+      if (!this.isSuggestionsOpen()) {
+        this.searchQuery.set(this.i18n.translateCity(cur));
+      }
+    });
+  }
+
+  onFocusSearch(event: FocusEvent): void {
+    this.openSuggestions();
+    const input = event.target as HTMLInputElement | null;
+    input?.select();
+  }
+
   openSuggestions(): void {
     this.isSuggestionsOpen.set(true);
   }
@@ -76,9 +99,18 @@ export class NavbarComponent {
   }
 
   selectCity(query: string): void {
+    const localized = this.i18n.translateCity(query);
+    this.searchQuery.set(localized);
     this.weatherService.fetchWeather(query);
-    this.searchQuery.set('');
     this.isSuggestionsOpen.set(false);
+  }
+
+  clearSearch(event?: MouseEvent): void {
+    event?.stopPropagation();
+    this.searchQuery.set('');
+    this.openSuggestions();
+    const input = document.getElementById('main-city-search') as HTMLInputElement | null;
+    input?.focus();
   }
 
   clearRecentHistory(event: MouseEvent): void {
@@ -117,12 +149,15 @@ export class NavbarComponent {
     const q = this.searchQuery().trim();
     if (q) {
       this.weatherService.fetchWeather(q);
-      this.searchQuery.set('');
+      const localized = this.i18n.translateCity(q);
+      this.searchQuery.set(localized);
       this.isSuggestionsOpen.set(false);
     }
   }
 
   selectPreset(query: string): void {
+    const localized = this.i18n.translateCity(query);
+    this.searchQuery.set(localized);
     this.weatherService.fetchWeather(query);
   }
 
