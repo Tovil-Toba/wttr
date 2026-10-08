@@ -21,12 +21,12 @@
       </div>
     </div>
 
-    <!-- 4 Bento Cards Grid -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3.5">
+    <!-- 4 Bento Cards Grid (2x2 layout for optimal spaciousness in 8-col layout) -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       <!-- 1. UV Index Card -->
       @if (uvInfo(); as uv) {
         <div
-          class="p-4 rounded-2xl bg-slate-50/80 dark:bg-slate-800/50 border border-slate-200/60 dark:border-slate-700/60 flex flex-col justify-between space-y-3 transition-all hover:shadow-md"
+          class="p-4 sm:p-5 rounded-2xl bg-slate-50/80 dark:bg-slate-800/50 border border-slate-200/60 dark:border-slate-700/60 flex flex-col justify-between space-y-3.5 transition-all hover:shadow-md overflow-hidden"
         >
           <!-- Card Header: Title Only -->
           <div class="flex items-center justify-between">
@@ -71,7 +71,7 @@
       <!-- 2. Wind & Gusts Card -->
       @if (windInfo(); as wind) {
         <div
-          class="p-4 rounded-2xl bg-slate-50/80 dark:bg-slate-800/50 border border-slate-200/60 dark:border-slate-700/60 flex flex-col justify-between space-y-3 transition-all hover:shadow-md"
+          class="p-4 sm:p-5 rounded-2xl bg-slate-50/80 dark:bg-slate-800/50 border border-slate-200/60 dark:border-slate-700/60 flex flex-col justify-between space-y-3.5 transition-all hover:shadow-md overflow-hidden"
         >
           <!-- Card Header: Title Only -->
           <div class="flex items-center justify-between">
@@ -90,7 +90,7 @@
                 {{ wind.speed }}
               </span>
               <span
-                class="text-[10px] font-bold px-2 py-0.5 rounded-full border bg-teal-500/10 text-teal-600 dark:text-teal-400 border-teal-500/20 uppercase tracking-wider shrink-0 whitespace-nowrap"
+                class="text-[11px] font-bold px-2.5 py-0.5 rounded-full border bg-teal-500/10 text-teal-600 dark:text-teal-400 border-teal-500/20 uppercase tracking-wider shrink-0 whitespace-nowrap"
               >
                 {{ wind.statusLabel }}
               </span>
@@ -133,7 +133,7 @@
       <!-- 3. Precipitation & Storm Risks Card -->
       @if (precipInfo(); as precip) {
         <div
-          class="p-4 rounded-2xl bg-slate-50/80 dark:bg-slate-800/50 border border-slate-200/60 dark:border-slate-700/60 flex flex-col justify-between space-y-3 transition-all hover:shadow-md"
+          class="p-4 sm:p-5 rounded-2xl bg-slate-50/80 dark:bg-slate-800/50 border border-slate-200/60 dark:border-slate-700/60 flex flex-col justify-between space-y-3.5 transition-all hover:shadow-md overflow-hidden"
         >
           <!-- Card Header: Title Only -->
           <div class="flex items-center justify-between">
@@ -152,7 +152,7 @@
                 {{ precip.rainChance }}%
               </span>
               <span
-                class="text-[10px] font-bold px-2 py-0.5 rounded-full border bg-sky-500/10 text-sky-600 dark:text-sky-400 border-sky-500/20 uppercase tracking-wider shrink-0 whitespace-nowrap"
+                class="text-[11px] font-bold px-2.5 py-0.5 rounded-full border bg-sky-500/10 text-sky-600 dark:text-sky-400 border-sky-500/20 uppercase tracking-wider shrink-0 whitespace-nowrap"
               >
                 {{ precip.statusLabel }}
               </span>
@@ -187,7 +187,7 @@
       <!-- 4. Air Comfort & Dew Point Card -->
       @if (airInfo(); as air) {
         <div
-          class="p-4 rounded-2xl bg-slate-50/80 dark:bg-slate-800/50 border border-slate-200/60 dark:border-slate-700/60 flex flex-col justify-between space-y-3 transition-all hover:shadow-md"
+          class="p-4 sm:p-5 rounded-2xl bg-slate-50/80 dark:bg-slate-800/50 border border-slate-200/60 dark:border-slate-700/60 flex flex-col justify-between space-y-3.5 transition-all hover:shadow-md overflow-hidden"
         >
           <!-- Card Header: Title Only -->
           <div class="flex items-center justify-between">
@@ -211,7 +211,7 @@
                 </div>
               </div>
               <span
-                class="text-[10px] font-bold px-2 py-0.5 rounded-full border bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-500/20 uppercase tracking-wider shrink-0 whitespace-nowrap"
+                class="text-[11px] font-bold px-2.5 py-0.5 rounded-full border bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-500/20 uppercase tracking-wider shrink-0 whitespace-nowrap"
               >
                 {{ i18n.dict().comfort.humidity }}: {{ air.humidity }}%
               </span>
@@ -220,7 +220,7 @@
 
           <!-- Assessment Footer -->
           <div class="flex items-center justify-between text-[11px] text-slate-600 dark:text-slate-300 pt-1 border-t border-slate-200/50 dark:border-slate-700/50">
-            <span class="truncate">{{ air.comfortLabel }}</span>
+            <span>{{ air.comfortLabel }}</span>
             @if (air.snowCoverCm > 0) {
               <span class="font-mono text-sky-500 shrink-0">❄️ {{ air.snowCoverCm }} см</span>
             } @else {
