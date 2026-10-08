@@ -43,7 +43,9 @@
           <!-- Value & Badge Row -->
           <div>
             <div class="flex items-baseline justify-between gap-2">
-              <span class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white leading-none">
+              <span
+                class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white leading-none"
+              >
                 {{ uv.value }}
               </span>
               <span
@@ -55,16 +57,20 @@
             </div>
 
             <!-- Gradient Scale Bar with Pin -->
-            <div class="relative w-full h-2 rounded-full bg-gradient-to-r from-emerald-500 via-amber-400 via-orange-500 via-rose-500 to-purple-600 mt-2.5">
+            <div
+              class="relative w-full h-2 rounded-full bg-gradient-to-r from-emerald-500 via-amber-400 via-orange-500 via-rose-500 to-purple-600 mt-2.5"
+            >
               <div
                 class="absolute -top-1 w-4 h-4 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-900 dark:border-white shadow-sm transition-all duration-300"
-                [style.left]="'calc(' + uv.percent + '% - ' + (uv.percent * 0.16) + 'px)'"
+                [style.left]="'calc(' + uv.percent + '% - ' + uv.percent * 0.16 + 'px)'"
               ></div>
             </div>
           </div>
 
           <!-- Advice footer -->
-          <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-tight pt-1 border-t border-slate-200/50 dark:border-slate-700/50">
+          <p
+            class="text-[11px] text-slate-500 dark:text-slate-400 leading-tight pt-1 border-t border-slate-200/50 dark:border-slate-700/50"
+          >
             {{ uv.advice }}
           </p>
         </div>
@@ -75,7 +81,9 @@
         <div
           class="p-4 sm:p-5 rounded-2xl bg-slate-50/80 dark:bg-slate-800/50 border border-slate-200/60 dark:border-slate-700/60 flex flex-col justify-between space-y-3.5 transition-all hover:shadow-md overflow-hidden"
           role="region"
-          [attr.aria-label]="i18n.dict().comfort.windTitle + ': ' + wind.speed + ', ' + wind.statusLabel"
+          [attr.aria-label]="
+            i18n.dict().comfort.windTitle + ': ' + wind.speed + ', ' + wind.statusLabel
+          "
         >
           <!-- Card Header: Title Only -->
           <div class="flex items-center justify-between">
@@ -90,7 +98,9 @@
           <!-- Value & Badge Row -->
           <div>
             <div class="flex items-baseline justify-between gap-2">
-              <span class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white leading-none whitespace-nowrap">
+              <span
+                class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white leading-none whitespace-nowrap"
+              >
                 {{ wind.speed }}
               </span>
               <span
@@ -119,7 +129,9 @@
           </div>
 
           <!-- Direction & Mini Compass Footer -->
-          <div class="flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400 pt-1 border-t border-slate-200/50 dark:border-slate-700/50 font-mono">
+          <div
+            class="flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400 pt-1 border-t border-slate-200/50 dark:border-slate-700/50 font-mono"
+          >
             <span>{{ wind.dir16 }} · {{ wind.degree }}°</span>
             <div
               class="w-6 h-6 rounded-full border border-teal-500/30 dark:border-teal-500/40 bg-teal-500/10 flex items-center justify-center shrink-0 shadow-inner relative"
@@ -140,7 +152,9 @@
         <div
           class="p-4 sm:p-5 rounded-2xl bg-slate-50/80 dark:bg-slate-800/50 border border-slate-200/60 dark:border-slate-700/60 flex flex-col justify-between space-y-3.5 transition-all hover:shadow-md overflow-hidden"
           role="region"
-          [attr.aria-label]="i18n.dict().comfort.precipTitle + ': ' + precip.rainChance + '%, ' + precip.statusLabel"
+          [attr.aria-label]="
+            i18n.dict().comfort.precipTitle + ': ' + precip.rainChance + '%, ' + precip.statusLabel
+          "
         >
           <!-- Card Header: Title Only -->
           <div class="flex items-center justify-between">
@@ -155,7 +169,9 @@
           <!-- Value & Badge Row -->
           <div>
             <div class="flex items-baseline justify-between gap-2">
-              <span class="text-3xl sm:text-4xl font-extrabold text-sky-600 dark:text-sky-400 leading-none whitespace-nowrap">
+              <span
+                class="text-3xl sm:text-4xl font-extrabold text-sky-600 dark:text-sky-400 leading-none whitespace-nowrap"
+              >
                 {{ precip.rainChance }}%
               </span>
               <span
@@ -166,7 +182,9 @@
             </div>
 
             <!-- Probability progress bar -->
-            <div class="w-full h-2 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden mt-2.5">
+            <div
+              class="w-full h-2 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden mt-2.5"
+            >
               <div
                 class="h-full bg-gradient-to-r from-sky-400 to-blue-600 rounded-full transition-all duration-300"
                 [style.width.%]="precip.rainChance"
@@ -175,7 +193,9 @@
           </div>
 
           <!-- Risks Footer -->
-          <div class="flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400 pt-1 border-t border-slate-200/50 dark:border-slate-700/50">
+          <div
+            class="flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400 pt-1 border-t border-slate-200/50 dark:border-slate-700/50"
+          >
             <span class="flex items-center gap-1">
               <i class="pi pi-bolt text-amber-500 text-[10px]"></i>
               {{ precip.thunderChance }}%
@@ -196,7 +216,9 @@
         <div
           class="p-4 sm:p-5 rounded-2xl bg-slate-50/80 dark:bg-slate-800/50 border border-slate-200/60 dark:border-slate-700/60 flex flex-col justify-between space-y-3.5 transition-all hover:shadow-md overflow-hidden"
           role="region"
-          [attr.aria-label]="i18n.dict().comfort.airTitle + ': ' + air.dewPoint + ', ' + air.comfortLabel"
+          [attr.aria-label]="
+            i18n.dict().comfort.airTitle + ': ' + air.dewPoint + ', ' + air.comfortLabel
+          "
         >
           <!-- Card Header: Title Only -->
           <div class="flex items-center justify-between">
@@ -212,10 +234,14 @@
           <div>
             <div class="flex items-baseline justify-between gap-2">
               <div>
-                <div class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold mb-0.5">
+                <div
+                  class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold mb-0.5"
+                >
                   {{ i18n.dict().comfort.dewPoint }}
                 </div>
-                <div class="text-3xl sm:text-4xl font-extrabold text-indigo-600 dark:text-indigo-400 leading-none whitespace-nowrap">
+                <div
+                  class="text-3xl sm:text-4xl font-extrabold text-indigo-600 dark:text-indigo-400 leading-none whitespace-nowrap"
+                >
                   {{ air.dewPoint }}
                 </div>
               </div>
@@ -228,7 +254,9 @@
           </div>
 
           <!-- Assessment Footer -->
-          <div class="flex items-center justify-between text-[11px] text-slate-600 dark:text-slate-300 pt-1 border-t border-slate-200/50 dark:border-slate-700/50">
+          <div
+            class="flex items-center justify-between text-[11px] text-slate-600 dark:text-slate-300 pt-1 border-t border-slate-200/50 dark:border-slate-700/50"
+          >
             <span>{{ air.comfortLabel }}</span>
             @if (air.snowCoverCm > 0) {
               <span class="font-mono text-sky-500 shrink-0">❄️ {{ air.snowCoverCm }} см</span>

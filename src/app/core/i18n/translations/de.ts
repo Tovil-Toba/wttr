@@ -67,8 +67,10 @@ export const deTranslations: RecursivePartial<TranslationDictionary> = {
     uvAdviceLow: 'Kein Sonnenschutz erforderlich, sicheres UV-Niveau.',
     uvAdviceModerate: 'Sonnenbrille und LSF 15+ bei längerem Aufenthalt empfohlen.',
     uvAdviceHigh: 'LSF 30+ Sonnencreme, Kopfbedeckung und Schatten zur Mittagszeit erforderlich.',
-    uvAdviceVeryHigh: 'Gefährliche UV-Strahlung! Direkte Sonne von 11 bis 16 Uhr meiden, LSF 50 nutzen.',
-    uvAdviceExtreme: 'Extreme Strahlung! Aufenthalt im Innenbereich oder tiefen Schatten empfohlen.',
+    uvAdviceVeryHigh:
+      'Gefährliche UV-Strahlung! Direkte Sonne von 11 bis 16 Uhr meiden, LSF 50 nutzen.',
+    uvAdviceExtreme:
+      'Extreme Strahlung! Aufenthalt im Innenbereich oder tiefen Schatten empfohlen.',
     windTitle: 'Wind und Böen',
     gustsLabel: 'Böen bis zu',
     calm: 'Windstille / schwacher Wind',

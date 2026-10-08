@@ -176,4 +176,3 @@ describe('HourlyForecastComponent', () => {
     expect(dayTabs[1].getAttribute('aria-selected')).toBe('true');
   });
 });
-

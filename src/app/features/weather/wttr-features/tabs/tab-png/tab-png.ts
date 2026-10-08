@@ -32,6 +32,9 @@ export class TabPngComponent {
     if (this.pngOnlyCurrent()) opts.push('0');
 
     const optStr = opts.length ? `_${opts.join('_')}` : '';
+    if (this.weatherService.useServerProxy) {
+      return `/api/png?city=${encodeURIComponent(q)}&opts=${encodeURIComponent(optStr)}`;
+    }
     return `https://wttr.in/${encodeURIComponent(q)}${optStr}.png`;
   });
 

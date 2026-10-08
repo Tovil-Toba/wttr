@@ -139,8 +139,7 @@
               [ngClass]="{
                 'bg-amber-500 text-white shadow-md shadow-amber-500/20':
                   d.headlineType === 'warmer',
-                'bg-sky-500 text-white shadow-md shadow-sky-500/20':
-                  d.headlineType === 'colder',
+                'bg-sky-500 text-white shadow-md shadow-sky-500/20': d.headlineType === 'colder',
                 'bg-emerald-500 text-white shadow-md shadow-emerald-500/20':
                   d.headlineType === 'equal',
               }"
@@ -204,11 +203,7 @@
 
                 <div class="flex flex-col items-end">
                   <div class="w-12 h-12 flex items-center justify-center">
-                    <app-weather-icon
-                      [condition]="c1.conditionType"
-                      size="md"
-                      [animated]="true"
-                    />
+                    <app-weather-icon [condition]="c1.conditionType" size="md" [animated]="true" />
                   </div>
                   <span class="text-3xl font-black font-mono text-slate-900 dark:text-white mt-1">
                     {{ c1.tempFormatted }}
@@ -295,11 +290,7 @@
 
                 <div class="flex flex-col items-end">
                   <div class="w-12 h-12 flex items-center justify-center">
-                    <app-weather-icon
-                      [condition]="c2.conditionType"
-                      size="md"
-                      [animated]="true"
-                    />
+                    <app-weather-icon [condition]="c2.conditionType" size="md" [animated]="true" />
                   </div>
                   <span class="text-3xl font-black font-mono text-slate-900 dark:text-white mt-1">
                     {{ c2.tempFormatted }}

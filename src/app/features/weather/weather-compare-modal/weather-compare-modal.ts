@@ -1,13 +1,5 @@
 import { CommonModule } from '@angular/common';
-import {
-  Component,
-  computed,
-  HostListener,
-  inject,
-  OnInit,
-  output,
-  signal,
-} from '@angular/core';
+import { Component, computed, HostListener, inject, OnInit, output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TooltipModule } from 'primeng/tooltip';
 
@@ -144,9 +136,9 @@ export class WeatherCompareModalComponent implements OnInit {
     } else {
       // Pick default: first favorite or Sochi/London
       const current = (this.weatherService.currentQuery() || '').toLowerCase();
-      const firstFav = this.weatherService.favorites().find(
-        (f) => f.query.toLowerCase() !== current && f.name.toLowerCase() !== current,
-      );
+      const firstFav = this.weatherService
+        .favorites()
+        .find((f) => f.query.toLowerCase() !== current && f.name.toLowerCase() !== current);
       if (firstFav) {
         this.loadCompareCity(firstFav.query);
       } else {

@@ -174,8 +174,7 @@ export const trTranslations: RecursivePartial<TranslationDictionary> = {
     shortcutF: 'F',
     shortcutFDesc: 'Mevcut şehri favorilere ekle veya çıkar',
     shortcutR: 'R',
-    shortcutRDesc:
-      'Hava durumu tahminini wttr sunucularından yenile (önbelleği temizle)',
+    shortcutRDesc: 'Hava durumu tahminini wttr sunucularından yenile (önbelleği temizle)',
     shortcutC: 'C',
     shortcutCDesc: 'İki şehir hava durumu karşılaştırma penceresini aç',
     shortcutQuestion: '?',

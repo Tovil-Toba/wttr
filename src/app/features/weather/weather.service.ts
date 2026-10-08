@@ -4,6 +4,7 @@ import { computed, inject, Injectable, signal } from '@angular/core';
 import { firstValueFrom, timeout } from 'rxjs';
 
 import { WeatherConditionType } from '../../shared/components/weather-icon/weather-icon';
+import { OpenMeteoGeoResult, transformOpenMeteoToWttr } from './open-meteo.fallback';
 import {
   FavoriteLocation,
   PressureUnit,
@@ -14,10 +15,6 @@ import {
   WindUnit,
   WttrResponse,
 } from './weather.model';
-import {
-  OpenMeteoGeoResult,
-  transformOpenMeteoToWttr,
-} from './open-meteo.fallback';
 
 @Injectable({
   providedIn: 'root',
@@ -45,6 +42,24 @@ export class WeatherService {
   readonly isFallbackMirror = signal<boolean>(false);
   readonly fallbackSourceName = signal<string>('wttr.is');
   private wttrBlockedInSession = false;
+
+  // Server proxy detection (for production host on Render and local Express server)
+  get useServerProxy(): boolean {
+    if (!this.window) return false;
+    // Disable in tests (Vitest / Karma) to preserve test mocks
+    if (
+      (this.window as any).__vitest_worker__ ||
+      (this.window as any).__karma__ ||
+      this.window.location.port === '9876'
+    ) {
+      return false;
+    }
+    const host = this.window.location.hostname;
+    const port = this.window.location.port;
+    if (port === '3000') return true;
+    if (host && host !== 'localhost' && host !== '127.0.0.1') return true;
+    return false;
+  }
 
   // Offline State Signals
   readonly isOffline = signal<boolean>(
@@ -193,34 +208,26 @@ export class WeatherService {
     try {
       let data: WttrResponse;
 
-      if (this.wttrBlockedInSession) {
-        // Direct fast-path to Open-Meteo mirror when upstream wttr.in is known blocked
-        data = await this.fetchOpenMeteoFallback(cleanQuery, this.currentLang());
-        this.isFallbackMirror.set(true);
-        this.fallbackSourceName.set('Open-Meteo');
-      } else {
+      if (this.useServerProxy) {
         try {
-          data = await this.requestWithFallback<WttrResponse>(
-            `${this.primaryBase}/${encodeURIComponent(cleanQuery)}?format=j1&lang=${this.currentLang()}`,
-            `${this.fallbackBase}/${encodeURIComponent(cleanQuery)}?format=j1&lang=${this.currentLang()}`,
+          data = await firstValueFrom(
+            this.http
+              .get<WttrResponse>(
+                `/api/weather?city=${encodeURIComponent(cleanQuery)}&lang=${this.currentLang()}`,
+              )
+              .pipe(timeout(6000)),
           );
-        } catch (wttrErr) {
-          console.warn('[WeatherService] Upstream wttr.in/is unreachable, engaging Open-Meteo fallback:', wttrErr);
-          this.wttrBlockedInSession = true;
-          if (this.window?.sessionStorage) {
-            try {
-              this.window.sessionStorage.setItem('wttr_fallback_active', 'true');
-            } catch {}
-          }
-          if (this.window?.localStorage) {
-            try {
-              this.window.localStorage.setItem('wttr_fallback_active', 'true');
-            } catch {}
-          }
-          data = await this.fetchOpenMeteoFallback(cleanQuery, this.currentLang());
-          this.isFallbackMirror.set(true);
-          this.fallbackSourceName.set('Open-Meteo');
+          this.isFallbackMirror.set(false);
+          this.fallbackSourceName.set('wttr.in');
+        } catch (proxyErr) {
+          console.warn(
+            '[WeatherService] Proxy fetch failed, attempting direct fallback:',
+            proxyErr,
+          );
+          data = await this.fetchDirectWeather(cleanQuery);
         }
+      } else {
+        data = await this.fetchDirectWeather(cleanQuery);
       }
 
       this.cache.set(cacheKey, { data, timestamp: Date.now() });
@@ -248,6 +255,41 @@ export class WeatherService {
     }
   }
 
+  // Direct fetch with fallback mirror and Open-Meteo
+  private async fetchDirectWeather(cleanQuery: string): Promise<WttrResponse> {
+    if (this.wttrBlockedInSession) {
+      this.isFallbackMirror.set(true);
+      this.fallbackSourceName.set('Open-Meteo');
+      return await this.fetchOpenMeteoFallback(cleanQuery, this.currentLang());
+    }
+
+    try {
+      return await this.requestWithFallback<WttrResponse>(
+        `${this.primaryBase}/${encodeURIComponent(cleanQuery)}?format=j1&lang=${this.currentLang()}`,
+        `${this.fallbackBase}/${encodeURIComponent(cleanQuery)}?format=j1&lang=${this.currentLang()}`,
+      );
+    } catch (wttrErr) {
+      console.warn(
+        '[WeatherService] Upstream wttr.in/is unreachable, engaging Open-Meteo fallback:',
+        wttrErr,
+      );
+      this.wttrBlockedInSession = true;
+      if (this.window?.sessionStorage) {
+        try {
+          this.window.sessionStorage.setItem('wttr_fallback_active', 'true');
+        } catch {}
+      }
+      if (this.window?.localStorage) {
+        try {
+          this.window.localStorage.setItem('wttr_fallback_active', 'true');
+        } catch {}
+      }
+      this.isFallbackMirror.set(true);
+      this.fallbackSourceName.set('Open-Meteo');
+      return await this.fetchOpenMeteoFallback(cleanQuery, this.currentLang());
+    }
+  }
+
   // Fetch CLI / Terminal plain text
   async fetchTerminalOutput(query: string, force = false): Promise<void> {
     const cleanQuery = query.trim() || 'Obninsk';
@@ -264,6 +306,26 @@ export class WeatherService {
     this.terminalError.set(null);
     this.lastLoadedTerminalQuery = cleanQuery;
     this.lastLoadedTerminalLang = this.currentLang();
+
+    if (this.useServerProxy) {
+      try {
+        const text = await firstValueFrom(
+          this.http
+            .get(
+              `/api/terminal?city=${encodeURIComponent(cleanQuery)}&lang=${this.currentLang()}`,
+              {
+                responseType: 'text',
+              },
+            )
+            .pipe(timeout(6000)),
+        );
+        this.terminalOutput.set(text);
+        this.isTerminalLoading.set(false);
+        return;
+      } catch (proxyErr) {
+        console.warn('[WeatherService] Proxy terminal fetch failed, trying direct:', proxyErr);
+      }
+    }
 
     if (this.wttrBlockedInSession) {
       this.terminalOutput.set(this.generateSyntheticTerminal(cleanQuery));
@@ -325,6 +387,24 @@ export class WeatherService {
     this.webError.set(null);
     this.lastLoadedWebQuery = cleanQuery;
     this.lastLoadedWebLang = this.currentLang();
+
+    if (this.useServerProxy) {
+      try {
+        const html = await firstValueFrom(
+          this.http
+            .get(`/api/web?city=${encodeURIComponent(cleanQuery)}&lang=${this.currentLang()}`, {
+              responseType: 'text',
+              headers: { Accept: 'text/html' },
+            })
+            .pipe(timeout(6000)),
+        );
+        this.webHtml.set(this.optimizeWttrHtml(html));
+        this.isWebLoading.set(false);
+        return;
+      } catch (proxyErr) {
+        console.warn('[WeatherService] Proxy web HTML fetch failed, trying direct:', proxyErr);
+      }
+    }
 
     if (this.wttrBlockedInSession) {
       this.webHtml.set(this.generateSyntheticWebHtml(cleanQuery));
@@ -1242,7 +1322,10 @@ export class WeatherService {
     } catch {}
   }
 
-  getOfflineData(cacheKey: string, allowGeneralFallback = false): { data: WttrResponse; timestamp: number } | null {
+  getOfflineData(
+    cacheKey: string,
+    allowGeneralFallback = false,
+  ): { data: WttrResponse; timestamp: number } | null {
     if (!this.window?.localStorage) return null;
     try {
       const raw = this.window.localStorage.getItem(this.offlineDataKeyPrefix + cacheKey);

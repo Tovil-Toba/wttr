@@ -47,7 +47,9 @@
             [class.dark:text-indigo-400]="!sun.isDay"
             [class.border-indigo-500\/20]="!sun.isDay"
           >
-            {{ sun.isDay ? ('☀️ ' + i18n.dict().astro.daytime) : ('🌙 ' + i18n.dict().astro.nighttime) }}
+            {{
+              sun.isDay ? '☀️ ' + i18n.dict().astro.daytime : '🌙 ' + i18n.dict().astro.nighttime
+            }}
           </span>
         </div>
 
@@ -82,10 +84,7 @@
             </defs>
 
             <!-- Sky arch fill -->
-            <path
-              d="M 35,105 A 130,85 0 0,1 285,105 Z"
-              fill="url(#skyUnderArc)"
-            />
+            <path d="M 35,105 A 130,85 0 0,1 285,105 Z" fill="url(#skyUnderArc)" />
 
             <!-- Background celestial arc (dashed track) -->
             <path
@@ -105,7 +104,7 @@
               stroke-width="2.5"
               stroke-linecap="round"
               [style.stroke-dasharray]="'410'"
-              [style.stroke-dashoffset]="410 - (410 * sun.progressPercent / 100)"
+              [style.stroke-dashoffset]="410 - (410 * sun.progressPercent) / 100"
               class="transition-all duration-700 ease-out"
             />
 
@@ -168,7 +167,9 @@
         </div>
 
         <!-- Sun Info Summary Row -->
-        <div class="flex items-center justify-between text-[11px] pt-2 border-t border-slate-200/50 dark:border-slate-700/50">
+        <div
+          class="flex items-center justify-between text-[11px] pt-2 border-t border-slate-200/50 dark:border-slate-700/50"
+        >
           <span class="text-slate-600 dark:text-slate-300 font-medium">
             <span class="text-slate-400">{{ i18n.dict().astro.daylight }}:</span>
             {{ sun.daylightDuration }}
@@ -211,7 +212,15 @@
                 viewBox="0 0 100 100"
                 class="w-20 h-20 overflow-visible filter drop-shadow-[0_4px_12px_rgba(99,102,241,0.25)]"
                 role="img"
-                [attr.aria-label]="i18n.dict().astro.moonTitle + ': ' + moon.phaseName + ', ' + moon.illumination + '% ' + i18n.dict().astro.illumination"
+                [attr.aria-label]="
+                  i18n.dict().astro.moonTitle +
+                  ': ' +
+                  moon.phaseName +
+                  ', ' +
+                  moon.illumination +
+                  '% ' +
+                  i18n.dict().astro.illumination
+                "
               >
                 <defs>
                   <!-- Moon glow filter -->
@@ -263,11 +272,7 @@
                     filter="url(#moonGlow)"
                   />
                 } @else if (!moon.isNew && moon.pathD) {
-                  <path
-                    [attr.d]="moon.pathD"
-                    fill="url(#moonLitGrad)"
-                    filter="url(#moonGlow)"
-                  />
+                  <path [attr.d]="moon.pathD" fill="url(#moonLitGrad)" filter="url(#moonGlow)" />
                 }
               </svg>
             </div>
@@ -280,11 +285,17 @@
 
               <!-- Illumination mini progress bar -->
               <div class="space-y-1">
-                <div class="flex items-center justify-between text-[10px] text-slate-500 dark:text-slate-400 font-mono">
+                <div
+                  class="flex items-center justify-between text-[10px] text-slate-500 dark:text-slate-400 font-mono"
+                >
                   <span>{{ i18n.dict().astro.illumination }}</span>
-                  <span class="font-bold text-indigo-600 dark:text-indigo-400">{{ moon.illumination }}%</span>
+                  <span class="font-bold text-indigo-600 dark:text-indigo-400"
+                    >{{ moon.illumination }}%</span
+                  >
                 </div>
-                <div class="w-full h-1.5 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden">
+                <div
+                  class="w-full h-1.5 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden"
+                >
                   <div
                     class="h-full bg-gradient-to-r from-indigo-500 to-sky-400 rounded-full transition-all duration-500"
                     [style.width.%]="moon.illumination"
@@ -293,7 +304,9 @@
               </div>
 
               <!-- Moonrise & Moonset -->
-              <div class="pt-1 flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400 font-mono">
+              <div
+                class="pt-1 flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400 font-mono"
+              >
                 <span class="flex items-center gap-1" [title]="i18n.dict().astro.moonrise">
                   <span class="text-indigo-500 font-bold">🌙↑</span>
                   {{ moon.moonrise }}
@@ -307,9 +320,18 @@
           </div>
 
           <!-- Moon Footer: Sunshine hours reference -->
-          <div class="flex items-center justify-between text-[11px] pt-2 border-t border-slate-200/50 dark:border-slate-700/50 text-slate-600 dark:text-slate-300">
-            <span>{{ i18n.dict().astro.sunHours }}: <strong class="font-mono text-amber-600 dark:text-amber-400">{{ sun.sunHour }}</strong></span>
-            <span class="text-base select-none shrink-0" [title]="moon.phaseName">{{ moon.icon }}</span>
+          <div
+            class="flex items-center justify-between text-[11px] pt-2 border-t border-slate-200/50 dark:border-slate-700/50 text-slate-600 dark:text-slate-300"
+          >
+            <span
+              >{{ i18n.dict().astro.sunHours }}:
+              <strong class="font-mono text-amber-600 dark:text-amber-400">{{
+                sun.sunHour
+              }}</strong></span
+            >
+            <span class="text-base select-none shrink-0" [title]="moon.phaseName">{{
+              moon.icon
+            }}</span>
           </div>
         </div>
       }

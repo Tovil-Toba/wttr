@@ -466,14 +466,22 @@ describe('WeatherService', () => {
       const geoReq = httpMock.expectOne((r) => r.url.includes('geocoding-api.open-meteo.com'));
       geoReq.flush({
         results: [
-          { name: 'Valencia', latitude: 39.4699, longitude: -0.3763, country: 'Spain', admin1: 'Valencia' },
+          {
+            name: 'Valencia',
+            latitude: 39.4699,
+            longitude: -0.3763,
+            country: 'Spain',
+            admin1: 'Valencia',
+          },
         ],
       });
 
       await new Promise((r) => setTimeout(r, 0));
 
       // Open-Meteo forecast succeeds
-      const forecastReq = httpMock.expectOne((r) => r.url.includes('api.open-meteo.com/v1/forecast'));
+      const forecastReq = httpMock.expectOne((r) =>
+        r.url.includes('api.open-meteo.com/v1/forecast'),
+      );
       forecastReq.flush({
         current: {
           temperature_2m: 22,
@@ -519,7 +527,7 @@ describe('WeatherService', () => {
 
     it('should serve repeated requests from in-memory cache within TTL and allow force refresh', async () => {
       const lang = service.currentLang();
-      
+
       // 1. First fetch issues HTTP request
       const firstFetch = service.fetchWeather('Madrid');
       const req1 = httpMock.expectOne(`https://wttr.in/Madrid?format=j1&lang=${lang}`);
@@ -673,4 +681,3 @@ describe('WeatherService', () => {
     });
   });
 });
-

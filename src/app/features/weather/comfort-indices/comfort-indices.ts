@@ -1,10 +1,10 @@
-import { Component, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, computed, inject } from '@angular/core';
 import { Tooltip } from 'primeng/tooltip';
 
 import { I18nService } from '../../../core/i18n';
-import { WeatherService } from '../weather.service';
 import { CurrentCondition, HourlyWeather, WeatherDay } from '../weather.model';
+import { WeatherService } from '../weather.service';
 
 export interface UvData {
   value: number;

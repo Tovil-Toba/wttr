@@ -220,4 +220,3 @@ export class WeatherHeroComponent {
     setTimeout(() => this.isPngDownloading.set(false), 2500);
   }
 }
-

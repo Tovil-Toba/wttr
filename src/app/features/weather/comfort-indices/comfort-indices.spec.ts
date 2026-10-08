@@ -224,4 +224,3 @@ describe('ComfortIndicesComponent', () => {
     expect(element.textContent).toContain('Precipitación y tormentas');
   });
 });
-

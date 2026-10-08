@@ -1,4 +1,4 @@
-import { Component, HostListener, computed, effect, inject, signal } from '@angular/core';
+import { Component, computed, effect, HostListener, inject, signal } from '@angular/core';
 
 import { I18nService } from './core/i18n';
 import { ThemeService } from './core/theme.service';
@@ -7,6 +7,7 @@ import { ComfortIndicesComponent } from './features/weather/comfort-indices/comf
 import { DailyForecastComponent } from './features/weather/daily-forecast/daily-forecast';
 import { HourlyForecastComponent } from './features/weather/hourly-forecast/hourly-forecast';
 import { SunMoonTrackerComponent } from './features/weather/sun-moon-tracker/sun-moon-tracker';
+import { WeatherCompareModalComponent } from './features/weather/weather-compare-modal/weather-compare-modal';
 import { WeatherHeroComponent } from './features/weather/weather-hero/weather-hero';
 import { WeatherService } from './features/weather/weather.service';
 import { WttrFeaturesComponent } from './features/weather/wttr-features/wttr-features';
@@ -16,7 +17,6 @@ import {
   InstructionsModalComponent,
   InstructionsSection,
 } from './shared/components/instructions-modal/instructions-modal';
-import { WeatherCompareModalComponent } from './features/weather/weather-compare-modal/weather-compare-modal';
 
 @Component({
   selector: 'app-root',

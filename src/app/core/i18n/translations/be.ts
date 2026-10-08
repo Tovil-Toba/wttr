@@ -163,8 +163,7 @@ export const beTranslations: RecursivePartial<TranslationDictionary> = {
     tabFeatures: '4. Магчымасці API',
     tabCurl: '5. Кансольныя каманды (curl)',
     shortcutsTitle: 'Гарачыя клавішы для хуткай працы',
-    shortcutsSubtitle:
-      'Кіруйце прагнозам надвор’я наўпрост з клавіятуры без мышы',
+    shortcutsSubtitle: 'Кіруйце прагнозам надвор’я наўпрост з клавіятуры без мышы',
     shortcutSlash: '/',
     shortcutSlashDesc: 'Імгненны фокус у радок пошуку гарадоў',
     shortcutT: 'T',

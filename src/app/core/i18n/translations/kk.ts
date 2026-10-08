@@ -66,7 +66,8 @@ export const kkTranslations: RecursivePartial<TranslationDictionary> = {
     uvAdviceLow: 'Күннен қорғану қажет емес, қауіпсіз деңгей.',
     uvAdviceModerate: 'Ұзақ уақыт жүргенде күн көзілдірігі мен SPF 15+ ұсынылады.',
     uvAdviceHigh: 'Түскі уақытта SPF 30+ кремі, бас киім және көлеңке қажет.',
-    uvAdviceVeryHigh: 'Қауіпті ультракүлгін! Сағат 11-16 аралығында тікелей күннен аулақ болыңыз, SPF 50 жағыңыз.',
+    uvAdviceVeryHigh:
+      'Қауіпті ультракүлгін! Сағат 11-16 аралығында тікелей күннен аулақ болыңыз, SPF 50 жағыңыз.',
     uvAdviceExtreme: 'Төтенше сәулелену! Ғимарат ішінде немесе көлеңкеде қалу ұсынылады.',
     windTitle: 'Жел және екпіндер',
     gustsLabel: 'Екпіні',
@@ -163,8 +164,7 @@ export const kkTranslations: RecursivePartial<TranslationDictionary> = {
     tabFeatures: '4. API мүмкіндіктері',
     tabCurl: '5. Терминал командалары (curl)',
     shortcutsTitle: 'Жылдам жұмыс істеуге арналған пернелер',
-    shortcutsSubtitle:
-      'Ауа райы қолданбасын тінтуірсіз, тікелей пернетақтадан басқарыңыз',
+    shortcutsSubtitle: 'Ауа райы қолданбасын тінтуірсіз, тікелей пернетақтадан басқарыңыз',
     shortcutSlash: '/',
     shortcutSlashDesc: 'Қала іздеу жолағына жылдам фокустау',
     shortcutT: 'T',
@@ -174,8 +174,7 @@ export const kkTranslations: RecursivePartial<TranslationDictionary> = {
     shortcutF: 'F',
     shortcutFDesc: 'Ағымдағы қаланы таңдаулыларға қосу немесе өшіру',
     shortcutR: 'R',
-    shortcutRDesc:
-      'Ауа райы болжамын wttr серверлерінен жаңарту (кэшті тазалау)',
+    shortcutRDesc: 'Ауа райы болжамын wttr серверлерінен жаңарту (кэшті тазалау)',
     shortcutC: 'C',
     shortcutCDesc: 'Екі қаланың ауа райын салыстыру режимін ашу',
     shortcutQuestion: '?',

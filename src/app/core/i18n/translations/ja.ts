@@ -66,7 +66,8 @@ export const jaTranslations: RecursivePartial<TranslationDictionary> = {
     uvAdviceLow: '日焼け止め対策は不要です。安全なレベルです。',
     uvAdviceModerate: '長時間屋外にいる場合はサングラスとSPF 15+をお勧めします。',
     uvAdviceHigh: '正午はSPF 30+、帽子、日陰の利用が必要です。',
-    uvAdviceVeryHigh: '危険な紫外線です！11時から16時までの直射日光を避け、SPF 50を使用してください。',
+    uvAdviceVeryHigh:
+      '危険な紫外線です！11時から16時までの直射日光を避け、SPF 50を使用してください。',
     uvAdviceExtreme: '極めて危険な放射です！屋内や日陰に留まることを推奨します。',
     windTitle: '風と突風',
     gustsLabel: '最大瞬間風速',
@@ -180,8 +181,7 @@ export const jaTranslations: RecursivePartial<TranslationDictionary> = {
     shortcutQuestionDesc: 'ヘルプとショートカット一覧を開く',
     shortcutEsc: 'Esc',
     shortcutEscDesc: '検索のクリアまたはモーダルを閉じる',
-    shortcutsProTip:
-      '文字入力中は誤動作を防ぐため、ショートカットは自動的に無効化されます。',
+    shortcutsProTip: '文字入力中は誤動作を防ぐため、ショートカットは自動的に無効化されます。',
   },
   compare: {
     title: '2都市の天気比較',

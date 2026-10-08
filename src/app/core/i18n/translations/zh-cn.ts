@@ -180,8 +180,7 @@ export const zhCnTranslations: RecursivePartial<TranslationDictionary> = {
     shortcutQuestionDesc: '打开使用指南与快捷键列表',
     shortcutEsc: 'Esc',
     shortcutEscDesc: '清除搜索输入或关闭当前打开的弹窗',
-    shortcutsProTip:
-      '在输入框中输入文字时快捷键会自动停用，不会干扰城市名称的输入。',
+    shortcutsProTip: '在输入框中输入文字时快捷键会自动停用，不会干扰城市名称的输入。',
   },
   compare: {
     title: '两座城市天气对比',

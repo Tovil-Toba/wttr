@@ -166,4 +166,3 @@ describe('SunMoonTrackerComponent', () => {
     expect(element.textContent).toContain('Fase e ciclo lunare');
   });
 });
-

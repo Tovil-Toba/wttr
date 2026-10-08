@@ -24,23 +24,21 @@ export class WttrFeaturesComponent {
 
   constructor() {
     // Whenever current query or language changes, trigger async load for active tab
-    effect(
-      () => {
-        const query = this.weatherService.currentQuery();
-        const lang = this.weatherService.currentLang();
-        if (query && lang) {
-          if (this.activeFeatureTab() === 'web') {
-            this.weatherService.fetchWebHtml(query);
-          } else if (this.activeFeatureTab() === 'terminal') {
-            this.weatherService.fetchTerminalOutput(query);
-          }
+    effect(() => {
+      const query = this.weatherService.currentQuery();
+      const lang = this.weatherService.currentLang();
+      if (query && lang) {
+        if (this.activeFeatureTab() === 'web') {
+          this.weatherService.fetchWebHtml(query);
+        } else if (this.activeFeatureTab() === 'terminal') {
+          this.weatherService.fetchTerminalOutput(query);
         }
-      });
+      }
+    });
 
     // Live timer counting seconds during active loading
     effect((onCleanup: (cleanupFn: () => void) => void) => {
-      const loading =
-        this.weatherService.isWebLoading() || this.weatherService.isTerminalLoading();
+      const loading = this.weatherService.isWebLoading() || this.weatherService.isTerminalLoading();
 
       if (loading) {
         this.loadingSeconds.set(0);

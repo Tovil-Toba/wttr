@@ -65,8 +65,22 @@ export function mapWmoToWttr(wmoCode: number, lang = 'ru'): { code: string; desc
 
 export function degreesToCompass(deg: number): string {
   const directions = [
-    'N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE',
-    'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW',
+    'N',
+    'NNE',
+    'NE',
+    'ENE',
+    'E',
+    'ESE',
+    'SE',
+    'SSE',
+    'S',
+    'SSW',
+    'SW',
+    'WSW',
+    'W',
+    'WNW',
+    'NW',
+    'NNW',
   ];
   const idx = Math.round(deg / 22.5) % 16;
   return directions[idx] || 'N';

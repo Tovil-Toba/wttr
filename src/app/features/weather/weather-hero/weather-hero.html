@@ -55,10 +55,14 @@
             <button
               type="button"
               (click)="shareForecast()"
-              [pTooltip]="isShareCopied() ? i18n.dict().share.copied : i18n.dict().share.buttonTooltip"
+              [pTooltip]="
+                isShareCopied() ? i18n.dict().share.copied : i18n.dict().share.buttonTooltip
+              "
               tooltipPosition="bottom"
               [showDelay]="isShareCopied() ? 0 : 500"
-              [attr.aria-label]="isShareCopied() ? i18n.dict().share.copied : i18n.dict().share.buttonTooltip"
+              [attr.aria-label]="
+                isShareCopied() ? i18n.dict().share.copied : i18n.dict().share.buttonTooltip
+              "
               [class.border-emerald-500]="isShareCopied()"
               [class.text-emerald-500]="isShareCopied()"
               class="w-9 h-9 sm:w-10 sm:h-10 aspect-square rounded-xl sm:rounded-2xl border border-slate-200/80 dark:border-white/15 bg-white/70 dark:bg-slate-800/70 hover:bg-white dark:hover:bg-slate-700 shadow-xs hover:shadow backdrop-blur-md transition-all duration-200 hover:scale-105 active:scale-95 flex items-center justify-center shrink-0 cursor-pointer text-slate-500 dark:text-slate-300 hover:text-sky-500 dark:hover:text-sky-400"
@@ -74,10 +78,18 @@
             <button
               type="button"
               (click)="downloadPng()"
-              [pTooltip]="isPngDownloading() ? i18n.dict().share.pngDownloaded : i18n.dict().share.downloadPngTooltip"
+              [pTooltip]="
+                isPngDownloading()
+                  ? i18n.dict().share.pngDownloaded
+                  : i18n.dict().share.downloadPngTooltip
+              "
               tooltipPosition="bottom"
               [showDelay]="isPngDownloading() ? 0 : 500"
-              [attr.aria-label]="isPngDownloading() ? i18n.dict().share.pngDownloaded : i18n.dict().share.downloadPngTooltip"
+              [attr.aria-label]="
+                isPngDownloading()
+                  ? i18n.dict().share.pngDownloaded
+                  : i18n.dict().share.downloadPngTooltip
+              "
               [class.border-emerald-500]="isPngDownloading()"
               [class.text-emerald-500]="isPngDownloading()"
               class="w-9 h-9 sm:w-10 sm:h-10 aspect-square rounded-xl sm:rounded-2xl border border-slate-200/80 dark:border-white/15 bg-white/70 dark:bg-slate-800/70 hover:bg-white dark:hover:bg-slate-700 shadow-xs hover:shadow backdrop-blur-md transition-all duration-200 hover:scale-105 active:scale-95 flex items-center justify-center shrink-0 cursor-pointer text-slate-500 dark:text-slate-300 hover:text-sky-500 dark:hover:text-sky-400"
@@ -126,7 +138,8 @@
             [title]="i18n.dict().offline.cachedDataTooltip"
           >
             <i class="pi pi-wifi text-[10px]"></i>
-            {{ i18n.dict().offline.badge }} • {{ i18n.dict().offline.dataFrom }} {{ formatOfflineTime() }}
+            {{ i18n.dict().offline.badge }} • {{ i18n.dict().offline.dataFrom }}
+            {{ formatOfflineTime() }}
           </span>
         }
         @if (weatherService.isFallbackMirror()) {
@@ -155,7 +168,11 @@
         <div class="flex flex-col gap-1">
           <span
             class="text-sm sm:text-base font-semibold text-slate-700 dark:text-slate-200"
-            [attr.aria-label]="i18n.dict().hero.feelsLike + ' ' + weatherService.formatTemp(cur.FeelsLikeC, cur.FeelsLikeF)"
+            [attr.aria-label]="
+              i18n.dict().hero.feelsLike +
+              ' ' +
+              weatherService.formatTemp(cur.FeelsLikeC, cur.FeelsLikeF)
+            "
           >
             {{ i18n.dict().hero.feelsLike }}
             {{ weatherService.formatTemp(cur.FeelsLikeC, cur.FeelsLikeF) }}
@@ -163,7 +180,15 @@
           @if (day0(); as d) {
             <span
               class="text-xs text-slate-500 dark:text-slate-400"
-              [attr.aria-label]="i18n.dict().hero.max + ' ' + weatherService.formatTemp(d.maxtempC, d.maxtempF) + ', ' + i18n.dict().hero.min + ' ' + weatherService.formatTemp(d.mintempC, d.mintempF)"
+              [attr.aria-label]="
+                i18n.dict().hero.max +
+                ' ' +
+                weatherService.formatTemp(d.maxtempC, d.maxtempF) +
+                ', ' +
+                i18n.dict().hero.min +
+                ' ' +
+                weatherService.formatTemp(d.mintempC, d.mintempF)
+              "
             >
               {{ i18n.dict().hero.max }} {{ weatherService.formatTemp(d.maxtempC, d.maxtempF) }} •
               {{ i18n.dict().hero.min }}
@@ -209,7 +234,13 @@
       <!-- Wind -->
       <div
         class="flex-1 min-w-[110px] sm:min-w-[135px] p-3 sm:p-3.5 rounded-2xl bg-white/40 dark:bg-slate-900/40 backdrop-blur-md border border-white/30 dark:border-white/5 flex flex-col justify-between"
-        [attr.aria-label]="i18n.dict().hero.wind + ': ' + weatherService.formatWind(cur.windspeedKmph) + ', ' + cur.winddir16Point"
+        [attr.aria-label]="
+          i18n.dict().hero.wind +
+          ': ' +
+          weatherService.formatWind(cur.windspeedKmph) +
+          ', ' +
+          cur.winddir16Point
+        "
         role="group"
       >
         <span
@@ -231,7 +262,9 @@
       <!-- Pressure -->
       <div
         class="flex-1 min-w-[110px] sm:min-w-[135px] p-3 sm:p-3.5 rounded-2xl bg-white/40 dark:bg-slate-900/40 backdrop-blur-md border border-white/30 dark:border-white/5 flex flex-col justify-between"
-        [attr.aria-label]="i18n.dict().hero.pressure + ': ' + weatherService.formatPressure(cur.pressure)"
+        [attr.aria-label]="
+          i18n.dict().hero.pressure + ': ' + weatherService.formatPressure(cur.pressure)
+        "
         role="group"
       >
         <span
@@ -250,7 +283,9 @@
       <!-- UV Index -->
       <div
         class="flex-1 min-w-[110px] sm:min-w-[135px] p-3 sm:p-3.5 rounded-2xl bg-white/40 dark:bg-slate-900/40 backdrop-blur-md border border-white/30 dark:border-white/5 flex flex-col justify-between"
-        [attr.aria-label]="i18n.dict().hero.uvIndex + ': ' + cur.uvIndex + ', ' + uvRiskLevel().label"
+        [attr.aria-label]="
+          i18n.dict().hero.uvIndex + ': ' + cur.uvIndex + ', ' + uvRiskLevel().label
+        "
         role="group"
       >
         <span
@@ -291,7 +326,9 @@
       <!-- Precipitation -->
       <div
         class="flex-1 min-w-[110px] sm:min-w-[135px] p-3 sm:p-3.5 rounded-2xl bg-white/40 dark:bg-slate-900/40 backdrop-blur-md border border-white/30 dark:border-white/5 flex flex-col justify-between"
-        [attr.aria-label]="i18n.dict().hero.precipitation + ': ' + cur.precipMM + ' ' + i18n.dict().common.mm"
+        [attr.aria-label]="
+          i18n.dict().hero.precipitation + ': ' + cur.precipMM + ' ' + i18n.dict().common.mm
+        "
         role="group"
       >
         <span
@@ -310,7 +347,9 @@
       <!-- Visibility -->
       <div
         class="flex-1 min-w-[110px] sm:min-w-[135px] p-3 sm:p-3.5 rounded-2xl bg-white/40 dark:bg-slate-900/40 backdrop-blur-md border border-white/30 dark:border-white/5 flex flex-col justify-between"
-        [attr.aria-label]="i18n.dict().hero.visibility + ': ' + cur.visibility + ' ' + i18n.dict().common.km"
+        [attr.aria-label]="
+          i18n.dict().hero.visibility + ': ' + cur.visibility + ' ' + i18n.dict().common.km
+        "
         role="group"
       >
         <span

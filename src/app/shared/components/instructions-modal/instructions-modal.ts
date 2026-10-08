@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit, inject, input, output, signal } from '@angular/core';
+import { Component, HostListener, inject, input, OnInit, output, signal } from '@angular/core';
 
 import { I18nService } from '../../../core/i18n';
 

@@ -180,8 +180,7 @@ export const ptBrTranslations: RecursivePartial<TranslationDictionary> = {
     shortcutQuestionDesc: 'Abrir ajuda e lista de atalhos',
     shortcutEsc: 'Esc',
     shortcutEscDesc: 'Limpar busca ou fechar qualquer modal ativo',
-    shortcutsProTip:
-      'Os atalhos são desativados automaticamente ao digitar nos campos de texto.',
+    shortcutsProTip: 'Os atalhos são desativados automaticamente ao digitar nos campos de texto.',
   },
   compare: {
     title: 'Comparação do clima entre duas cidades',
