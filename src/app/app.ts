@@ -6,6 +6,7 @@ import { FavoritesListComponent } from './features/favorites/favorites-list/favo
 import { ComfortIndicesComponent } from './features/weather/comfort-indices/comfort-indices';
 import { DailyForecastComponent } from './features/weather/daily-forecast/daily-forecast';
 import { HourlyForecastComponent } from './features/weather/hourly-forecast/hourly-forecast';
+import { SunMoonTrackerComponent } from './features/weather/sun-moon-tracker/sun-moon-tracker';
 import { WeatherHeroComponent } from './features/weather/weather-hero/weather-hero';
 import { WeatherService } from './features/weather/weather.service';
 import { WttrFeaturesComponent } from './features/weather/wttr-features/wttr-features';
@@ -20,6 +21,7 @@ import { InstructionsModalComponent } from './shared/components/instructions-mod
     WeatherHeroComponent,
     HourlyForecastComponent,
     ComfortIndicesComponent,
+    SunMoonTrackerComponent,
     DailyForecastComponent,
     WttrFeaturesComponent,
     FavoritesListComponent,

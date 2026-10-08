@@ -10,6 +10,7 @@ export interface TranslationDictionary {
     copied: string;
     updated: string;
     hours: string;
+    minutes: string;
     km: string;
     mm: string;
   };
@@ -113,6 +114,24 @@ export interface TranslationDictionary {
     waningGibbous: string;
     lastQuarter: string;
     waningCrescent: string;
+  };
+  astro: {
+    title: string;
+    subtitle: string;
+    sunTitle: string;
+    moonTitle: string;
+    sunrise: string;
+    sunset: string;
+    daylight: string;
+    untilSunset: string;
+    untilSunrise: string;
+    sunHours: string;
+    moonrise: string;
+    moonset: string;
+    illumination: string;
+    daytime: string;
+    nighttime: string;
+    goldenHour: string;
   };
   features: {
     title: string;
