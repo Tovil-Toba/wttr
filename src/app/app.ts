@@ -3,6 +3,7 @@ import { Component, computed, effect, inject, signal } from '@angular/core';
 import { I18nService } from './core/i18n';
 import { ThemeService } from './core/theme.service';
 import { FavoritesListComponent } from './features/favorites/favorites-list/favorites-list';
+import { ComfortIndicesComponent } from './features/weather/comfort-indices/comfort-indices';
 import { DailyForecastComponent } from './features/weather/daily-forecast/daily-forecast';
 import { HourlyForecastComponent } from './features/weather/hourly-forecast/hourly-forecast';
 import { WeatherHeroComponent } from './features/weather/weather-hero/weather-hero';
@@ -18,6 +19,7 @@ import { InstructionsModalComponent } from './shared/components/instructions-mod
     NavbarComponent,
     WeatherHeroComponent,
     HourlyForecastComponent,
+    ComfortIndicesComponent,
     DailyForecastComponent,
     WttrFeaturesComponent,
     FavoritesListComponent,
