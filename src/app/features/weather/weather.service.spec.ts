@@ -493,5 +493,35 @@ describe('WeatherService', () => {
 
       expect(service.isFallbackMirror()).toBe(false);
     });
+
+    it('should toggle, open, and close language menu and compare modal', () => {
+      expect(service.isLangMenuOpen()).toBe(false);
+      service.toggleLangMenu();
+      expect(service.isLangMenuOpen()).toBe(true);
+      service.closeLangMenu();
+      expect(service.isLangMenuOpen()).toBe(false);
+      service.openLangMenu();
+      expect(service.isLangMenuOpen()).toBe(true);
+
+      expect(service.isCompareOpen()).toBe(false);
+      service.toggleCompare();
+      expect(service.isCompareOpen()).toBe(true);
+      service.toggleCompare();
+      expect(service.isCompareOpen()).toBe(false);
+    });
+
+    it('should refresh current weather by bypassing cache on refreshCurrentWeather', async () => {
+      const lang = service.currentLang();
+      service.currentQuery.set('Valencia');
+
+      const refreshPromise = service.refreshCurrentWeather();
+      const primaryReq = httpMock.expectOne(`https://wttr.in/Valencia?format=j1&lang=${lang}`);
+      primaryReq.flush(mockWeatherResponse);
+      const termReq = httpMock.expectOne(`https://wttr.in/Valencia?T&lang=${lang}`);
+      termReq.flush('Terminal Valencia');
+
+      await refreshPromise;
+      expect(service.weatherData()).toEqual(mockWeatherResponse);
+    });
   });
 });

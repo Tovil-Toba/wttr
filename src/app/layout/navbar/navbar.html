@@ -37,6 +37,7 @@
               class="pi pi-search absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 pointer-events-none"
             ></i>
             <input
+              id="main-city-search"
               type="text"
               [(ngModel)]="searchQuery"
               name="search"
@@ -45,9 +46,17 @@
               autocapitalize="off"
               spellcheck="false"
               [placeholder]="i18n.dict().common.searchPlaceholder"
-              class="w-full pl-10 pr-24 py-2.5 rounded-full text-sm bg-slate-100 dark:bg-slate-800/90 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 border border-transparent focus:border-sky-500 dark:focus:border-sky-400 focus:bg-white dark:focus:bg-slate-900 focus:outline-none focus:ring-4 focus:ring-sky-500/10 transition-all duration-200 shadow-inner"
+              class="w-full pl-10 pr-28 py-2.5 rounded-full text-sm bg-slate-100 dark:bg-slate-800/90 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 border border-transparent focus:border-sky-500 dark:focus:border-sky-400 focus:bg-white dark:focus:bg-slate-900 focus:outline-none focus:ring-4 focus:ring-sky-500/10 transition-all duration-200 shadow-inner"
             />
-            <div class="absolute right-1.5 top-1/2 -translate-y-1/2 flex items-center gap-1">
+            <div class="absolute right-1.5 top-1/2 -translate-y-1/2 flex items-center gap-1.5">
+              <kbd
+                class="hidden md:inline-flex items-center justify-center px-1.5 py-0.5 text-[10px] font-mono font-semibold text-slate-400 dark:text-slate-500 bg-white/80 dark:bg-slate-700/80 rounded border border-slate-200 dark:border-slate-600 select-none shadow-2xs"
+                [pTooltip]="i18n.dict().instructions.shortcutSlashDesc"
+                tooltipPosition="bottom"
+                [showDelay]="500"
+              >
+                /
+              </kbd>
               <button
                 type="button"
                 (click)="locateMe()"
@@ -96,7 +105,7 @@
           <!-- Language Dropdown Menu -->
           @if (isLangMenuOpen()) {
             <!-- Backdrop -->
-            <div class="fixed inset-0 z-40" (click)="isLangMenuOpen.set(false)"></div>
+            <div class="fixed inset-0 z-40" (click)="weatherService.closeLangMenu()"></div>
 
             <div
               class="absolute right-0 mt-2 w-56 py-1.5 rounded-2xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-slate-200/90 dark:border-slate-800 shadow-2xl z-50 animate-in fade-in zoom-in-95 duration-150 max-h-96 overflow-y-auto"

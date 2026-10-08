@@ -1,6 +1,8 @@
-import { Component, HostListener, inject, output, signal } from '@angular/core';
+import { Component, HostListener, OnInit, inject, input, output, signal } from '@angular/core';
 
 import { I18nService } from '../../../core/i18n';
+
+export type InstructionsSection = 'search' | 'settings' | 'shortcuts' | 'features' | 'curl';
 
 @Component({
   selector: 'app-instructions-modal',
@@ -8,19 +10,24 @@ import { I18nService } from '../../../core/i18n';
   templateUrl: './instructions-modal.html',
   styleUrl: './instructions-modal.scss',
 })
-export class InstructionsModalComponent {
+export class InstructionsModalComponent implements OnInit {
   readonly i18n = inject(I18nService);
+  readonly initialSection = input<InstructionsSection>('search');
   close = output<void>();
 
-  activeSection = signal<'search' | 'settings' | 'features' | 'curl'>('search');
+  activeSection = signal<InstructionsSection>('search');
   copiedCommand = signal<string | null>(null);
+
+  ngOnInit(): void {
+    this.activeSection.set(this.initialSection());
+  }
 
   @HostListener('document:keydown.escape')
   onEscape(): void {
     this.close.emit();
   }
 
-  setSection(section: 'search' | 'settings' | 'features' | 'curl'): void {
+  setSection(section: InstructionsSection): void {
     this.activeSection.set(section);
   }
 

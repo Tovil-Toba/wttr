@@ -207,9 +207,10 @@ export const ruTranslations: TranslationDictionary = {
   },
   instructions: {
     tabSearch: '1. Поиск и локации',
-    tabSettings: '2. Настройки и Избранное',
-    tabFeatures: '3. Вкладки API',
-    tabCurl: '4. Команды консоли (curl)',
+    tabSettings: '2. Настройки и избранное',
+    tabShortcuts: '3. Горячие клавиши',
+    tabFeatures: '4. Вкладки API',
+    tabCurl: '5. Команды консоли (curl)',
 
     // Search
     searchTitle: 'Форматы поисковых запросов',
@@ -250,6 +251,28 @@ export const ruTranslations: TranslationDictionary = {
     langTitle: 'Выбор языка',
     langDesc:
       'Кнопка с кодом языка (RU, EN и др.) в правом верхнем углу шапки открывает меню выбора. Смена языка мгновенно переводит весь интерфейс и передаёт параметр &lang= во все запросы, ссылки и команды wttr.in.',
+
+    // Shortcuts
+    shortcutsTitle: 'Горячие клавиши для быстрой работы',
+    shortcutsSubtitle: 'Управляйте прогнозом погоды прямо с клавиатуры без мыши',
+    shortcutSlash: '/',
+    shortcutSlashDesc: 'Мгновенный фокус в строку поиска городов',
+    shortcutT: 'T',
+    shortcutTDesc: 'Переключение светлой и тёмной темы оформления',
+    shortcutL: 'L',
+    shortcutLDesc: 'Быстрое открытие и закрытие меню выбора языка',
+    shortcutF: 'F',
+    shortcutFDesc: 'Добавить текущий город в избранное или удалить',
+    shortcutR: 'R',
+    shortcutRDesc: 'Обновить прогноз погоды с серверов wttr (сброс кэша)',
+    shortcutC: 'C',
+    shortcutCDesc: 'Открыть режим сравнения погоды двух городов',
+    shortcutQuestion: '?',
+    shortcutQuestionDesc: 'Открыть справку и список горячих клавиш',
+    shortcutEsc: 'Esc',
+    shortcutEscDesc: 'Очистить поиск или закрыть активное модальное окно',
+    shortcutsProTip:
+      'Шорткаты автоматически отключаются при вводе текста в строке поиска, чтобы не мешать набору названий городов.',
 
     // Features
     featuresTitle: 'Возможности интеграции wttr.in',

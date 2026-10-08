@@ -58,6 +58,9 @@ export class WeatherService {
   readonly isCompareOpen = signal<boolean>(false);
   readonly compareTargetCity = signal<string>('');
 
+  // Language Menu State
+  readonly isLangMenuOpen = signal<boolean>(false);
+
   // Web View HTML State
   readonly webHtml = signal<string>('');
   readonly isWebLoading = signal<boolean>(false);
@@ -326,6 +329,37 @@ export class WeatherService {
 
   closeCompare(): void {
     this.isCompareOpen.set(false);
+  }
+
+  toggleCompare(): void {
+    if (this.isCompareOpen()) {
+      this.closeCompare();
+    } else {
+      this.openCompare();
+    }
+  }
+
+  // Language Menu Actions
+  toggleLangMenu(): void {
+    this.isLangMenuOpen.update((v) => !v);
+  }
+
+  closeLangMenu(): void {
+    this.isLangMenuOpen.set(false);
+  }
+
+  openLangMenu(): void {
+    this.isLangMenuOpen.set(true);
+  }
+
+  async refreshCurrentWeather(): Promise<void> {
+    const cur = this.currentQuery();
+    const cacheKey = `${cur.toLowerCase()}_${this.currentLang()}`;
+    this.cache.delete(cacheKey);
+    await this.fetchWeather(cur, true);
+    if (this.webHtml()) {
+      this.fetchWebHtml(cur, true);
+    }
   }
 
   async fetchComparisonWeather(query: string): Promise<WttrResponse> {

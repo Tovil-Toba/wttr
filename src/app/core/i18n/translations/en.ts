@@ -208,8 +208,9 @@ export const enTranslations: TranslationDictionary = {
   instructions: {
     tabSearch: '1. Search & Locations',
     tabSettings: '2. Settings & Favorites',
-    tabFeatures: '3. API Features',
-    tabCurl: '4. CLI Commands (curl)',
+    tabShortcuts: '3. Keyboard Shortcuts',
+    tabFeatures: '4. API Features',
+    tabCurl: '5. CLI Commands (curl)',
 
     // Search
     searchTitle: 'Search Query Formats',
@@ -249,6 +250,28 @@ export const enTranslations: TranslationDictionary = {
     langTitle: 'Language Selection',
     langDesc:
       'The language button (RU, EN, etc.) in the top right header opens the selection menu. Switching instantly translates the entire UI and passes the &lang= parameter to all wttr.in requests, links, and commands.',
+
+    // Shortcuts
+    shortcutsTitle: 'Keyboard Shortcuts',
+    shortcutsSubtitle: 'Control wttr.app lightning-fast from your keyboard without a mouse',
+    shortcutSlash: '/',
+    shortcutSlashDesc: 'Instantly focus the city search input',
+    shortcutT: 'T',
+    shortcutTDesc: 'Toggle between dark and light themes',
+    shortcutL: 'L',
+    shortcutLDesc: 'Quickly open and close the language selector menu',
+    shortcutF: 'F',
+    shortcutFDesc: 'Add current city to favorites or remove',
+    shortcutR: 'R',
+    shortcutRDesc: 'Refresh weather forecast from wttr servers (bypass cache)',
+    shortcutC: 'C',
+    shortcutCDesc: 'Open two-city weather comparison mode',
+    shortcutQuestion: '?',
+    shortcutQuestionDesc: 'Open help dialog and shortcuts list',
+    shortcutEsc: 'Esc',
+    shortcutEscDesc: 'Clear search input or close any active modal',
+    shortcutsProTip:
+      'Shortcuts are automatically disabled while typing in input fields so they never interfere with typing city names.',
 
     // Features
     featuresTitle: 'wttr.in Integration Capabilities',

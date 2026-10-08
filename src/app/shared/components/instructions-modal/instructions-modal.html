@@ -81,6 +81,22 @@
 
       <button
         type="button"
+        (click)="setSection('shortcuts')"
+        [class.bg-white]="activeSection() === 'shortcuts'"
+        [class.dark:bg-slate-800]="activeSection() === 'shortcuts'"
+        [class.text-sky-600]="activeSection() === 'shortcuts'"
+        [class.dark:text-sky-400]="activeSection() === 'shortcuts'"
+        [class.shadow-xs]="activeSection() === 'shortcuts'"
+        [class.text-slate-600]="activeSection() !== 'shortcuts'"
+        [class.dark:text-slate-400]="activeSection() !== 'shortcuts'"
+        class="px-3 py-1.5 rounded-lg font-semibold transition-all flex items-center gap-1.5 whitespace-nowrap cursor-pointer"
+      >
+        <i class="pi pi-bolt text-xs"></i>
+        <span>{{ i18n.dict().instructions.tabShortcuts }}</span>
+      </button>
+
+      <button
+        type="button"
         (click)="setSection('features')"
         [class.bg-white]="activeSection() === 'features'"
         [class.dark:bg-slate-800]="activeSection() === 'features'"
@@ -338,6 +354,189 @@
                 {{ i18n.dict().instructions.langDesc }}
               </p>
             </div>
+          </div>
+        </div>
+      }
+
+      <!-- Section: Горячие клавиши (Shortcuts) -->
+      @if (activeSection() === 'shortcuts') {
+        <div class="space-y-4 animate-in fade-in duration-150">
+          <div class="space-y-1">
+            <h4 class="font-bold text-base text-slate-900 dark:text-white flex items-center gap-2">
+              <i class="pi pi-bolt text-amber-500"></i>
+              {{ i18n.dict().instructions.shortcutsTitle }}
+            </h4>
+            <p class="text-xs text-slate-500 dark:text-slate-400">
+              {{ i18n.dict().instructions.shortcutsSubtitle }}
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+            <!-- / : Search -->
+            <div
+              class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-800 flex items-start gap-3"
+            >
+              <kbd
+                class="min-w-8 h-8 px-2 rounded-xl bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 shadow-xs flex items-center justify-center font-mono font-bold text-sm text-sky-600 dark:text-sky-400 shrink-0"
+              >
+                {{ i18n.dict().instructions.shortcutSlash }}
+              </kbd>
+              <div class="space-y-0.5">
+                <span class="font-bold text-slate-900 dark:text-white block">
+                  {{ i18n.dict().instructions.shortcutSlashDesc }}
+                </span>
+                <p class="text-[11px] text-slate-500 dark:text-slate-400 font-mono">
+                  /
+                </p>
+              </div>
+            </div>
+
+            <!-- T : Theme -->
+            <div
+              class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-800 flex items-start gap-3"
+            >
+              <kbd
+                class="min-w-8 h-8 px-2 rounded-xl bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 shadow-xs flex items-center justify-center font-mono font-bold text-sm text-indigo-600 dark:text-indigo-400 shrink-0"
+              >
+                {{ i18n.dict().instructions.shortcutT }}
+              </kbd>
+              <div class="space-y-0.5">
+                <span class="font-bold text-slate-900 dark:text-white block">
+                  {{ i18n.dict().instructions.shortcutTDesc }}
+                </span>
+                <p class="text-[11px] text-slate-500 dark:text-slate-400 font-mono">
+                  T / t
+                </p>
+              </div>
+            </div>
+
+            <!-- L : Language -->
+            <div
+              class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-800 flex items-start gap-3"
+            >
+              <kbd
+                class="min-w-8 h-8 px-2 rounded-xl bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 shadow-xs flex items-center justify-center font-mono font-bold text-sm text-blue-600 dark:text-blue-400 shrink-0"
+              >
+                {{ i18n.dict().instructions.shortcutL }}
+              </kbd>
+              <div class="space-y-0.5">
+                <span class="font-bold text-slate-900 dark:text-white block">
+                  {{ i18n.dict().instructions.shortcutLDesc }}
+                </span>
+                <p class="text-[11px] text-slate-500 dark:text-slate-400 font-mono">
+                  L / l
+                </p>
+              </div>
+            </div>
+
+            <!-- F : Favorite -->
+            <div
+              class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-800 flex items-start gap-3"
+            >
+              <kbd
+                class="min-w-8 h-8 px-2 rounded-xl bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 shadow-xs flex items-center justify-center font-mono font-bold text-sm text-amber-500 dark:text-amber-400 shrink-0"
+              >
+                {{ i18n.dict().instructions.shortcutF }}
+              </kbd>
+              <div class="space-y-0.5">
+                <span class="font-bold text-slate-900 dark:text-white block">
+                  {{ i18n.dict().instructions.shortcutFDesc }}
+                </span>
+                <p class="text-[11px] text-slate-500 dark:text-slate-400 font-mono">
+                  F / f
+                </p>
+              </div>
+            </div>
+
+            <!-- R : Refresh -->
+            <div
+              class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-800 flex items-start gap-3"
+            >
+              <kbd
+                class="min-w-8 h-8 px-2 rounded-xl bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 shadow-xs flex items-center justify-center font-mono font-bold text-sm text-emerald-600 dark:text-emerald-400 shrink-0"
+              >
+                {{ i18n.dict().instructions.shortcutR }}
+              </kbd>
+              <div class="space-y-0.5">
+                <span class="font-bold text-slate-900 dark:text-white block">
+                  {{ i18n.dict().instructions.shortcutRDesc }}
+                </span>
+                <p class="text-[11px] text-slate-500 dark:text-slate-400 font-mono">
+                  R / r
+                </p>
+              </div>
+            </div>
+
+            <!-- C : Compare -->
+            <div
+              class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-800 flex items-start gap-3"
+            >
+              <kbd
+                class="min-w-8 h-8 px-2 rounded-xl bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 shadow-xs flex items-center justify-center font-mono font-bold text-sm text-violet-600 dark:text-violet-400 shrink-0"
+              >
+                {{ i18n.dict().instructions.shortcutC }}
+              </kbd>
+              <div class="space-y-0.5">
+                <span class="font-bold text-slate-900 dark:text-white block">
+                  {{ i18n.dict().instructions.shortcutCDesc }}
+                </span>
+                <p class="text-[11px] text-slate-500 dark:text-slate-400 font-mono">
+                  C / c
+                </p>
+              </div>
+            </div>
+
+            <!-- ? / H : Help -->
+            <div
+              class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-800 flex items-start gap-3"
+            >
+              <kbd
+                class="min-w-8 h-8 px-2 rounded-xl bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 shadow-xs flex items-center justify-center font-mono font-bold text-sm text-pink-600 dark:text-pink-400 shrink-0"
+              >
+                ?
+              </kbd>
+              <div class="space-y-0.5">
+                <span class="font-bold text-slate-900 dark:text-white block">
+                  {{ i18n.dict().instructions.shortcutQuestionDesc }}
+                </span>
+                <p class="text-[11px] text-slate-500 dark:text-slate-400 font-mono">
+                  ? / H / h
+                </p>
+              </div>
+            </div>
+
+            <!-- Esc : Close / Clear -->
+            <div
+              class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-800 flex items-start gap-3"
+            >
+              <kbd
+                class="min-w-8 h-8 px-2 rounded-xl bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 shadow-xs flex items-center justify-center font-mono font-bold text-sm text-slate-700 dark:text-slate-300 shrink-0"
+              >
+                {{ i18n.dict().instructions.shortcutEsc }}
+              </kbd>
+              <div class="space-y-0.5">
+                <span class="font-bold text-slate-900 dark:text-white block">
+                  {{ i18n.dict().instructions.shortcutEscDesc }}
+                </span>
+                <p class="text-[11px] text-slate-500 dark:text-slate-400 font-mono">
+                  Escape
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pro Tip Card -->
+          <div
+            class="p-4 rounded-2xl bg-amber-50/80 dark:bg-amber-950/20 border border-amber-200/80 dark:border-amber-900/40 flex items-start gap-3"
+          >
+            <div
+              class="w-7 h-7 rounded-xl bg-amber-500/20 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0 mt-0.5"
+            >
+              <i class="pi pi-info-circle text-sm"></i>
+            </div>
+            <p class="text-xs text-amber-900 dark:text-amber-200 leading-relaxed">
+              {{ i18n.dict().instructions.shortcutsProTip }}
+            </p>
           </div>
         </div>
       }

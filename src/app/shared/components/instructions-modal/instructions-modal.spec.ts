@@ -118,5 +118,19 @@ describe('InstructionsModalComponent', () => {
     component.setSection('curl');
     await fixture.whenStable();
     expect(element.textContent).toContain('Шпаргалка консольных команд (curl)');
+
+    component.setSection('shortcuts');
+    await fixture.whenStable();
+    expect(element.textContent).toContain('Горячие клавиши для быстрой работы');
+    expect(element.textContent).toContain('Esc');
+  });
+
+  it('should initialize with initialSection when provided', async () => {
+    const customFixture = TestBed.createComponent(InstructionsModalComponent);
+    customFixture.componentRef.setInput('initialSection', 'shortcuts');
+    await customFixture.whenStable();
+    customFixture.componentInstance.ngOnInit();
+    await customFixture.whenStable();
+    expect(customFixture.componentInstance.activeSection()).toBe('shortcuts');
   });
 });

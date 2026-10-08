@@ -165,7 +165,7 @@
       <div class="flex items-center gap-4">
         <button
           type="button"
-          (click)="isInstructionsOpen.set(true)"
+          (click)="openInstructions('search')"
           class="hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer flex items-center gap-1.5 font-medium"
         >
           <i class="pi pi-question-circle text-xs text-sky-500"></i>
@@ -185,7 +185,10 @@
 
   <!-- Instructions Modal Dialog -->
   @if (isInstructionsOpen()) {
-    <app-instructions-modal (close)="isInstructionsOpen.set(false)" />
+    <app-instructions-modal
+      [initialSection]="initialInstructionsSection()"
+      (close)="closeInstructions()"
+    />
   }
 
   <!-- About Modal Dialog -->

@@ -197,8 +197,9 @@ export const deTranslations: RecursivePartial<TranslationDictionary> = {
   instructions: {
     tabSearch: '1. Suche und Standorte',
     tabSettings: '2. Einstellungen und Favoriten',
-    tabFeatures: '3. API-Funktionen',
-    tabCurl: '4. CLI-Befehle (curl)',
+    tabShortcuts: '3. Tastaturkürzel',
+    tabFeatures: '4. API-Funktionen',
+    tabCurl: '5. CLI-Befehle (curl)',
 
     searchTitle: 'Suchanfrageformate',
     searchSubtitle: 'Der Dienst unterstützt flexible Ortsformate in der Suchleiste:',
@@ -232,6 +233,27 @@ export const deTranslations: RecursivePartial<TranslationDictionary> = {
     langTitle: 'Sprachauswahl',
     langDesc:
       'Die Schaltfläche mit dem Sprachcode (RU, EN usw.) oben rechts in der Kopfzeile öffnet das Auswahlmenü. Ein Wechsel übersetzt sofort die gesamte Benutzeroberfläche und übergibt den Parameter &lang= an alle Anfragen, Links und Befehle von wttr.in.',
+
+    shortcutsTitle: 'Tastaturkürzel für schnelle Bedienung',
+    shortcutsSubtitle: 'Steuern Sie die Wetter-App blitzschnell per Tastatur ohne Maus',
+    shortcutSlash: '/',
+    shortcutSlashDesc: 'Sofortiger Fokus auf das Stadtsuchfeld',
+    shortcutT: 'T',
+    shortcutTDesc: 'Umschalten zwischen dunklem und hellem Design',
+    shortcutL: 'L',
+    shortcutLDesc: 'Schnelles Öffnen und Schließen des Sprachmenüs',
+    shortcutF: 'F',
+    shortcutFDesc: 'Aktuelle Stadt zu Favoriten hinzufügen oder entfernen',
+    shortcutR: 'R',
+    shortcutRDesc: 'Wetterbericht aktualisieren (Cache umgehen)',
+    shortcutC: 'C',
+    shortcutCDesc: 'Wettervergleich zwischen zwei Städten öffnen',
+    shortcutQuestion: '?',
+    shortcutQuestionDesc: 'Hilfe und Liste der Tastaturkürzel öffnen',
+    shortcutEsc: 'Esc',
+    shortcutEscDesc: 'Suche löschen oder aktives Fenster schließen',
+    shortcutsProTip:
+      'Tastaturkürzel sind während der Texteingabe in Suchfeldern deaktiviert, um das Tippen nicht zu stören.',
 
     featuresTitle: 'wttr.in Integrationsmöglichkeiten',
     featuresSubtitle:

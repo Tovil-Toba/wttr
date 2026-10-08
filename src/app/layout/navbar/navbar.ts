@@ -20,15 +20,15 @@ export class NavbarComponent {
 
   searchQuery = signal<string>('');
   isSettingsOpen = signal<boolean>(false);
-  isLangMenuOpen = signal<boolean>(false);
+  readonly isLangMenuOpen = this.weatherService.isLangMenuOpen;
 
   toggleLangMenu(): void {
-    this.isLangMenuOpen.update((v) => !v);
+    this.weatherService.toggleLangMenu();
   }
 
   selectLanguage(code: string): void {
     this.weatherService.setLanguage(code);
-    this.isLangMenuOpen.set(false);
+    this.weatherService.closeLangMenu();
   }
 
   readonly quickPresets = computed(() => [

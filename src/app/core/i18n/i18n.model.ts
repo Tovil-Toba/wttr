@@ -212,6 +212,7 @@ export interface TranslationDictionary {
   instructions: {
     tabSearch: string;
     tabSettings: string;
+    tabShortcuts: string;
     tabFeatures: string;
     tabCurl: string;
 
@@ -247,6 +248,27 @@ export interface TranslationDictionary {
     themeDesc: string;
     langTitle: string;
     langDesc: string;
+
+    // Shortcuts
+    shortcutsTitle: string;
+    shortcutsSubtitle: string;
+    shortcutSlash: string;
+    shortcutSlashDesc: string;
+    shortcutT: string;
+    shortcutTDesc: string;
+    shortcutL: string;
+    shortcutLDesc: string;
+    shortcutF: string;
+    shortcutFDesc: string;
+    shortcutR: string;
+    shortcutRDesc: string;
+    shortcutC: string;
+    shortcutCDesc: string;
+    shortcutQuestion: string;
+    shortcutQuestionDesc: string;
+    shortcutEsc: string;
+    shortcutEscDesc: string;
+    shortcutsProTip: string;
 
     // Features
     featuresTitle: string;
