@@ -185,4 +185,17 @@ export const zhCnTranslations: RecursivePartial<TranslationDictionary> = {
     error: '无法获取所选城市的天气数据',
     noComparisonData: '请在上方选择需要对比的城市',
   },
+  share: {
+    buttonTooltip: '分享天气预报 (复制摘要)',
+    copied: '天气摘要已复制到剪贴板！',
+    downloadPngTooltip: '下载 PNG 天气卡片',
+    pngDownloaded: '正在下载 PNG 天气卡片...',
+    shareTitle: '{city}天气',
+    weatherIn: '天气',
+    feelsLike: '体感温度',
+    wind: '风力',
+    humidity: '湿度',
+    rainChance: '降水概率',
+    summaryFooter: 'wttr.app 天气预报',
+  },
 };

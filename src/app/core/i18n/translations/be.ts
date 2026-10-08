@@ -185,4 +185,17 @@ export const beTranslations: RecursivePartial<TranslationDictionary> = {
     error: 'Не ўдалося загрузіць даныя для абранага горада',
     noComparisonData: 'Абярыце горад для параўнання вышэй',
   },
+  share: {
+    buttonTooltip: 'Падзяліцца прагнозам (скапіяваць зводку)',
+    copied: 'Зводка надвор’я скапіявана ў буфер абмену!',
+    downloadPngTooltip: 'Спампаваць PNG-картку прагнозу',
+    pngDownloaded: 'PNG-картка спампоўваецца...',
+    shareTitle: 'Надвор’е ў горадзе {city}',
+    weatherIn: 'Надвор’е',
+    feelsLike: 'Адчуваецца як',
+    wind: 'Вецер',
+    humidity: 'Вільготнасць',
+    rainChance: 'Верагоднасць ападкаў',
+    summaryFooter: 'Прагноз надвор’я на wttr.app',
+  },
 };

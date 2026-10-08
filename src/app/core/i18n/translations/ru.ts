@@ -341,4 +341,17 @@ export const ruTranslations: TranslationDictionary = {
     error: 'Не удалось загрузить данные для выбранного города',
     noComparisonData: 'Выберите город для сравнения выше',
   },
+  share: {
+    buttonTooltip: 'Поделиться прогнозом (скопировать сводку)',
+    copied: 'Сводка скопирована в буфер обмена!',
+    downloadPngTooltip: 'Скачать PNG-карточку прогноза',
+    pngDownloaded: 'PNG-карточка скачивается...',
+    shareTitle: 'Погода в городе {city}',
+    weatherIn: 'Погода',
+    feelsLike: 'Ощущается как',
+    wind: 'Ветер',
+    humidity: 'Влажность',
+    rainChance: 'Вероятность осадков',
+    summaryFooter: 'Прогноз погоды на wttr.app',
+  },
 };

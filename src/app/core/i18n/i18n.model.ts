@@ -324,6 +324,19 @@ export interface TranslationDictionary {
     error: string;
     noComparisonData: string;
   };
+  share: {
+    buttonTooltip: string;
+    copied: string;
+    downloadPngTooltip: string;
+    pngDownloaded: string;
+    shareTitle: string;
+    weatherIn: string;
+    feelsLike: string;
+    wind: string;
+    humidity: string;
+    rainChance: string;
+    summaryFooter: string;
+  };
 }
 
 export type RecursivePartial<T> = {

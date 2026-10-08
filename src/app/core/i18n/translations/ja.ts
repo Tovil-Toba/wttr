@@ -185,4 +185,17 @@ export const jaTranslations: RecursivePartial<TranslationDictionary> = {
     error: '選択した都市の気象データを取得できませんでした',
     noComparisonData: '上記で比較する都市を選択してください',
   },
+  share: {
+    buttonTooltip: '天気を共有 (概要をコピー)',
+    copied: '天気の概要をクリップボードにコピーしました！',
+    downloadPngTooltip: 'PNG天気カードをダウンロード',
+    pngDownloaded: 'PNG天気カードをダウンロード中...',
+    shareTitle: '{city}の天気',
+    weatherIn: '天気',
+    feelsLike: '体感温度',
+    wind: '風速',
+    humidity: '湿度',
+    rainChance: '降水確率',
+    summaryFooter: 'wttr.app の天気予報',
+  },
 };

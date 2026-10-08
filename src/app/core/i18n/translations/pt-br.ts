@@ -185,4 +185,17 @@ export const ptBrTranslations: RecursivePartial<TranslationDictionary> = {
     error: 'Falha ao carregar dados meteorológicos para a cidade selecionada',
     noComparisonData: 'Selecione uma cidade para comparar acima',
   },
+  share: {
+    buttonTooltip: 'Compartilhar previsão (copiar resumo)',
+    copied: 'Resumo do clima copiado para a área de transferência!',
+    downloadPngTooltip: 'Baixar cartão meteorológico em PNG',
+    pngDownloaded: 'Baixando cartão PNG...',
+    shareTitle: 'Clima em {city}',
+    weatherIn: 'Clima',
+    feelsLike: 'Sensação térmica',
+    wind: 'Vento',
+    humidity: 'Umidade',
+    rainChance: 'Probabilidade de chuva',
+    summaryFooter: 'Previsão do tempo no wttr.app',
+  },
 };

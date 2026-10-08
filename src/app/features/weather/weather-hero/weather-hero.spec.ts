@@ -160,4 +160,30 @@ describe('WeatherHeroComponent', () => {
     compareBtn.click();
     expect(spy).toHaveBeenCalled();
   });
+
+  it('should format weather share text with emojis, temperature, wind and humidity', () => {
+    const shareText = component.getFormattedShareText();
+    expect(shareText).toContain('Москва');
+    expect(shareText).toContain('+19°C');
+    expect(shareText).toContain('3.3 м/с');
+    expect(shareText).toContain('48%');
+    expect(shareText).toContain('Прогноз погоды на wttr.app');
+  });
+
+  it('should handle shareForecast and toggle isShareCopied', async () => {
+    const shareBtn = element.querySelector('button[aria-label*="Поделиться"]') as HTMLButtonElement;
+    expect(shareBtn).toBeTruthy();
+
+    await component.shareForecast();
+    expect(component.isShareCopied()).toBe(true);
+  });
+
+  it('should handle downloadPng and toggle isPngDownloading', () => {
+    const pngBtn = element.querySelector('button[aria-label*="PNG"]') as HTMLButtonElement;
+    expect(pngBtn).toBeTruthy();
+
+    component.downloadPng();
+    expect(component.isPngDownloading()).toBe(true);
+  });
 });
+

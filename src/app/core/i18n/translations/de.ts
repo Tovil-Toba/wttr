@@ -313,4 +313,17 @@ export const deTranslations: RecursivePartial<TranslationDictionary> = {
     error: 'Wetterdaten für die gewählte Stadt konnten nicht geladen werden',
     noComparisonData: 'Wählen Sie oben eine Vergleichsstadt aus',
   },
+  share: {
+    buttonTooltip: 'Wetterbericht teilen (Zusammenfassung kopieren)',
+    copied: 'Wetterbericht in Zwischenablage kopiert!',
+    downloadPngTooltip: 'PNG-Wetterkarte herunterladen',
+    pngDownloaded: 'PNG-Wetterkarte wird heruntergeladen...',
+    shareTitle: 'Wetter in {city}',
+    weatherIn: 'Wetter',
+    feelsLike: 'Gefühlt wie',
+    wind: 'Wind',
+    humidity: 'Luftfeuchtigkeit',
+    rainChance: 'Niederschlag',
+    summaryFooter: 'Wetterbericht auf wttr.app',
+  },
 };

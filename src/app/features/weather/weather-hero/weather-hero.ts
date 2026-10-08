@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { Tag } from 'primeng/tag';
 import { Tooltip } from 'primeng/tooltip';
 
@@ -87,4 +87,131 @@ export class WeatherHeroComponent {
   toggleFavorite(): void {
     this.weatherService.toggleFavorite();
   }
+
+  readonly isShareCopied = signal<boolean>(false);
+  readonly isPngDownloading = signal<boolean>(false);
+
+  getConditionEmoji(): string {
+    const type = this.weatherTheme().conditionType;
+    switch (type) {
+      case 'sunny':
+        return '☀️';
+      case 'clear-night':
+        return '🌙';
+      case 'partly-cloudy-day':
+        return '🌤️';
+      case 'partly-cloudy-night':
+        return '☁️';
+      case 'cloudy':
+      case 'overcast':
+        return '☁️';
+      case 'drizzle':
+      case 'rain':
+      case 'heavy-rain':
+        return '🌧️';
+      case 'snow':
+      case 'blizzard':
+      case 'sleet':
+        return '🌨️';
+      case 'thunder':
+        return '⛈️';
+      case 'wind':
+        return '💨';
+      case 'fog':
+        return '🌫️';
+      default:
+        return '🌤️';
+    }
+  }
+
+  getFormattedShareText(): string {
+    const cur = this.current();
+    if (!cur) return '';
+
+    const city = this.cityName();
+    const temp = this.weatherService.formatTemp(cur.temp_C, cur.temp_F);
+    const feels = this.weatherService.formatTemp(cur.FeelsLikeC, cur.FeelsLikeF);
+    const wind = this.weatherService.formatWind(cur.windspeedKmph);
+    const humidity = `${cur.humidity}%`;
+    const desc = this.weatherDesc();
+    const emoji = this.getConditionEmoji();
+
+    const t = this.i18n.dict().share;
+    return `${emoji} ${city}: ${temp}, ${desc}\n${t.feelsLike}: ${feels} • ${t.wind}: ${wind} • ${t.humidity}: ${humidity}\n${t.summaryFooter}`;
+  }
+
+  async shareForecast(): Promise<void> {
+    const cur = this.current();
+    if (!cur) return;
+
+    const text = this.getFormattedShareText();
+    const url = typeof window !== 'undefined' ? window.location.href : 'https://wttr.app';
+    const title = this.i18n.t('share.shareTitle', { city: this.cityName() });
+
+    if (typeof navigator !== 'undefined' && navigator.share) {
+      try {
+        await navigator.share({
+          title,
+          text,
+          url,
+        });
+        return;
+      } catch (err: any) {
+        if (err?.name === 'AbortError') return;
+      }
+    }
+
+    await this.copyShareText(`${text}\n${url}`);
+  }
+
+  private async copyShareText(content: string): Promise<void> {
+    try {
+      if (typeof navigator !== 'undefined' && navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(content);
+      } else {
+        this.fallbackCopyText(content);
+      }
+    } catch {
+      this.fallbackCopyText(content);
+    }
+    this.isShareCopied.set(true);
+    setTimeout(() => this.isShareCopied.set(false), 2500);
+  }
+
+  private fallbackCopyText(text: string): void {
+    if (typeof document === 'undefined') return;
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.style.position = 'fixed';
+    textarea.style.opacity = '0';
+    document.body.appendChild(textarea);
+    textarea.select();
+    try {
+      document.execCommand('copy');
+    } catch {
+      // Ignore
+    }
+    document.body.removeChild(textarea);
+  }
+
+  downloadPng(): void {
+    const q = this.weatherService.currentQuery();
+    if (!q || typeof document === 'undefined') return;
+
+    const lang = this.weatherService.currentLang();
+    const url = `https://wttr.in/${encodeURIComponent(q)}.png?lang=${lang}`;
+
+    this.isPngDownloading.set(true);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `wttr-${q}.png`;
+    a.target = '_blank';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
+    setTimeout(() => this.isPngDownloading.set(false), 2500);
+  }
 }
+

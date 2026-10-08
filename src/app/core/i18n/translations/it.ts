@@ -185,4 +185,17 @@ export const itTranslations: RecursivePartial<TranslationDictionary> = {
     error: 'Impossibile caricare i dati meteo per la città selezionata',
     noComparisonData: 'Seleziona una città da confrontare in alto',
   },
+  share: {
+    buttonTooltip: 'Condividi previsioni (copia riepilogo)',
+    copied: 'Riepilogo meteo copiato negli appunti!',
+    downloadPngTooltip: 'Scarica scheda meteo PNG',
+    pngDownloaded: 'Download scheda PNG in corso...',
+    shareTitle: 'Meteo a {city}',
+    weatherIn: 'Meteo',
+    feelsLike: 'Percepita',
+    wind: 'Vento',
+    humidity: 'Umidità',
+    rainChance: 'Probabilità di pioggia',
+    summaryFooter: 'Previsioni meteo su wttr.app',
+  },
 };

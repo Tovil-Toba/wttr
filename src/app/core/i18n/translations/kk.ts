@@ -185,4 +185,17 @@ export const kkTranslations: RecursivePartial<TranslationDictionary> = {
     error: 'Таңдалған қала үшін ауа райы деректерін алу мүмкін болмады',
     noComparisonData: 'Жоғарыдан салыстырылатын қаланы таңдаңыз',
   },
+  share: {
+    buttonTooltip: 'Болжаммен бөлісу (қысқаша мәліметті көшіру)',
+    copied: 'Ауа райы мәліметі алмасу буферіне көшірілді!',
+    downloadPngTooltip: 'PNG ауа райы картасын жүктеп алу',
+    pngDownloaded: 'PNG картасы жүктелуде...',
+    shareTitle: '{city} қаласындағы ауа райы',
+    weatherIn: 'Ауа райы',
+    feelsLike: 'Сезілетіні',
+    wind: 'Жел',
+    humidity: 'Ылғалдылық',
+    rainChance: 'Жауын-шашын қаупі',
+    summaryFooter: 'wttr.app ауа райы болжамы',
+  },
 };

@@ -185,4 +185,17 @@ export const trTranslations: RecursivePartial<TranslationDictionary> = {
     error: 'Seçilen şehir için hava durumu verileri yüklenemedi',
     noComparisonData: 'Yukarıdan karşılaştırılacak bir şehir seçin',
   },
+  share: {
+    buttonTooltip: 'Hava durumunu paylaş (özeti kopyala)',
+    copied: 'Hava durumu özeti panoya kopyalandı!',
+    downloadPngTooltip: 'PNG hava durumu kartını indir',
+    pngDownloaded: 'PNG hava durumu kartı indiriliyor...',
+    shareTitle: '{city} hava durumu',
+    weatherIn: 'Hava Durumu',
+    feelsLike: 'Hissedilen',
+    wind: 'Rüzgar',
+    humidity: 'Nem',
+    rainChance: 'Yağış ihtimali',
+    summaryFooter: 'wttr.app hava durumu tahmini',
+  },
 };

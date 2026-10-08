@@ -222,4 +222,17 @@ export const frTranslations: RecursivePartial<TranslationDictionary> = {
     error: 'Échec du chargement des données météo pour la ville sélectionnée',
     noComparisonData: 'Sélectionnez une ville à comparer ci-dessus',
   },
+  share: {
+    buttonTooltip: 'Partager les prévisions (copier le résumé)',
+    copied: 'Résumé météo copié dans le presse-papiers !',
+    downloadPngTooltip: 'Télécharger la carte météo PNG',
+    pngDownloaded: 'Téléchargement de la carte PNG...',
+    shareTitle: 'Météo à {city}',
+    weatherIn: 'Météo',
+    feelsLike: 'Ressenti',
+    wind: 'Vent',
+    humidity: 'Humidité',
+    rainChance: 'Risque de pluie',
+    summaryFooter: 'Prévisions météo sur wttr.app',
+  },
 };

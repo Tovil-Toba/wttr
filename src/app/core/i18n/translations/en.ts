@@ -338,4 +338,17 @@ export const enTranslations: TranslationDictionary = {
     error: 'Failed to fetch weather for selected city',
     noComparisonData: 'Select a comparison city above',
   },
+  share: {
+    buttonTooltip: 'Share forecast (copy summary)',
+    copied: 'Weather summary copied to clipboard!',
+    downloadPngTooltip: 'Download PNG weather card',
+    pngDownloaded: 'Downloading PNG weather card...',
+    shareTitle: 'Weather in {city}',
+    weatherIn: 'Weather',
+    feelsLike: 'Feels like',
+    wind: 'Wind',
+    humidity: 'Humidity',
+    rainChance: 'Precipitation',
+    summaryFooter: 'Weather forecast on wttr.app',
+  },
 };
