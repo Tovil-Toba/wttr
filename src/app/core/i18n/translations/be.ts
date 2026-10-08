@@ -224,7 +224,7 @@ export const beTranslations: RecursivePartial<TranslationDictionary> = {
     wind: 'Вецер',
     humidity: 'Вільготнасць',
     rainChance: 'Верагоднасць ападкаў',
-    summaryFooter: 'Прагноз надвор’я на wttr.app',
+    summaryFooter: 'Прагноз надвор’я на wttr.hub',
   },
   searchChips: {
     recent: 'Нядаўнія пошукі',

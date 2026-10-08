@@ -225,7 +225,7 @@ export const trTranslations: RecursivePartial<TranslationDictionary> = {
     wind: 'Rüzgar',
     humidity: 'Nem',
     rainChance: 'Yağış ihtimali',
-    summaryFooter: 'wttr.app hava durumu tahmini',
+    summaryFooter: 'wttr.hub hava durumu tahmini',
   },
   searchChips: {
     recent: 'Son Aramalar',

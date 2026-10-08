@@ -201,7 +201,7 @@ export const ruTranslations: TranslationDictionary = {
   },
   modals: {
     aboutTitle: 'О проекте',
-    aboutSubtitle: 'wttr.app — архитектура, технологии и искусственный интеллект',
+    aboutSubtitle: 'wttr.hub — архитектура, технологии и искусственный интеллект',
     instructionsTitle: 'Справка и параметры wttr.in',
     instructionsSubtitle: 'Полное руководство по консольному и веб-использованию сервиса',
   },
@@ -375,7 +375,7 @@ export const ruTranslations: TranslationDictionary = {
     wind: 'Ветер',
     humidity: 'Влажность',
     rainChance: 'Вероятность осадков',
-    summaryFooter: 'Прогноз погоды на wttr.app',
+    summaryFooter: 'Прогноз погоды на wttr.hub',
   },
   searchChips: {
     recent: 'Недавние поиски',

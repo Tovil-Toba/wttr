@@ -167,7 +167,7 @@ describe('WeatherHeroComponent', () => {
     expect(shareText).toContain('+19°C');
     expect(shareText).toContain('3.3 м/с');
     expect(shareText).toContain('48%');
-    expect(shareText).toContain('Прогноз погоды на wttr.app');
+    expect(shareText).toContain('Прогноз погоды на wttr.hub');
   });
 
   it('should handle shareForecast and toggle isShareCopied', async () => {

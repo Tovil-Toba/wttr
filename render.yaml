@@ -1,7 +1,7 @@
 services:
   - type: web
     runtime: static
-    name: wttr-app
+    name: wttr-hub
     buildCommand: npm run build
     staticPublishPath: ./dist/wttr/browser
     routes:

@@ -128,7 +128,7 @@ describe('NavbarComponent', () => {
   it('should switch logo between light and dark variants based on active theme', async () => {
     themeService.setTheme('dark');
     await fixture.whenStable();
-    const img = element.querySelector('img[alt="wttr.app"]') as HTMLImageElement;
+    const img = element.querySelector('img[alt="wttr.hub"]') as HTMLImageElement;
     expect(img.getAttribute('src')).toBe('logo-dark.jpg');
 
     themeService.setTheme('light');

@@ -225,7 +225,7 @@ export const kkTranslations: RecursivePartial<TranslationDictionary> = {
     wind: 'Жел',
     humidity: 'Ылғалдылық',
     rainChance: 'Жауын-шашын қаупі',
-    summaryFooter: 'wttr.app ауа райы болжамы',
+    summaryFooter: 'wttr.hub ауа райы болжамы',
   },
   searchChips: {
     recent: 'Соңғы іздеулер',

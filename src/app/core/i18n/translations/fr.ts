@@ -260,7 +260,7 @@ export const frTranslations: RecursivePartial<TranslationDictionary> = {
     wind: 'Vent',
     humidity: 'Humidité',
     rainChance: 'Risque de pluie',
-    summaryFooter: 'Prévisions météo sur wttr.app',
+    summaryFooter: 'Prévisions météo sur wttr.hub',
   },
   searchChips: {
     recent: 'Recherches récentes',

@@ -150,7 +150,8 @@ export class WeatherHeroComponent {
     if (!cur) return;
 
     const text = this.getFormattedShareText();
-    const url = typeof window !== 'undefined' ? window.location.href : 'https://wttr.app';
+    const url =
+      typeof window !== 'undefined' ? window.location.href : 'https://wttr-hub.onrender.com';
     const title = this.i18n.t('share.shareTitle', { city: this.cityName() });
 
     if (typeof navigator !== 'undefined' && navigator.share) {

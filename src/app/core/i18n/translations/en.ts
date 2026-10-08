@@ -201,7 +201,7 @@ export const enTranslations: TranslationDictionary = {
   },
   modals: {
     aboutTitle: 'About Project',
-    aboutSubtitle: 'wttr.app — architecture, tech stack and artificial intelligence',
+    aboutSubtitle: 'wttr.hub — architecture, tech stack and artificial intelligence',
     instructionsTitle: 'wttr.in Reference & CLI',
     instructionsSubtitle: 'Comprehensive guide for terminal and web usage',
   },
@@ -253,7 +253,7 @@ export const enTranslations: TranslationDictionary = {
 
     // Shortcuts
     shortcutsTitle: 'Keyboard Shortcuts',
-    shortcutsSubtitle: 'Control wttr.app lightning-fast from your keyboard without a mouse',
+    shortcutsSubtitle: 'Control wttr.hub lightning-fast from your keyboard without a mouse',
     shortcutSlash: '/',
     shortcutSlashDesc: 'Instantly focus the city search input',
     shortcutT: 'T',
@@ -372,7 +372,7 @@ export const enTranslations: TranslationDictionary = {
     wind: 'Wind',
     humidity: 'Humidity',
     rainChance: 'Precipitation',
-    summaryFooter: 'Weather forecast on wttr.app',
+    summaryFooter: 'Weather forecast on wttr.hub',
   },
   searchChips: {
     recent: 'Recent Searches',

@@ -223,7 +223,7 @@ export const zhCnTranslations: RecursivePartial<TranslationDictionary> = {
     wind: '风力',
     humidity: '湿度',
     rainChance: '降水概率',
-    summaryFooter: 'wttr.app 天气预报',
+    summaryFooter: 'wttr.hub 天气预报',
   },
   searchChips: {
     recent: '最近搜索',

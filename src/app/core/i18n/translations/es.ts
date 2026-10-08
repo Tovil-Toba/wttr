@@ -261,7 +261,7 @@ export const esTranslations: RecursivePartial<TranslationDictionary> = {
     wind: 'Viento',
     humidity: 'Humedad',
     rainChance: 'Probabilidad de lluvia',
-    summaryFooter: 'Pronóstico del tiempo en wttr.app',
+    summaryFooter: 'Pronóstico del tiempo en wttr.hub',
   },
   searchChips: {
     recent: 'Búsquedas recientes',

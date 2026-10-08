@@ -346,7 +346,7 @@ export const deTranslations: RecursivePartial<TranslationDictionary> = {
     wind: 'Wind',
     humidity: 'Luftfeuchtigkeit',
     rainChance: 'Niederschlag',
-    summaryFooter: 'Wetterbericht auf wttr.app',
+    summaryFooter: 'Wetterbericht auf wttr.hub',
   },
   searchChips: {
     recent: 'Letzte Suchanfragen',

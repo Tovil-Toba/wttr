@@ -1,4 +1,4 @@
-// wttr.app Service Worker — Offline Support & Asset Caching
+// wttr.hub Service Worker — Offline Support & Asset Caching
 const STATIC_CACHE = 'wttr-static-v1';
 const API_CACHE = 'wttr-api-v1';
 

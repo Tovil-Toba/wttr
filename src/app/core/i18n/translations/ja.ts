@@ -223,7 +223,7 @@ export const jaTranslations: RecursivePartial<TranslationDictionary> = {
     wind: '風速',
     humidity: '湿度',
     rainChance: '降水確率',
-    summaryFooter: 'wttr.app の天気予報',
+    summaryFooter: 'wttr.hub の天気予報',
   },
   searchChips: {
     recent: '最近の検索',

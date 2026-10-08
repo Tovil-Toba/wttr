@@ -1,4 +1,4 @@
-# 🌦️ wttr.app — Современный клиент сервиса погоды wttr.in
+# 🌦️ wttr.hub — Современный клиент сервиса погоды wttr.in
 
 [![Angular](https://img.shields.io/badge/Angular-22.2-DD0031?style=flat-square&logo=angular&logoColor=white)](https://angular.dev/)
 [![PrimeNG](https://img.shields.io/badge/PrimeNG-22.1-E23237?style=flat-square&logo=primeng&logoColor=white)](https://primeng.org/)

@@ -223,7 +223,7 @@ export const itTranslations: RecursivePartial<TranslationDictionary> = {
     wind: 'Vento',
     humidity: 'Umidità',
     rainChance: 'Probabilità di pioggia',
-    summaryFooter: 'Previsioni meteo su wttr.app',
+    summaryFooter: 'Previsioni meteo su wttr.hub',
   },
   searchChips: {
     recent: 'Ricerche recenti',
