@@ -19,11 +19,23 @@ pre,
   font-family: 'JetBrains Mono', monospace;
 }
 
-/* Custom scrollbar */
+/* Mobile viewport overflow prevention & custom scrollbar */
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+  position: relative;
+}
+
 html {
   scrollbar-color: #94a3b8 transparent;
   scrollbar-width: thin;
-  scrollbar-gutter: stable;
+}
+
+@media (min-width: 768px) {
+  html {
+    scrollbar-gutter: stable;
+  }
 }
 
 html.dark {

@@ -232,7 +232,7 @@ export class WeatherService {
               responseType: 'text',
             },
           )
-          .pipe(timeout(6000)),
+          .pipe(timeout(12000)),
       );
       this.terminalOutput.set(text);
     } catch {
@@ -245,7 +245,7 @@ export class WeatherService {
                 responseType: 'text',
               },
             )
-            .pipe(timeout(6000)),
+            .pipe(timeout(12000)),
         );
         this.terminalOutput.set(fallbackText);
       } catch {
@@ -286,7 +286,7 @@ export class WeatherService {
             responseType: 'text',
             headers: { Accept: 'text/html' },
           })
-          .pipe(timeout(10000)),
+          .pipe(timeout(12000)),
       );
       this.webHtml.set(this.optimizeWttrHtml(html));
     } catch {
@@ -298,7 +298,7 @@ export class WeatherService {
               responseType: 'text',
               headers: { Accept: 'text/html' },
             })
-            .pipe(timeout(10000)),
+            .pipe(timeout(12000)),
         );
         this.webHtml.set(this.optimizeWttrHtml(fallbackHtml));
       } catch {
@@ -340,14 +340,14 @@ export class WeatherService {
   // Request with fallback helper
   private async requestWithFallback<T>(primaryUrl: string, fallbackUrl: string): Promise<T> {
     try {
-      const result = await firstValueFrom(this.http.get<T>(primaryUrl).pipe(timeout(6000)));
+      const result = await firstValueFrom(this.http.get<T>(primaryUrl).pipe(timeout(12000)));
       this.isFallbackMirror.set(false);
-      return result;
+      return typeof result === 'string' ? JSON.parse(result) : result;
     } catch {
       // Try fallback
-      const result = await firstValueFrom(this.http.get<T>(fallbackUrl).pipe(timeout(6000)));
+      const result = await firstValueFrom(this.http.get<T>(fallbackUrl).pipe(timeout(12000)));
       this.isFallbackMirror.set(true);
-      return result;
+      return typeof result === 'string' ? JSON.parse(result) : result;
     }
   }
 

@@ -1,92 +1,94 @@
 @if (current(); as cur) {
   <div
-    class="relative overflow-hidden rounded-3xl p-6 sm:p-8 bg-gradient-to-br border border-white/20 dark:border-white/10 shadow-2xl backdrop-blur-2xl transition-all duration-500"
+    class="relative overflow-hidden rounded-3xl p-4 sm:p-8 bg-gradient-to-br border border-white/20 dark:border-white/10 shadow-2xl backdrop-blur-2xl transition-all duration-500"
     [class]="weatherTheme().gradient"
   >
     <!-- Top row: Location & Favorite Toggle -->
-    <div class="flex flex-wrap items-start justify-between gap-4 relative z-10">
-      <div>
-        <div class="flex items-center gap-2">
+    <div class="flex flex-wrap items-start justify-between gap-3 sm:gap-4 relative z-10">
+      <div class="min-w-0 max-w-full">
+        <div class="flex flex-wrap items-center gap-2">
           <h1
-            class="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight"
+            class="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight break-words"
           >
             {{ cityName() }}
           </h1>
-          <button
-            type="button"
-            (click)="toggleFavorite()"
-            [pTooltip]="
-              weatherService.isCurrentFavorite()
-                ? i18n.dict().hero.removeFavorite
-                : i18n.dict().hero.addFavorite
-            "
-            tooltipPosition="bottom"
-            [showDelay]="500"
-            [attr.aria-label]="
-              weatherService.isCurrentFavorite()
-                ? i18n.dict().hero.removeFavorite
-                : i18n.dict().hero.addFavorite
-            "
-            class="w-10 h-10 aspect-square rounded-2xl border border-slate-200/80 dark:border-white/15 bg-white/70 dark:bg-slate-800/70 hover:bg-white dark:hover:bg-slate-700 shadow-xs hover:shadow backdrop-blur-md transition-all duration-200 hover:scale-105 active:scale-95 flex items-center justify-center shrink-0 cursor-pointer"
-          >
-            @if (weatherService.isCurrentFavorite()) {
-              <i class="pi pi-star-fill text-amber-500 text-lg"></i>
-            } @else {
-              <i
-                class="pi pi-star text-slate-400 dark:text-slate-300 text-lg hover:text-amber-500 transition-colors"
-              ></i>
-            }
-          </button>
+          <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+            <button
+              type="button"
+              (click)="toggleFavorite()"
+              [pTooltip]="
+                weatherService.isCurrentFavorite()
+                  ? i18n.dict().hero.removeFavorite
+                  : i18n.dict().hero.addFavorite
+              "
+              tooltipPosition="bottom"
+              [showDelay]="500"
+              [attr.aria-label]="
+                weatherService.isCurrentFavorite()
+                  ? i18n.dict().hero.removeFavorite
+                  : i18n.dict().hero.addFavorite
+              "
+              class="w-9 h-9 sm:w-10 sm:h-10 aspect-square rounded-xl sm:rounded-2xl border border-slate-200/80 dark:border-white/15 bg-white/70 dark:bg-slate-800/70 hover:bg-white dark:hover:bg-slate-700 shadow-xs hover:shadow backdrop-blur-md transition-all duration-200 hover:scale-105 active:scale-95 flex items-center justify-center shrink-0 cursor-pointer"
+            >
+              @if (weatherService.isCurrentFavorite()) {
+                <i class="pi pi-star-fill text-amber-500 text-base sm:text-lg"></i>
+              } @else {
+                <i
+                  class="pi pi-star text-slate-400 dark:text-slate-300 text-base sm:text-lg hover:text-amber-500 transition-colors"
+                ></i>
+              }
+            </button>
 
-          <button
-            type="button"
-            (click)="weatherService.openCompare()"
-            [pTooltip]="i18n.dict().compare.buttonTooltip"
-            tooltipPosition="bottom"
-            [showDelay]="500"
-            [attr.aria-label]="i18n.dict().compare.buttonTooltip"
-            class="w-10 h-10 aspect-square rounded-2xl border border-slate-200/80 dark:border-white/15 bg-white/70 dark:bg-slate-800/70 hover:bg-white dark:hover:bg-slate-700 shadow-xs hover:shadow backdrop-blur-md transition-all duration-200 hover:scale-105 active:scale-95 flex items-center justify-center shrink-0 cursor-pointer text-slate-500 dark:text-slate-300 hover:text-sky-500 dark:hover:text-sky-400"
-          >
-            <i class="pi pi-arrows-h text-lg"></i>
-          </button>
+            <button
+              type="button"
+              (click)="weatherService.openCompare()"
+              [pTooltip]="i18n.dict().compare.buttonTooltip"
+              tooltipPosition="bottom"
+              [showDelay]="500"
+              [attr.aria-label]="i18n.dict().compare.buttonTooltip"
+              class="w-9 h-9 sm:w-10 sm:h-10 aspect-square rounded-xl sm:rounded-2xl border border-slate-200/80 dark:border-white/15 bg-white/70 dark:bg-slate-800/70 hover:bg-white dark:hover:bg-slate-700 shadow-xs hover:shadow backdrop-blur-md transition-all duration-200 hover:scale-105 active:scale-95 flex items-center justify-center shrink-0 cursor-pointer text-slate-500 dark:text-slate-300 hover:text-sky-500 dark:hover:text-sky-400"
+            >
+              <i class="pi pi-arrows-h text-base sm:text-lg"></i>
+            </button>
 
-          <!-- Share / Copy forecast button -->
-          <button
-            type="button"
-            (click)="shareForecast()"
-            [pTooltip]="isShareCopied() ? i18n.dict().share.copied : i18n.dict().share.buttonTooltip"
-            tooltipPosition="bottom"
-            [showDelay]="isShareCopied() ? 0 : 500"
-            [attr.aria-label]="isShareCopied() ? i18n.dict().share.copied : i18n.dict().share.buttonTooltip"
-            [class.border-emerald-500]="isShareCopied()"
-            [class.text-emerald-500]="isShareCopied()"
-            class="w-10 h-10 aspect-square rounded-2xl border border-slate-200/80 dark:border-white/15 bg-white/70 dark:bg-slate-800/70 hover:bg-white dark:hover:bg-slate-700 shadow-xs hover:shadow backdrop-blur-md transition-all duration-200 hover:scale-105 active:scale-95 flex items-center justify-center shrink-0 cursor-pointer text-slate-500 dark:text-slate-300 hover:text-sky-500 dark:hover:text-sky-400"
-          >
-            @if (isShareCopied()) {
-              <i class="pi pi-check text-emerald-500 text-lg"></i>
-            } @else {
-              <i class="pi pi-share-alt text-lg"></i>
-            }
-          </button>
+            <!-- Share / Copy forecast button -->
+            <button
+              type="button"
+              (click)="shareForecast()"
+              [pTooltip]="isShareCopied() ? i18n.dict().share.copied : i18n.dict().share.buttonTooltip"
+              tooltipPosition="bottom"
+              [showDelay]="isShareCopied() ? 0 : 500"
+              [attr.aria-label]="isShareCopied() ? i18n.dict().share.copied : i18n.dict().share.buttonTooltip"
+              [class.border-emerald-500]="isShareCopied()"
+              [class.text-emerald-500]="isShareCopied()"
+              class="w-9 h-9 sm:w-10 sm:h-10 aspect-square rounded-xl sm:rounded-2xl border border-slate-200/80 dark:border-white/15 bg-white/70 dark:bg-slate-800/70 hover:bg-white dark:hover:bg-slate-700 shadow-xs hover:shadow backdrop-blur-md transition-all duration-200 hover:scale-105 active:scale-95 flex items-center justify-center shrink-0 cursor-pointer text-slate-500 dark:text-slate-300 hover:text-sky-500 dark:hover:text-sky-400"
+            >
+              @if (isShareCopied()) {
+                <i class="pi pi-check text-emerald-500 text-base sm:text-lg"></i>
+              } @else {
+                <i class="pi pi-share-alt text-base sm:text-lg"></i>
+              }
+            </button>
 
-          <!-- Direct Download PNG Card button -->
-          <button
-            type="button"
-            (click)="downloadPng()"
-            [pTooltip]="isPngDownloading() ? i18n.dict().share.pngDownloaded : i18n.dict().share.downloadPngTooltip"
-            tooltipPosition="bottom"
-            [showDelay]="isPngDownloading() ? 0 : 500"
-            [attr.aria-label]="isPngDownloading() ? i18n.dict().share.pngDownloaded : i18n.dict().share.downloadPngTooltip"
-            [class.border-emerald-500]="isPngDownloading()"
-            [class.text-emerald-500]="isPngDownloading()"
-            class="w-10 h-10 aspect-square rounded-2xl border border-slate-200/80 dark:border-white/15 bg-white/70 dark:bg-slate-800/70 hover:bg-white dark:hover:bg-slate-700 shadow-xs hover:shadow backdrop-blur-md transition-all duration-200 hover:scale-105 active:scale-95 flex items-center justify-center shrink-0 cursor-pointer text-slate-500 dark:text-slate-300 hover:text-sky-500 dark:hover:text-sky-400"
-          >
-            @if (isPngDownloading()) {
-              <i class="pi pi-check text-emerald-500 text-lg"></i>
-            } @else {
-              <i class="pi pi-download text-lg"></i>
-            }
-          </button>
+            <!-- Direct Download PNG Card button -->
+            <button
+              type="button"
+              (click)="downloadPng()"
+              [pTooltip]="isPngDownloading() ? i18n.dict().share.pngDownloaded : i18n.dict().share.downloadPngTooltip"
+              tooltipPosition="bottom"
+              [showDelay]="isPngDownloading() ? 0 : 500"
+              [attr.aria-label]="isPngDownloading() ? i18n.dict().share.pngDownloaded : i18n.dict().share.downloadPngTooltip"
+              [class.border-emerald-500]="isPngDownloading()"
+              [class.text-emerald-500]="isPngDownloading()"
+              class="w-9 h-9 sm:w-10 sm:h-10 aspect-square rounded-xl sm:rounded-2xl border border-slate-200/80 dark:border-white/15 bg-white/70 dark:bg-slate-800/70 hover:bg-white dark:hover:bg-slate-700 shadow-xs hover:shadow backdrop-blur-md transition-all duration-200 hover:scale-105 active:scale-95 flex items-center justify-center shrink-0 cursor-pointer text-slate-500 dark:text-slate-300 hover:text-sky-500 dark:hover:text-sky-400"
+            >
+              @if (isPngDownloading()) {
+                <i class="pi pi-check text-emerald-500 text-base sm:text-lg"></i>
+              } @else {
+                <i class="pi pi-download text-base sm:text-lg"></i>
+              }
+            </button>
+          </div>
         </div>
 
         <div
@@ -187,7 +189,7 @@
     >
       <!-- Humidity -->
       <div
-        class="flex-1 min-w-[125px] sm:min-w-[135px] p-3 sm:p-3.5 rounded-2xl bg-white/40 dark:bg-slate-900/40 backdrop-blur-md border border-white/30 dark:border-white/5 flex flex-col justify-between"
+        class="flex-1 min-w-[110px] sm:min-w-[135px] p-3 sm:p-3.5 rounded-2xl bg-white/40 dark:bg-slate-900/40 backdrop-blur-md border border-white/30 dark:border-white/5 flex flex-col justify-between"
         [attr.aria-label]="i18n.dict().hero.humidity + ': ' + cur.humidity + '%'"
         role="group"
       >
@@ -206,7 +208,7 @@
 
       <!-- Wind -->
       <div
-        class="flex-1 min-w-[125px] sm:min-w-[135px] p-3 sm:p-3.5 rounded-2xl bg-white/40 dark:bg-slate-900/40 backdrop-blur-md border border-white/30 dark:border-white/5 flex flex-col justify-between"
+        class="flex-1 min-w-[110px] sm:min-w-[135px] p-3 sm:p-3.5 rounded-2xl bg-white/40 dark:bg-slate-900/40 backdrop-blur-md border border-white/30 dark:border-white/5 flex flex-col justify-between"
         [attr.aria-label]="i18n.dict().hero.wind + ': ' + weatherService.formatWind(cur.windspeedKmph) + ', ' + cur.winddir16Point"
         role="group"
       >
@@ -228,7 +230,7 @@
 
       <!-- Pressure -->
       <div
-        class="flex-1 min-w-[125px] sm:min-w-[135px] p-3 sm:p-3.5 rounded-2xl bg-white/40 dark:bg-slate-900/40 backdrop-blur-md border border-white/30 dark:border-white/5 flex flex-col justify-between"
+        class="flex-1 min-w-[110px] sm:min-w-[135px] p-3 sm:p-3.5 rounded-2xl bg-white/40 dark:bg-slate-900/40 backdrop-blur-md border border-white/30 dark:border-white/5 flex flex-col justify-between"
         [attr.aria-label]="i18n.dict().hero.pressure + ': ' + weatherService.formatPressure(cur.pressure)"
         role="group"
       >
@@ -247,7 +249,7 @@
 
       <!-- UV Index -->
       <div
-        class="flex-1 min-w-[125px] sm:min-w-[135px] p-3 sm:p-3.5 rounded-2xl bg-white/40 dark:bg-slate-900/40 backdrop-blur-md border border-white/30 dark:border-white/5 flex flex-col justify-between"
+        class="flex-1 min-w-[110px] sm:min-w-[135px] p-3 sm:p-3.5 rounded-2xl bg-white/40 dark:bg-slate-900/40 backdrop-blur-md border border-white/30 dark:border-white/5 flex flex-col justify-between"
         [attr.aria-label]="i18n.dict().hero.uvIndex + ': ' + cur.uvIndex + ', ' + uvRiskLevel().label"
         role="group"
       >
@@ -269,7 +271,7 @@
 
       <!-- Cloudcover -->
       <div
-        class="flex-1 min-w-[125px] sm:min-w-[135px] p-3 sm:p-3.5 rounded-2xl bg-white/40 dark:bg-slate-900/40 backdrop-blur-md border border-white/30 dark:border-white/5 flex flex-col justify-between"
+        class="flex-1 min-w-[110px] sm:min-w-[135px] p-3 sm:p-3.5 rounded-2xl bg-white/40 dark:bg-slate-900/40 backdrop-blur-md border border-white/30 dark:border-white/5 flex flex-col justify-between"
         [attr.aria-label]="i18n.dict().hero.cloudcover + ': ' + cur.cloudcover + '%'"
         role="group"
       >
@@ -288,7 +290,7 @@
 
       <!-- Precipitation -->
       <div
-        class="flex-1 min-w-[125px] sm:min-w-[135px] p-3 sm:p-3.5 rounded-2xl bg-white/40 dark:bg-slate-900/40 backdrop-blur-md border border-white/30 dark:border-white/5 flex flex-col justify-between"
+        class="flex-1 min-w-[110px] sm:min-w-[135px] p-3 sm:p-3.5 rounded-2xl bg-white/40 dark:bg-slate-900/40 backdrop-blur-md border border-white/30 dark:border-white/5 flex flex-col justify-between"
         [attr.aria-label]="i18n.dict().hero.precipitation + ': ' + cur.precipMM + ' ' + i18n.dict().common.mm"
         role="group"
       >
@@ -307,7 +309,7 @@
 
       <!-- Visibility -->
       <div
-        class="flex-1 min-w-[125px] sm:min-w-[135px] p-3 sm:p-3.5 rounded-2xl bg-white/40 dark:bg-slate-900/40 backdrop-blur-md border border-white/30 dark:border-white/5 flex flex-col justify-between"
+        class="flex-1 min-w-[110px] sm:min-w-[135px] p-3 sm:p-3.5 rounded-2xl bg-white/40 dark:bg-slate-900/40 backdrop-blur-md border border-white/30 dark:border-white/5 flex flex-col justify-between"
         [attr.aria-label]="i18n.dict().hero.visibility + ': ' + cur.visibility + ' ' + i18n.dict().common.km"
         role="group"
       >

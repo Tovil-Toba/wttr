@@ -1,15 +1,15 @@
 <header
   class="sticky top-0 z-40 w-full backdrop-blur-xl bg-white/70 dark:bg-slate-900/80 border-b border-slate-200/80 dark:border-slate-800/80 transition-colors duration-300"
 >
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex items-center justify-between min-h-[76px] py-2 sm:py-2.5 gap-4">
+  <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+    <div class="flex flex-wrap sm:flex-nowrap items-center justify-between py-2 sm:py-2.5 gap-y-2.5 gap-x-2 sm:gap-4">
       <!-- Brand Logo -->
       <div
-        class="flex items-center gap-3.5 cursor-pointer group shrink-0"
+        class="order-1 flex items-center gap-2.5 sm:gap-3.5 cursor-pointer group shrink-0"
         (click)="weatherService.fetchWeather('Obninsk')"
       >
         <div
-          class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl overflow-hidden border transition-all duration-300 group-hover:scale-105 shrink-0 bg-slate-100/90 dark:bg-slate-900 border-slate-200/90 dark:border-white/10 shadow-md shadow-slate-300/40 dark:shadow-xl dark:shadow-sky-500/20"
+          class="w-10 h-10 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl overflow-hidden border transition-all duration-300 group-hover:scale-105 shrink-0 bg-slate-100/90 dark:bg-slate-900 border-slate-200/90 dark:border-white/10 shadow-md shadow-slate-300/40 dark:shadow-xl dark:shadow-sky-500/20"
         >
           <img
             [src]="themeService.isDark() ? 'logo-dark.jpg' : 'logo-light.jpg'"
@@ -19,7 +19,7 @@
         </div>
         <div>
           <span
-            class="font-extrabold text-2xl sm:text-3xl tracking-tight bg-gradient-to-r from-sky-600 via-indigo-600 to-purple-600 dark:from-sky-400 dark:via-indigo-300 dark:to-purple-400 bg-clip-text text-transparent leading-none"
+            class="font-extrabold text-xl sm:text-3xl tracking-tight bg-gradient-to-r from-sky-600 via-indigo-600 to-purple-600 dark:from-sky-400 dark:via-indigo-300 dark:to-purple-400 bg-clip-text text-transparent leading-none"
           >
             wttr.hub
           </span>
@@ -30,7 +30,7 @@
       </div>
 
       <!-- Search Bar -->
-      <div class="flex-1 max-w-xl">
+      <div class="order-3 sm:order-2 w-full sm:flex-1 sm:max-w-xl">
         <form (ngSubmit)="onSearch()" autocomplete="off" class="relative flex items-center">
           <div class="relative w-full">
             <i
@@ -242,7 +242,7 @@
       </div>
 
       <!-- Actions (Language, Settings & Theme Toggle) -->
-      <div class="flex items-center gap-2 shrink-0">
+      <div class="order-2 sm:order-3 flex items-center gap-1.5 sm:gap-2 shrink-0">
         <!-- Language Selector Dropdown -->
         <div class="relative">
           <button
@@ -382,7 +382,7 @@
 
     <!-- Quick Presets Sub-bar -->
     <div
-      class="flex items-center gap-2 py-2 overflow-x-auto no-scrollbar border-t border-slate-100 dark:border-slate-800/60 text-xs"
+      class="flex items-center gap-2 py-2 overflow-x-auto no-scrollbar border-t border-slate-100 dark:border-slate-800/60 text-xs w-full max-w-full"
     >
       <span
         class="text-slate-400 dark:text-slate-500 whitespace-nowrap flex items-center gap-1 font-medium pl-1"
