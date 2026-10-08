@@ -24,10 +24,15 @@
       <!-- Day Buttons -->
       <div
         class="inline-flex rounded-xl p-1 bg-slate-100 dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700/60"
+        role="tablist"
+        [attr.aria-label]="i18n.dict().daily.title"
       >
         @for (day of weatherService.threeDaysForecast(); track day.date; let idx = $index) {
           <button
             type="button"
+            role="tab"
+            [attr.aria-selected]="selectedDayIndex() === idx"
+            [attr.aria-label]="getDayLabel(idx, day.date)"
             (click)="selectDay(idx)"
             [class.bg-white]="selectedDayIndex() === idx"
             [class.dark:bg-slate-700]="selectedDayIndex() === idx"
@@ -46,9 +51,14 @@
       <!-- View Mode Buttons (Cards / Chart) -->
       <div
         class="inline-flex rounded-xl p-1 bg-slate-100 dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700/60"
+        role="tablist"
+        [attr.aria-label]="i18n.dict().hourly.title"
       >
         <button
           type="button"
+          role="tab"
+          [attr.aria-selected]="viewMode() === 'cards'"
+          [attr.aria-label]="i18n.dict().hourly.cardsView || 'Карточки'"
           (click)="setViewMode('cards')"
           [class.bg-white]="viewMode() === 'cards'"
           [class.dark:bg-slate-700]="viewMode() === 'cards'"
@@ -60,7 +70,6 @@
           class="px-2.5 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all duration-150 cursor-pointer"
           [pTooltip]="i18n.dict().hourly.cardsView || 'Карточки'"
           tooltipPosition="top"
-          aria-label="Cards view"
         >
           <i class="pi pi-th-large text-xs"></i>
           <span class="hidden sm:inline">{{ i18n.dict().hourly.cardsView || 'Карточки' }}</span>
@@ -68,6 +77,9 @@
 
         <button
           type="button"
+          role="tab"
+          [attr.aria-selected]="viewMode() === 'chart'"
+          [attr.aria-label]="i18n.dict().hourly.chartView || 'График'"
           (click)="setViewMode('chart')"
           [class.bg-white]="viewMode() === 'chart'"
           [class.dark:bg-slate-700]="viewMode() === 'chart'"
@@ -79,7 +91,6 @@
           class="px-2.5 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all duration-150 cursor-pointer"
           [pTooltip]="i18n.dict().hourly.chartView || 'График'"
           tooltipPosition="top"
-          aria-label="Chart view"
         >
           <i class="pi pi-chart-line text-xs"></i>
           <span class="hidden sm:inline">{{ i18n.dict().hourly.chartView || 'График' }}</span>
@@ -100,7 +111,7 @@
           [pTooltip]="i18n.dict().hourly.scrollLeft"
           tooltipPosition="top"
           [showDelay]="500"
-          aria-label="Scroll left"
+          [attr.aria-label]="i18n.dict().hourly.scrollLeft"
         >
           <i class="pi pi-chevron-left text-xs sm:text-sm"></i>
         </button>
@@ -115,6 +126,8 @@
         @for (hour of hourlyList(); track hour.time) {
           <div
             class="min-w-[130px] flex-1 p-4 rounded-2xl bg-slate-50/80 dark:bg-slate-800/50 border border-slate-200/60 dark:border-slate-700/50 flex flex-col items-center justify-between text-center hover:shadow-md hover:border-sky-500/30 transition-all duration-200 group"
+            role="article"
+            [attr.aria-label]="formatHourTime(hour.time) + ': ' + weatherService.formatTemp(hour.tempC, hour.tempF) + ', ' + getDescriptionRu(hour)"
           >
             <!-- Time -->
             <span class="text-xs font-bold text-slate-500 dark:text-slate-400">
@@ -186,7 +199,7 @@
           [pTooltip]="i18n.dict().hourly.scrollRight"
           tooltipPosition="top"
           [showDelay]="500"
-          aria-label="Scroll right"
+          [attr.aria-label]="i18n.dict().hourly.scrollRight"
         >
           <i class="pi pi-chevron-right text-xs sm:text-sm"></i>
         </button>

@@ -57,6 +57,7 @@
                   type="button"
                   (click)="clearSearch($event)"
                   class="w-6 h-6 rounded-full flex items-center justify-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-200/60 dark:hover:bg-slate-700/60 transition-colors cursor-pointer"
+                  [attr.aria-label]="i18n.dict().common.close"
                   title="Очистить"
                 >
                   <i class="pi pi-times text-xs"></i>
@@ -76,6 +77,7 @@
                 [pTooltip]="i18n.dict().common.locateMe"
                 tooltipPosition="bottom"
                 [showDelay]="500"
+                [attr.aria-label]="i18n.dict().common.locateMe"
                 class="w-8 h-8 rounded-full flex items-center justify-center text-slate-500 hover:text-sky-600 dark:text-slate-400 dark:hover:text-sky-400 hover:bg-slate-200/60 dark:hover:bg-slate-700/60 transition-colors"
               >
                 <i class="pi pi-map-marker text-xs"></i>
@@ -255,6 +257,8 @@
             [pTooltip]="i18n.dict().navbar.langTooltip"
             tooltipPosition="bottom"
             [showDelay]="500"
+            [attr.aria-label]="i18n.dict().navbar.langTooltip"
+            [attr.aria-expanded]="isLangMenuOpen()"
           >
             <span
               class="text-xs font-bold font-mono tracking-wider select-none leading-none uppercase"
@@ -343,6 +347,8 @@
           [pTooltip]="i18n.dict().navbar.settingsTooltip"
           tooltipPosition="bottom"
           [showDelay]="500"
+          [attr.aria-label]="i18n.dict().navbar.settingsTooltip"
+          [attr.aria-expanded]="isSettingsOpen()"
         >
           <i class="pi pi-sliders-h text-sm"></i>
         </button>
@@ -359,6 +365,11 @@
           "
           tooltipPosition="bottom"
           [showDelay]="500"
+          [attr.aria-label]="
+            themeService.currentTheme() === 'dark'
+              ? i18n.dict().navbar.themeLightTooltip
+              : i18n.dict().navbar.themeDarkTooltip
+          "
         >
           @if (themeService.currentTheme() === 'dark') {
             <i class="pi pi-sun text-amber-400 text-sm"></i>

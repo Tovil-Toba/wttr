@@ -37,6 +37,7 @@
         type="button"
         (click)="close.emit()"
         [title]="i18n.dict().common.close + ' (Esc)'"
+        [attr.aria-label]="i18n.dict().common.close"
         class="w-9 h-9 rounded-xl border border-slate-200 dark:border-slate-800 bg-white/70 dark:bg-slate-800 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors flex items-center justify-center cursor-pointer shadow-xs"
       >
         <i class="pi pi-times text-sm"></i>
@@ -46,9 +47,14 @@
     <!-- Navigation Tabs -->
     <div
       class="flex items-center gap-1.5 px-6 py-2.5 bg-slate-100/60 dark:bg-slate-950/60 border-b border-slate-200/60 dark:border-slate-800 overflow-x-auto no-scrollbar shrink-0 text-xs"
+      role="tablist"
+      [attr.aria-label]="i18n.dict().modals.instructionsTitle"
     >
       <button
         type="button"
+        role="tab"
+        [attr.aria-selected]="activeSection() === 'search'"
+        [attr.aria-label]="i18n.dict().instructions.tabSearch"
         (click)="setSection('search')"
         [class.bg-white]="activeSection() === 'search'"
         [class.dark:bg-slate-800]="activeSection() === 'search'"
@@ -65,6 +71,9 @@
 
       <button
         type="button"
+        role="tab"
+        [attr.aria-selected]="activeSection() === 'settings'"
+        [attr.aria-label]="i18n.dict().instructions.tabSettings"
         (click)="setSection('settings')"
         [class.bg-white]="activeSection() === 'settings'"
         [class.dark:bg-slate-800]="activeSection() === 'settings'"
@@ -81,6 +90,9 @@
 
       <button
         type="button"
+        role="tab"
+        [attr.aria-selected]="activeSection() === 'shortcuts'"
+        [attr.aria-label]="i18n.dict().instructions.tabShortcuts"
         (click)="setSection('shortcuts')"
         [class.bg-white]="activeSection() === 'shortcuts'"
         [class.dark:bg-slate-800]="activeSection() === 'shortcuts'"
@@ -97,6 +109,9 @@
 
       <button
         type="button"
+        role="tab"
+        [attr.aria-selected]="activeSection() === 'features'"
+        [attr.aria-label]="i18n.dict().instructions.tabFeatures"
         (click)="setSection('features')"
         [class.bg-white]="activeSection() === 'features'"
         [class.dark:bg-slate-800]="activeSection() === 'features'"
@@ -113,6 +128,9 @@
 
       <button
         type="button"
+        role="tab"
+        [attr.aria-selected]="activeSection() === 'curl'"
+        [attr.aria-label]="i18n.dict().instructions.tabCurl"
         (click)="setSection('curl')"
         [class.bg-white]="activeSection() === 'curl'"
         [class.dark:bg-slate-800]="activeSection() === 'curl'"

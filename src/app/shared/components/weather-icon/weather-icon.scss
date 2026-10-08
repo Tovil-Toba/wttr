@@ -381,9 +381,42 @@
   }
 }
 
-/* Reduced Motion */
+/* Reduced Motion: gracefully freeze rain, snow and celestial animations */
 @media (prefers-reduced-motion: reduce) {
   [class*='anim-'] {
     animation: none !important;
+    transition: none !important;
+  }
+
+  /* Render precipitation and celestial elements with clear static visibility */
+  .anim-rain-drop-1,
+  .anim-rain-drop-2,
+  .anim-rain-drop-3,
+  .anim-drizzle-1,
+  .anim-drizzle-2,
+  .anim-drizzle-3,
+  .anim-heavy-rain-1,
+  .anim-heavy-rain-2,
+  .anim-heavy-rain-3,
+  .anim-heavy-rain-4,
+  .anim-heavy-rain-5 {
+    opacity: 0.85 !important;
+    transform: none !important;
+  }
+
+  .anim-snow-flake-1,
+  .anim-snow-flake-2,
+  .anim-snow-flake-3,
+  .anim-blizzard-flake-1,
+  .anim-blizzard-flake-2,
+  .anim-sleet-pellet {
+    opacity: 0.9 !important;
+    transform: none !important;
+  }
+
+  .anim-lightning {
+    opacity: 0.85 !important;
+    transform: none !important;
   }
 }
+

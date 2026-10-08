@@ -25,6 +25,8 @@
 
       <div
         class="rounded-3xl p-5 bg-white/70 dark:bg-slate-900/70 border border-slate-200/80 dark:border-slate-800/80 backdrop-blur-xl shadow-lg flex flex-col justify-between hover:border-indigo-500/30 transition-all group"
+        role="article"
+        [attr.aria-label]="meta.dayLabel + ', ' + cond.descRu + ', ' + weatherService.formatTemp(day.maxtempC, day.maxtempF) + ' / ' + weatherService.formatTemp(day.mintempC, day.mintempF)"
       >
         <!-- Day Header -->
         <div
@@ -49,7 +51,7 @@
         <!-- Temperature Range & Condition -->
         <div class="py-4">
           <div class="flex items-baseline justify-between mb-2">
-            <div>
+            <div [attr.aria-label]="i18n.dict().hero.max + ': ' + weatherService.formatTemp(day.maxtempC, day.maxtempF) + ', ' + i18n.dict().hero.min + ': ' + weatherService.formatTemp(day.mintempC, day.mintempF)">
               <span class="text-2xl font-black text-slate-900 dark:text-white">
                 {{ weatherService.formatTemp(day.maxtempC, day.maxtempF) }}
               </span>

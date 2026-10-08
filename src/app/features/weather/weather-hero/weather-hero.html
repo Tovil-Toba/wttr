@@ -146,16 +146,23 @@
       <div class="flex items-baseline gap-4">
         <span
           class="text-6xl sm:text-8xl font-black text-slate-900 dark:text-white tracking-tighter leading-none"
+          [attr.aria-label]="cityName() + ': ' + weatherService.formatTemp(cur.temp_C, cur.temp_F)"
         >
           {{ weatherService.formatTemp(cur.temp_C, cur.temp_F) }}
         </span>
         <div class="flex flex-col gap-1">
-          <span class="text-sm sm:text-base font-semibold text-slate-700 dark:text-slate-200">
+          <span
+            class="text-sm sm:text-base font-semibold text-slate-700 dark:text-slate-200"
+            [attr.aria-label]="i18n.dict().hero.feelsLike + ' ' + weatherService.formatTemp(cur.FeelsLikeC, cur.FeelsLikeF)"
+          >
             {{ i18n.dict().hero.feelsLike }}
             {{ weatherService.formatTemp(cur.FeelsLikeC, cur.FeelsLikeF) }}
           </span>
           @if (day0(); as d) {
-            <span class="text-xs text-slate-500 dark:text-slate-400">
+            <span
+              class="text-xs text-slate-500 dark:text-slate-400"
+              [attr.aria-label]="i18n.dict().hero.max + ' ' + weatherService.formatTemp(d.maxtempC, d.maxtempF) + ', ' + i18n.dict().hero.min + ' ' + weatherService.formatTemp(d.mintempC, d.mintempF)"
+            >
               {{ i18n.dict().hero.max }} {{ weatherService.formatTemp(d.maxtempC, d.maxtempF) }} •
               {{ i18n.dict().hero.min }}
               {{ weatherService.formatTemp(d.mintempC, d.mintempF) }}
@@ -181,11 +188,13 @@
       <!-- Humidity -->
       <div
         class="flex-1 min-w-[125px] sm:min-w-[135px] p-3 sm:p-3.5 rounded-2xl bg-white/40 dark:bg-slate-900/40 backdrop-blur-md border border-white/30 dark:border-white/5 flex flex-col justify-between"
+        [attr.aria-label]="i18n.dict().hero.humidity + ': ' + cur.humidity + '%'"
+        role="group"
       >
         <span
           class="text-[11px] font-medium text-slate-500 dark:text-slate-400 flex items-center gap-1.5 whitespace-nowrap"
         >
-          <i class="pi pi-tint text-sky-500 text-xs shrink-0"></i>
+          <i class="pi pi-tint text-sky-500 text-xs shrink-0" aria-hidden="true"></i>
           <span>{{ i18n.dict().hero.humidity }}</span>
         </span>
         <span
@@ -198,11 +207,13 @@
       <!-- Wind -->
       <div
         class="flex-1 min-w-[125px] sm:min-w-[135px] p-3 sm:p-3.5 rounded-2xl bg-white/40 dark:bg-slate-900/40 backdrop-blur-md border border-white/30 dark:border-white/5 flex flex-col justify-between"
+        [attr.aria-label]="i18n.dict().hero.wind + ': ' + weatherService.formatWind(cur.windspeedKmph) + ', ' + cur.winddir16Point"
+        role="group"
       >
         <span
           class="text-[11px] font-medium text-slate-500 dark:text-slate-400 flex items-center gap-1.5 whitespace-nowrap"
         >
-          <i class="pi pi-compass text-teal-500 text-xs shrink-0"></i>
+          <i class="pi pi-compass text-teal-500 text-xs shrink-0" aria-hidden="true"></i>
           <span>{{ i18n.dict().hero.wind }}</span>
         </span>
         <div
@@ -218,11 +229,13 @@
       <!-- Pressure -->
       <div
         class="flex-1 min-w-[125px] sm:min-w-[135px] p-3 sm:p-3.5 rounded-2xl bg-white/40 dark:bg-slate-900/40 backdrop-blur-md border border-white/30 dark:border-white/5 flex flex-col justify-between"
+        [attr.aria-label]="i18n.dict().hero.pressure + ': ' + weatherService.formatPressure(cur.pressure)"
+        role="group"
       >
         <span
           class="text-[11px] font-medium text-slate-500 dark:text-slate-400 flex items-center gap-1.5 whitespace-nowrap"
         >
-          <i class="pi pi-gauge text-indigo-500 text-xs shrink-0"></i>
+          <i class="pi pi-gauge text-indigo-500 text-xs shrink-0" aria-hidden="true"></i>
           <span>{{ i18n.dict().hero.pressure }}</span>
         </span>
         <span
@@ -235,11 +248,13 @@
       <!-- UV Index -->
       <div
         class="flex-1 min-w-[125px] sm:min-w-[135px] p-3 sm:p-3.5 rounded-2xl bg-white/40 dark:bg-slate-900/40 backdrop-blur-md border border-white/30 dark:border-white/5 flex flex-col justify-between"
+        [attr.aria-label]="i18n.dict().hero.uvIndex + ': ' + cur.uvIndex + ', ' + uvRiskLevel().label"
+        role="group"
       >
         <span
           class="text-[11px] font-medium text-slate-500 dark:text-slate-400 flex items-center gap-1.5 whitespace-nowrap"
         >
-          <i class="pi pi-sun text-amber-500 text-xs shrink-0"></i>
+          <i class="pi pi-sun text-amber-500 text-xs shrink-0" aria-hidden="true"></i>
           <span>{{ i18n.dict().hero.uvIndex }}</span>
         </span>
         <div class="flex items-baseline gap-1.5 mt-1.5 whitespace-nowrap">
@@ -255,11 +270,13 @@
       <!-- Cloudcover -->
       <div
         class="flex-1 min-w-[125px] sm:min-w-[135px] p-3 sm:p-3.5 rounded-2xl bg-white/40 dark:bg-slate-900/40 backdrop-blur-md border border-white/30 dark:border-white/5 flex flex-col justify-between"
+        [attr.aria-label]="i18n.dict().hero.cloudcover + ': ' + cur.cloudcover + '%'"
+        role="group"
       >
         <span
           class="text-[11px] font-medium text-slate-500 dark:text-slate-400 flex items-center gap-1.5 whitespace-nowrap"
         >
-          <i class="pi pi-cloud text-blue-400 text-xs shrink-0"></i>
+          <i class="pi pi-cloud text-blue-400 text-xs shrink-0" aria-hidden="true"></i>
           <span>{{ i18n.dict().hero.cloudcover }}</span>
         </span>
         <span
@@ -272,11 +289,13 @@
       <!-- Precipitation -->
       <div
         class="flex-1 min-w-[125px] sm:min-w-[135px] p-3 sm:p-3.5 rounded-2xl bg-white/40 dark:bg-slate-900/40 backdrop-blur-md border border-white/30 dark:border-white/5 flex flex-col justify-between"
+        [attr.aria-label]="i18n.dict().hero.precipitation + ': ' + cur.precipMM + ' ' + i18n.dict().common.mm"
+        role="group"
       >
         <span
           class="text-[11px] font-medium text-slate-500 dark:text-slate-400 flex items-center gap-1.5 whitespace-nowrap"
         >
-          <i class="pi pi-cloud-download text-blue-500 text-xs shrink-0"></i>
+          <i class="pi pi-cloud-download text-blue-500 text-xs shrink-0" aria-hidden="true"></i>
           <span>{{ i18n.dict().hero.precipitation }}</span>
         </span>
         <span
@@ -289,11 +308,13 @@
       <!-- Visibility -->
       <div
         class="flex-1 min-w-[125px] sm:min-w-[135px] p-3 sm:p-3.5 rounded-2xl bg-white/40 dark:bg-slate-900/40 backdrop-blur-md border border-white/30 dark:border-white/5 flex flex-col justify-between"
+        [attr.aria-label]="i18n.dict().hero.visibility + ': ' + cur.visibility + ' ' + i18n.dict().common.km"
+        role="group"
       >
         <span
           class="text-[11px] font-medium text-slate-500 dark:text-slate-400 flex items-center gap-1.5 whitespace-nowrap"
         >
-          <i class="pi pi-eye text-emerald-500 text-xs shrink-0"></i>
+          <i class="pi pi-eye text-emerald-500 text-xs shrink-0" aria-hidden="true"></i>
           <span>{{ i18n.dict().hero.visibility }}</span>
         </span>
         <span

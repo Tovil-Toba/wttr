@@ -47,6 +47,8 @@ describe('WeatherIconComponent', () => {
 
       const svg = element.querySelector('svg');
       expect(svg).toBeTruthy();
+      expect(svg?.getAttribute('role')).toBe('img');
+      expect(svg?.getAttribute('aria-label')).toBeTruthy();
     });
   });
 

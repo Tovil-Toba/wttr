@@ -56,7 +56,8 @@
           <svg
             viewBox="0 0 320 125"
             class="w-full h-auto max-h-36 overflow-visible"
-            aria-label="Solar Trajectory Arc"
+            role="img"
+            [attr.aria-label]="i18n.dict().astro.sunTitle + ': ' + sun.sunrise + ' - ' + sun.sunset"
           >
             <defs>
               <!-- Sun halo gradient -->
@@ -209,7 +210,8 @@
               <svg
                 viewBox="0 0 100 100"
                 class="w-20 h-20 overflow-visible filter drop-shadow-[0_4px_12px_rgba(99,102,241,0.25)]"
-                aria-label="Moon Phase Visualization"
+                role="img"
+                [attr.aria-label]="i18n.dict().astro.moonTitle + ': ' + moon.phaseName + ', ' + moon.illumination + '% ' + i18n.dict().astro.illumination"
               >
                 <defs>
                   <!-- Moon glow filter -->

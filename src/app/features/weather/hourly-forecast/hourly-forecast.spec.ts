@@ -157,4 +157,23 @@ describe('HourlyForecastComponent', () => {
     expect(component.hoveredPointIndex()).toBe(1);
     expect(component.hoveredPoint()?.time).toBe('12:00');
   });
+
+  it('should have proper accessibility roles and aria attributes on day tabs and view switcher', async () => {
+    const tablists = element.querySelectorAll('[role="tablist"]');
+    expect(tablists.length).toBeGreaterThanOrEqual(2);
+
+    const dayTabs = element.querySelectorAll('button[role="tab"]');
+    expect(dayTabs.length).toBeGreaterThanOrEqual(5); // 3 day tabs + 2 view mode tabs
+
+    // The first day tab should have aria-selected="true"
+    expect(dayTabs[0].getAttribute('aria-selected')).toBe('true');
+    expect(dayTabs[1].getAttribute('aria-selected')).toBe('false');
+
+    // Clicking day tab updates aria-selected
+    component.selectDay(1);
+    await fixture.whenStable();
+    expect(dayTabs[0].getAttribute('aria-selected')).toBe('false');
+    expect(dayTabs[1].getAttribute('aria-selected')).toBe('true');
+  });
 });
+
