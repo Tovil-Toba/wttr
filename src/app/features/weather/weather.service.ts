@@ -14,6 +14,10 @@ import {
   WindUnit,
   WttrResponse,
 } from './weather.model';
+import {
+  OpenMeteoGeoResult,
+  transformOpenMeteoToWttr,
+} from './open-meteo.fallback';
 
 @Injectable({
   providedIn: 'root',
@@ -37,8 +41,10 @@ export class WeatherService {
   private readonly cache = new Map<string, { data: WttrResponse; timestamp: number }>();
   readonly cacheTtlMs = 10 * 60 * 1000;
 
-  // Fallback mirror indicator
+  // Fallback mirror indicator & active source
   readonly isFallbackMirror = signal<boolean>(false);
+  readonly fallbackSourceName = signal<string>('wttr.is');
+  private wttrBlockedInSession = false;
 
   // Offline State Signals
   readonly isOffline = signal<boolean>(
@@ -116,6 +122,13 @@ export class WeatherService {
 
     // Register online/offline connectivity listeners
     if (this.window) {
+      // Restore session fallback state if previously triggered
+      if (this.window.sessionStorage?.getItem('wttr_fallback_active') === 'true') {
+        this.wttrBlockedInSession = true;
+        this.isFallbackMirror.set(true);
+        this.fallbackSourceName.set('Open-Meteo');
+      }
+
       this.window.addEventListener('online', () => {
         const wasOfflineState = this.isOffline() || this.isOfflineData();
         this.isOffline.set(false);
@@ -175,11 +188,32 @@ export class WeatherService {
     this.fetchTerminalOutput(cleanQuery, force);
 
     try {
-      // First attempt: Primary URL
-      const data = await this.requestWithFallback<WttrResponse>(
-        `${this.primaryBase}/${encodeURIComponent(cleanQuery)}?format=j1&lang=${this.currentLang()}`,
-        `${this.fallbackBase}/${encodeURIComponent(cleanQuery)}?format=j1&lang=${this.currentLang()}`,
-      );
+      let data: WttrResponse;
+
+      if (this.wttrBlockedInSession) {
+        // Direct fast-path to Open-Meteo mirror when upstream wttr.in is known blocked
+        data = await this.fetchOpenMeteoFallback(cleanQuery, this.currentLang());
+        this.isFallbackMirror.set(true);
+        this.fallbackSourceName.set('Open-Meteo');
+      } else {
+        try {
+          data = await this.requestWithFallback<WttrResponse>(
+            `${this.primaryBase}/${encodeURIComponent(cleanQuery)}?format=j1&lang=${this.currentLang()}`,
+            `${this.fallbackBase}/${encodeURIComponent(cleanQuery)}?format=j1&lang=${this.currentLang()}`,
+          );
+        } catch (wttrErr) {
+          console.warn('[WeatherService] Upstream wttr.in/is unreachable, engaging Open-Meteo fallback:', wttrErr);
+          this.wttrBlockedInSession = true;
+          if (this.window?.sessionStorage) {
+            try {
+              this.window.sessionStorage.setItem('wttr_fallback_active', 'true');
+            } catch {}
+          }
+          data = await this.fetchOpenMeteoFallback(cleanQuery, this.currentLang());
+          this.isFallbackMirror.set(true);
+          this.fallbackSourceName.set('Open-Meteo');
+        }
+      }
 
       this.cache.set(cacheKey, { data, timestamp: Date.now() });
       this.saveOfflineData(cacheKey, data);
@@ -223,6 +257,12 @@ export class WeatherService {
     this.lastLoadedTerminalQuery = cleanQuery;
     this.lastLoadedTerminalLang = this.currentLang();
 
+    if (this.wttrBlockedInSession) {
+      this.terminalOutput.set(this.generateSyntheticTerminal(cleanQuery));
+      this.isTerminalLoading.set(false);
+      return;
+    }
+
     try {
       const text = await firstValueFrom(
         this.http
@@ -232,7 +272,7 @@ export class WeatherService {
               responseType: 'text',
             },
           )
-          .pipe(timeout(12000)),
+          .pipe(timeout(3500)),
       );
       this.terminalOutput.set(text);
     } catch {
@@ -245,11 +285,11 @@ export class WeatherService {
                 responseType: 'text',
               },
             )
-            .pipe(timeout(12000)),
+            .pipe(timeout(3500)),
         );
         this.terminalOutput.set(fallbackText);
       } catch {
-        this.terminalOutput.set('Не удалось загрузить текстовый терминальный вывод wttr.in');
+        this.terminalOutput.set(this.generateSyntheticTerminal(cleanQuery));
       }
     } finally {
       this.isTerminalLoading.set(false);
@@ -278,6 +318,12 @@ export class WeatherService {
     this.lastLoadedWebQuery = cleanQuery;
     this.lastLoadedWebLang = this.currentLang();
 
+    if (this.wttrBlockedInSession) {
+      this.webHtml.set(this.generateSyntheticWebHtml(cleanQuery));
+      this.isWebLoading.set(false);
+      return;
+    }
+
     try {
       const url = `${this.primaryBase}/${encodeURIComponent(cleanQuery)}?lang=${this.currentLang()}`;
       const html = await firstValueFrom(
@@ -286,7 +332,7 @@ export class WeatherService {
             responseType: 'text',
             headers: { Accept: 'text/html' },
           })
-          .pipe(timeout(12000)),
+          .pipe(timeout(3500)),
       );
       this.webHtml.set(this.optimizeWttrHtml(html));
     } catch {
@@ -298,11 +344,11 @@ export class WeatherService {
               responseType: 'text',
               headers: { Accept: 'text/html' },
             })
-            .pipe(timeout(12000)),
+            .pipe(timeout(3500)),
         );
         this.webHtml.set(this.optimizeWttrHtml(fallbackHtml));
       } catch {
-        this.webError.set('Не удалось загрузить веб-версию отчета wttr.in.');
+        this.webHtml.set(this.generateSyntheticWebHtml(cleanQuery));
       }
     } finally {
       this.isWebLoading.set(false);
@@ -340,15 +386,142 @@ export class WeatherService {
   // Request with fallback helper
   private async requestWithFallback<T>(primaryUrl: string, fallbackUrl: string): Promise<T> {
     try {
-      const result = await firstValueFrom(this.http.get<T>(primaryUrl).pipe(timeout(12000)));
+      const result = await firstValueFrom(this.http.get<T>(primaryUrl).pipe(timeout(3500)));
       this.isFallbackMirror.set(false);
+      this.fallbackSourceName.set('wttr.in');
       return typeof result === 'string' ? JSON.parse(result) : result;
     } catch {
       // Try fallback
-      const result = await firstValueFrom(this.http.get<T>(fallbackUrl).pipe(timeout(12000)));
+      const result = await firstValueFrom(this.http.get<T>(fallbackUrl).pipe(timeout(3500)));
       this.isFallbackMirror.set(true);
+      this.fallbackSourceName.set('wttr.is');
       return typeof result === 'string' ? JSON.parse(result) : result;
     }
+  }
+
+  // Open-Meteo fallback fetcher: geocodes query and fetches forecast
+  async fetchOpenMeteoFallback(query: string, lang = 'ru'): Promise<WttrResponse> {
+    const clean = query.trim() || 'Obninsk';
+
+    // 1. Check if query is latitude/longitude coordinates
+    const coordMatch = clean.match(/^([-+]?\d+(?:\.\d+)?)[,\s]+([-+]?\d+(?:\.\d+)?)$/);
+    let geo: OpenMeteoGeoResult;
+
+    if (coordMatch) {
+      geo = {
+        name: clean,
+        latitude: parseFloat(coordMatch[1]),
+        longitude: parseFloat(coordMatch[2]),
+      };
+    } else {
+      // Strip leading ~ or @ wttr.in syntax
+      const searchName = clean.replace(/^[~@]/, '').trim();
+      const geoUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(searchName)}&count=1&language=${lang}`;
+
+      try {
+        const geoRes = await firstValueFrom(
+          this.http.get<{ results?: any[] }>(geoUrl).pipe(timeout(5000)),
+        );
+        if (geoRes?.results && geoRes.results.length > 0) {
+          const first = geoRes.results[0];
+          geo = {
+            name: first.name,
+            latitude: first.latitude,
+            longitude: first.longitude,
+            country: first.country,
+            admin1: first.admin1,
+          };
+        } else {
+          // If no results in current language, try without language parameter
+          const fallbackGeoUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(searchName)}&count=1`;
+          const fallbackGeoRes = await firstValueFrom(
+            this.http.get<{ results?: any[] }>(fallbackGeoUrl).pipe(timeout(5000)),
+          );
+          if (fallbackGeoRes?.results && fallbackGeoRes.results.length > 0) {
+            const first = fallbackGeoRes.results[0];
+            geo = {
+              name: first.name,
+              latitude: first.latitude,
+              longitude: first.longitude,
+              country: first.country,
+              admin1: first.admin1,
+            };
+          } else {
+            throw new Error(`Location not found: ${clean}`);
+          }
+        }
+      } catch (e: any) {
+        throw new Error(e?.message || `Location search failed: ${clean}`);
+      }
+    }
+
+    const forecastUrl = `https://api.open-meteo.com/v1/forecast?latitude=${geo.latitude}&longitude=${geo.longitude}&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,cloud_cover,surface_pressure,wind_speed_10m,wind_direction_10m&hourly=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation_probability,precipitation,weather_code,surface_pressure,cloud_cover,wind_speed_10m,wind_direction_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max&timezone=auto&forecast_days=3`;
+
+    const rawForecast = await firstValueFrom(this.http.get<any>(forecastUrl).pipe(timeout(6000)));
+    return transformOpenMeteoToWttr(rawForecast, geo, lang);
+  }
+
+  private generateSyntheticTerminal(query: string): string {
+    const data = this.weatherData();
+    const cur = data?.current_condition?.[0];
+    const area = data?.nearest_area?.[0];
+    const city = area?.areaName?.[0]?.value || query;
+    if (!cur) {
+      return `Weather report: ${city}\n[wttr.hub fallback mirror active]`;
+    }
+    const temp = this.formatTemp(cur.temp_C, cur.temp_F);
+    const feels = this.formatTemp(cur.FeelsLikeC, cur.FeelsLikeF);
+    const desc =
+      this.currentLang() === 'ru'
+        ? cur.lang_ru?.[0]?.value || cur.weatherDesc?.[0]?.value || 'Ясно'
+        : cur.weatherDesc?.[0]?.value || 'Clear';
+    const wind = `${cur.windspeedKmph} km/h ${cur.winddir16Point}`;
+    const humidity = `${cur.humidity}%`;
+    const pressure = `${cur.pressure} hPa`;
+
+    const days = data?.weather || [];
+    const forecastLines = days.map((d) => {
+      const min = this.formatTemp(d.mintempC, d.mintempF);
+      const max = this.formatTemp(d.maxtempC, d.maxtempF);
+      const sun = d.astronomy?.[0];
+      const sunInfo = sun ? ` (Sunrise: ${sun.sunrise}, Sunset: ${sun.sunset})` : '';
+      return `  ${d.date}: ${min} .. ${max}${sunInfo}`;
+    });
+
+    return [
+      `Weather report: ${city}`,
+      ``,
+      `    \\   /     ${desc}`,
+      `     .-.      ${temp} (feels like ${feels})`,
+      `  ― (   ) ―   Wind: ${wind}`,
+      `     \`-\`      Humidity: ${humidity} | Pressure: ${pressure}`,
+      `    /   \\     Cloud cover: ${cur.cloudcover}% | UV: ${cur.uvIndex}`,
+      ``,
+      ...(forecastLines.length > 0 ? ['Forecast:', ...forecastLines, ''] : []),
+      `[wttr.hub mirror active (Open-Meteo)]`,
+    ].join('\n');
+  }
+
+  private generateSyntheticWebHtml(query: string): string {
+    const data = this.weatherData();
+    const cur = data?.current_condition?.[0];
+    const area = data?.nearest_area?.[0];
+    const city = area?.areaName?.[0]?.value || query;
+    const temp = cur ? this.formatTemp(cur.temp_C, cur.temp_F) : '';
+    const desc = cur
+      ? this.currentLang() === 'ru'
+        ? cur.lang_ru?.[0]?.value || cur.weatherDesc?.[0]?.value
+        : cur.weatherDesc?.[0]?.value
+      : '';
+
+    return `
+      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; text-align: center; padding: 2rem; color: #94a3b8;">
+        <h2 style="color: #38bdf8; margin-bottom: 0.5rem;">${city}</h2>
+        <div style="font-size: 2.5rem; font-weight: bold; color: #f8fafc; margin: 1rem 0;">${temp}</div>
+        <div style="font-size: 1.1rem; color: #cbd5e1; margin-bottom: 1.5rem;">${desc}</div>
+        <p style="font-size: 0.85rem; opacity: 0.8;">wttr.in прямой веб-отчет недоступен на данной сети.<br>Данные отображаются через резервное зеркало wttr.hub.</p>
+      </div>
+    `;
   }
 
   // Geolocation detection
@@ -407,6 +580,12 @@ export class WeatherService {
   }
 
   async refreshCurrentWeather(): Promise<void> {
+    this.wttrBlockedInSession = false;
+    if (this.window?.sessionStorage) {
+      try {
+        this.window.sessionStorage.removeItem('wttr_fallback_active');
+      } catch {}
+    }
     const cur = this.currentQuery();
     const cacheKey = `${cur.toLowerCase()}_${this.currentLang()}`;
     this.cache.delete(cacheKey);
@@ -424,10 +603,19 @@ export class WeatherService {
       return cached.data;
     }
 
-    const data = await this.requestWithFallback<WttrResponse>(
-      `${this.primaryBase}/${encodeURIComponent(cleanQuery)}?format=j1&lang=${this.currentLang()}`,
-      `${this.fallbackBase}/${encodeURIComponent(cleanQuery)}?format=j1&lang=${this.currentLang()}`,
-    );
+    let data: WttrResponse;
+    if (this.wttrBlockedInSession) {
+      data = await this.fetchOpenMeteoFallback(cleanQuery, this.currentLang());
+    } else {
+      try {
+        data = await this.requestWithFallback<WttrResponse>(
+          `${this.primaryBase}/${encodeURIComponent(cleanQuery)}?format=j1&lang=${this.currentLang()}`,
+          `${this.fallbackBase}/${encodeURIComponent(cleanQuery)}?format=j1&lang=${this.currentLang()}`,
+        );
+      } catch {
+        data = await this.fetchOpenMeteoFallback(cleanQuery, this.currentLang());
+      }
+    }
 
     this.cache.set(cacheKey, { data, timestamp: Date.now() });
     return data;

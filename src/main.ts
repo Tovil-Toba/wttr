@@ -5,17 +5,15 @@ import { appConfig } from './app/app.config';
 
 bootstrapApplication(App, appConfig).catch((err) => console.error(err));
 
-// Register Service Worker for PWA and offline support
+// Ensure any legacy Service Worker registrations are removed to prevent mobile fetch interception
 if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker
-      .register('/sw.js')
-      .then((reg) => {
-        reg.update();
-      })
-      .catch((err) => {
-        console.warn('[PWA] Service worker registration failed:', err);
-      });
-  });
+  navigator.serviceWorker
+    .getRegistrations()
+    .then((registrations) => {
+      for (const registration of registrations) {
+        registration.unregister();
+      }
+    })
+    .catch(() => {});
 }
 

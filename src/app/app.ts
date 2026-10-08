@@ -72,7 +72,7 @@ export class App {
   }
 
   retryFetch(): void {
-    this.weatherService.fetchWeather(this.weatherService.currentQuery());
+    this.weatherService.refreshCurrentWeather();
   }
 
   @HostListener('window:keydown', ['$event'])

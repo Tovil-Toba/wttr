@@ -46,6 +46,7 @@ describe('WeatherService', () => {
   beforeEach(() => {
     TestBed.resetTestingModule();
     window.localStorage.clear();
+    window.sessionStorage.clear();
 
     TestBed.configureTestingModule({
       providers: [
@@ -73,6 +74,7 @@ describe('WeatherService', () => {
   afterEach(() => {
     httpMock.verify();
     window.localStorage.clear();
+    window.sessionStorage.clear();
     TestBed.resetTestingModule();
   });
 
@@ -428,10 +430,91 @@ describe('WeatherService', () => {
       const fallbackReq = httpMock.expectOne(`https://wttr.is/UnknownPlace?format=j1&lang=${lang}`);
       fallbackReq.flush('Fallback failed', { status: 500, statusText: 'Server Error' });
 
+      await new Promise((r) => setTimeout(r, 0));
+
+      // Open-Meteo geocoding also fails
+      const geoReq = httpMock.expectOne((r) => r.url.includes('geocoding-api.open-meteo.com'));
+      geoReq.flush('Geo failed', { status: 500, statusText: 'Server Error' });
+
       await fetchPromise;
 
       expect(service.isLoading()).toBe(false);
       expect(service.errorMessage()).toBeTruthy();
+    });
+
+    it('should fallback to Open-Meteo when both wttr.in and wttr.is fail', async () => {
+      const lang = service.currentLang();
+      const fetchPromise = service.fetchWeather('Valencia');
+
+      const termReq = httpMock.expectOne(`https://wttr.in/Valencia?T&lang=${lang}`);
+      termReq.flush('Error', { status: 500, statusText: 'Server Error' });
+
+      const primaryReq = httpMock.expectOne(`https://wttr.in/Valencia?format=j1&lang=${lang}`);
+      primaryReq.flush('Primary failed', { status: 500, statusText: 'Server Error' });
+
+      await Promise.resolve();
+
+      const termFallbackReq = httpMock.expectOne(`https://wttr.is/Valencia?T&lang=${lang}`);
+      termFallbackReq.flush('Error', { status: 500, statusText: 'Server Error' });
+
+      const fallbackReq = httpMock.expectOne(`https://wttr.is/Valencia?format=j1&lang=${lang}`);
+      fallbackReq.flush('Fallback failed', { status: 500, statusText: 'Server Error' });
+
+      await new Promise((r) => setTimeout(r, 0));
+
+      // Open-Meteo geocoding succeeds
+      const geoReq = httpMock.expectOne((r) => r.url.includes('geocoding-api.open-meteo.com'));
+      geoReq.flush({
+        results: [
+          { name: 'Valencia', latitude: 39.4699, longitude: -0.3763, country: 'Spain', admin1: 'Valencia' },
+        ],
+      });
+
+      await new Promise((r) => setTimeout(r, 0));
+
+      // Open-Meteo forecast succeeds
+      const forecastReq = httpMock.expectOne((r) => r.url.includes('api.open-meteo.com/v1/forecast'));
+      forecastReq.flush({
+        current: {
+          temperature_2m: 22,
+          apparent_temperature: 22,
+          relative_humidity_2m: 55,
+          weather_code: 0,
+          surface_pressure: 1015,
+          wind_speed_10m: 12,
+          wind_direction_10m: 180,
+          cloud_cover: 10,
+          precipitation: 0,
+        },
+        daily: {
+          time: ['2026-10-08', '2026-10-09', '2026-10-10'],
+          temperature_2m_max: [24, 25, 23],
+          temperature_2m_min: [15, 16, 14],
+          sunrise: ['2026-10-08T07:00', '2026-10-09T07:01', '2026-10-10T07:02'],
+          sunset: ['2026-10-08T19:00', '2026-10-09T18:58', '2026-10-10T18:57'],
+          uv_index_max: [5, 5, 4],
+        },
+        hourly: {
+          time: new Array(72).fill('2026-10-08T00:00'),
+          temperature_2m: new Array(72).fill(20),
+          apparent_temperature: new Array(72).fill(20),
+          weather_code: new Array(72).fill(0),
+          wind_speed_10m: new Array(72).fill(10),
+          wind_direction_10m: new Array(72).fill(180),
+          relative_humidity_2m: new Array(72).fill(50),
+          surface_pressure: new Array(72).fill(1013),
+          cloud_cover: new Array(72).fill(20),
+          precipitation: new Array(72).fill(0),
+          precipitation_probability: new Array(72).fill(0),
+        },
+      });
+
+      await fetchPromise;
+
+      expect(service.weatherData()).toBeTruthy();
+      expect(service.isFallbackMirror()).toBe(true);
+      expect(service.fallbackSourceName()).toBe('Open-Meteo');
+      expect(service.errorMessage()).toBeNull();
     });
 
     it('should serve repeated requests from in-memory cache within TTL and allow force refresh', async () => {
@@ -574,6 +657,12 @@ describe('WeatherService', () => {
         // Fallback fails
         const fallbackReq = httpMock.expectOne(`https://wttr.is/Tokyo?format=j1&lang=${lang}`);
         fallbackReq.flush('Fallback failed', { status: 500, statusText: 'Server Error' });
+
+        await new Promise((r) => setTimeout(r, 0));
+
+        // Open-Meteo geocoding also fails
+        const geoReq = httpMock.expectOne((r) => r.url.includes('geocoding-api.open-meteo.com'));
+        geoReq.flush('Geo failed', { status: 500, statusText: 'Server Error' });
 
         await fetchPromise;
 
