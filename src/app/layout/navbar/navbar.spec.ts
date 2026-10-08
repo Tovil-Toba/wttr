@@ -53,14 +53,14 @@ describe('NavbarComponent', () => {
     expect(element.textContent).toContain('Шереметьево (SVO)');
   });
 
-  it('should submit search form and trigger fetchWeather with trimmed query', () => {
+  it('should submit search form, trigger fetchWeather with trimmed query and clear input', () => {
     const fetchSpy = vi.spyOn(weatherService, 'fetchWeather');
     component.searchQuery.set('  Владивосток  ');
 
     component.onSearch();
 
     expect(fetchSpy).toHaveBeenCalledWith('Владивосток');
-    expect(component.searchQuery()).toBe('Владивосток');
+    expect(component.searchQuery()).toBe('');
   });
 
   it('should not search if query is empty or whitespace', () => {
@@ -72,12 +72,12 @@ describe('NavbarComponent', () => {
     expect(fetchSpy).not.toHaveBeenCalled();
   });
 
-  it('should call fetchWeather and fill search query when clicking quick preset chip', () => {
+  it('should call fetchWeather and keep search input clean when clicking quick preset chip', () => {
     const fetchSpy = vi.spyOn(weatherService, 'fetchWeather');
     component.selectPreset('Tokyo');
 
     expect(fetchSpy).toHaveBeenCalledWith('Tokyo');
-    expect(component.searchQuery()).toBe('Токио');
+    expect(component.searchQuery()).toBe('');
   });
 
   it('should trigger locateMe when clicking geolocation button', () => {
@@ -220,7 +220,7 @@ describe('NavbarComponent', () => {
 
       component.selectCity('Dubai');
       expect(fetchSpy).toHaveBeenCalledWith('Dubai');
-      expect(component.searchQuery()).toBe('Дубай');
+      expect(component.searchQuery()).toBe('');
       expect(component.isSuggestionsOpen()).toBe(false);
     });
 
@@ -229,6 +229,15 @@ describe('NavbarComponent', () => {
       component.clearSearch();
       expect(component.searchQuery()).toBe('');
       expect(component.isSuggestionsOpen()).toBe(true);
+    });
+
+    it('should keep search bar empty by default and clear it on search submission', () => {
+      expect(component.searchQuery()).toBe('');
+
+      component.searchQuery.set('London');
+      component.onSearch();
+      expect(component.searchQuery()).toBe('');
+      expect(component.isSuggestionsOpen()).toBe(false);
     });
 
     it('should display recent searches and allow clearing or removing items', async () => {

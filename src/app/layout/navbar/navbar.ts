@@ -75,15 +75,6 @@ export class NavbarComponent {
     return results;
   });
 
-  constructor() {
-    effect(() => {
-      const cur = this.weatherService.currentQuery();
-      if (!this.isSuggestionsOpen()) {
-        this.searchQuery.set(this.i18n.translateCity(cur));
-      }
-    });
-  }
-
   onFocusSearch(event: FocusEvent): void {
     this.openSuggestions();
     const input = event.target as HTMLInputElement | null;
@@ -99,9 +90,8 @@ export class NavbarComponent {
   }
 
   selectCity(query: string): void {
-    const localized = this.i18n.translateCity(query);
-    this.searchQuery.set(localized);
     this.weatherService.fetchWeather(query);
+    this.searchQuery.set('');
     this.isSuggestionsOpen.set(false);
   }
 
@@ -149,16 +139,16 @@ export class NavbarComponent {
     const q = this.searchQuery().trim();
     if (q) {
       this.weatherService.fetchWeather(q);
-      const localized = this.i18n.translateCity(q);
-      this.searchQuery.set(localized);
+      this.searchQuery.set('');
       this.isSuggestionsOpen.set(false);
+      const input = document.getElementById('main-city-search') as HTMLInputElement | null;
+      input?.blur();
     }
   }
 
   selectPreset(query: string): void {
-    const localized = this.i18n.translateCity(query);
-    this.searchQuery.set(localized);
     this.weatherService.fetchWeather(query);
+    this.searchQuery.set('');
   }
 
   toggleTheme(): void {
