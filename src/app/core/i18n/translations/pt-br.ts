@@ -14,6 +14,7 @@ export const ptBrTranslations: RecursivePartial<TranslationDictionary> = {
     hours: 'h',
     km: 'km',
     mm: 'mm',
+    scrollTop: 'Voltar ao topo',
   },
   navbar: {
     subtitle: 'Previsão do tempo em tempo real',

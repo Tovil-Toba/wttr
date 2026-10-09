@@ -15,6 +15,7 @@ export const esTranslations: RecursivePartial<TranslationDictionary> = {
     minutes: 'min',
     km: 'km',
     mm: 'mm',
+    scrollTop: 'Volver arriba',
   },
   navbar: {
     subtitle: 'Pronóstico del tiempo en tiempo real',

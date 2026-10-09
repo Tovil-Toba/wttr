@@ -14,6 +14,7 @@ export const trTranslations: RecursivePartial<TranslationDictionary> = {
     hours: 'sa',
     km: 'km',
     mm: 'mm',
+    scrollTop: 'Yukarı çık',
   },
   navbar: {
     subtitle: 'Gerçek zamanlı hava durumu',

@@ -14,6 +14,7 @@ export const jaTranslations: RecursivePartial<TranslationDictionary> = {
     hours: '時間',
     km: 'km',
     mm: 'mm',
+    scrollTop: 'トップへ戻る',
   },
   navbar: {
     subtitle: 'リアルタイム天気予報',

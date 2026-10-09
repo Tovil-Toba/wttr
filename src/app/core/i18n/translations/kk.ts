@@ -14,6 +14,7 @@ export const kkTranslations: RecursivePartial<TranslationDictionary> = {
     hours: 'сағ',
     km: 'км',
     mm: 'мм',
+    scrollTop: 'Жоғарыға',
   },
   navbar: {
     subtitle: 'Нақты уақыттағы ауа райы',

@@ -14,6 +14,7 @@ export const beTranslations: RecursivePartial<TranslationDictionary> = {
     hours: 'г',
     km: 'км',
     mm: 'мм',
+    scrollTop: 'Наверх',
   },
   navbar: {
     subtitle: 'Надвор’е ў рэальным часе',

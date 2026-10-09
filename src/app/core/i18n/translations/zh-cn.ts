@@ -14,6 +14,7 @@ export const zhCnTranslations: RecursivePartial<TranslationDictionary> = {
     hours: '小时',
     km: '公里',
     mm: '毫米',
+    scrollTop: '回到顶部',
   },
   navbar: {
     subtitle: '实时天气预报',
