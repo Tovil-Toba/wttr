@@ -104,3 +104,17 @@ html.dark {
       no-repeat center / contain;
   }
 }
+
+/* Safe area padding for modal backdrops on mobile devices */
+.modal-backdrop-safe {
+  padding-top: max(0.75rem, env(safe-area-inset-top));
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+  padding-left: max(0.75rem, env(safe-area-inset-left));
+  padding-right: max(0.75rem, env(safe-area-inset-right));
+}
+
+@media (min-width: 640px) {
+  .modal-backdrop-safe {
+    padding: 1rem;
+  }
+}
