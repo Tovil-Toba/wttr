@@ -19,6 +19,7 @@ export const frTranslations: RecursivePartial<TranslationDictionary> = {
   navbar: {
     subtitle: 'Météo en temps réel',
     quick: 'Rapide :',
+    installTooltip: "Installer l'application",
     settingsTooltip: 'Unités de mesure',
     themeLightTooltip: 'Activer le mode clair',
     themeDarkTooltip: 'Activer le mode sombre',

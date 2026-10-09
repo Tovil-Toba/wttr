@@ -19,6 +19,7 @@ export const zhCnTranslations: RecursivePartial<TranslationDictionary> = {
   navbar: {
     subtitle: '实时天气预报',
     quick: '快捷:',
+    installTooltip: '安装应用',
     settingsTooltip: '测量单位',
     themeLightTooltip: '切换至浅色模式',
     themeDarkTooltip: '切换至深色模式',

@@ -20,6 +20,7 @@ export const enTranslations: TranslationDictionary = {
   navbar: {
     subtitle: 'Real-time weather forecast',
     quick: 'Quick:',
+    installTooltip: 'Install app',
     settingsTooltip: 'Measurement units',
     themeLightTooltip: 'Switch to light theme',
     themeDarkTooltip: 'Switch to dark theme',

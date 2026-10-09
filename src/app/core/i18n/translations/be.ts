@@ -19,6 +19,7 @@ export const beTranslations: RecursivePartial<TranslationDictionary> = {
   navbar: {
     subtitle: 'Надвор’е ў рэальным часе',
     quick: 'Хутка:',
+    installTooltip: 'Усталяваць праграму',
     settingsTooltip: 'Адзінкі вымярэння',
     themeLightTooltip: 'Уключыць светлую тэму',
     themeDarkTooltip: 'Уключыць цёмную тэму',

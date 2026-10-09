@@ -5,14 +5,9 @@ import { appConfig } from './app/app.config';
 
 bootstrapApplication(App, appConfig).catch((err) => console.error(err));
 
-// Ensure any legacy Service Worker registrations are removed to prevent mobile fetch interception
+// Register pass-through Service Worker for PWA installability
 if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
-  navigator.serviceWorker
-    .getRegistrations()
-    .then((registrations) => {
-      for (const registration of registrations) {
-        registration.unregister();
-      }
-    })
-    .catch(() => {});
+  navigator.serviceWorker.register('/sw.js').catch((err) => {
+    console.warn('[PWA] Service worker registration failed:', err);
+  });
 }

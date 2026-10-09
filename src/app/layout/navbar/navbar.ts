@@ -4,6 +4,7 @@ import { Tooltip } from 'primeng/tooltip';
 
 import { I18nService } from '../../core/i18n';
 import { CANONICAL_CITIES } from '../../core/i18n/cities.dict';
+import { PwaInstallService } from '../../core/pwa-install.service';
 import { ThemeService } from '../../core/theme.service';
 import { PressureUnit, TempUnit, WindUnit } from '../../features/weather/weather.model';
 import { WeatherService } from '../../features/weather/weather.service';
@@ -18,6 +19,7 @@ export class NavbarComponent {
   readonly weatherService = inject(WeatherService);
   readonly themeService = inject(ThemeService);
   readonly i18n = inject(I18nService);
+  readonly pwaInstall = inject(PwaInstallService);
 
   searchQuery = signal<string>('');
   isSettingsOpen = signal<boolean>(false);
@@ -173,5 +175,9 @@ export class NavbarComponent {
 
   toggleSettings(): void {
     this.isSettingsOpen.update((v) => !v);
+  }
+
+  installApp(): void {
+    this.pwaInstall.install();
   }
 }

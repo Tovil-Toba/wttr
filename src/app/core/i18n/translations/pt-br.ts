@@ -19,6 +19,7 @@ export const ptBrTranslations: RecursivePartial<TranslationDictionary> = {
   navbar: {
     subtitle: 'Previsão do tempo em tempo real',
     quick: 'Rápido:',
+    installTooltip: 'Instalar aplicativo',
     settingsTooltip: 'Unidades de medida',
     themeLightTooltip: 'Ativar tema claro',
     themeDarkTooltip: 'Ativar tema escuro',

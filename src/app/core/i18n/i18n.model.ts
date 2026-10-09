@@ -18,6 +18,7 @@ export interface TranslationDictionary {
   navbar: {
     subtitle: string;
     quick: string;
+    installTooltip: string;
     settingsTooltip: string;
     themeLightTooltip: string;
     themeDarkTooltip: string;

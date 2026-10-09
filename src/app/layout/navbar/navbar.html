@@ -240,8 +240,23 @@
         </form>
       </div>
 
-      <!-- Actions (Language, Settings & Theme Toggle) -->
+      <!-- Actions (Install, Language, Settings & Theme Toggle) -->
       <div class="order-2 sm:order-3 flex items-center gap-1.5 sm:gap-2 shrink-0">
+        <!-- Install PWA Button (Visible only when installation is available) -->
+        @if (pwaInstall.canInstall()) {
+          <button
+            type="button"
+            (click)="installApp()"
+            class="w-10 h-10 rounded-xl border border-slate-200/90 dark:border-slate-800 bg-white/70 dark:bg-slate-800/60 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 transition-all duration-200 hover:scale-105 active:scale-95 shadow-sm hover:shadow flex items-center justify-center shrink-0 cursor-pointer"
+            [pTooltip]="i18n.dict().navbar.installTooltip"
+            tooltipPosition="bottom"
+            [showDelay]="500"
+            [attr.aria-label]="i18n.dict().navbar.installTooltip"
+          >
+            <i class="pi pi-download text-sm"></i>
+          </button>
+        }
+
         <!-- Language Selector Dropdown -->
         <div class="relative">
           <button

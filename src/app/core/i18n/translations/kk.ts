@@ -19,6 +19,7 @@ export const kkTranslations: RecursivePartial<TranslationDictionary> = {
   navbar: {
     subtitle: 'Нақты уақыттағы ауа райы',
     quick: 'Жылдам:',
+    installTooltip: 'Қолданбаны орнату',
     settingsTooltip: 'Өлшем бірліктері',
     themeLightTooltip: 'Ашық тақырыпқа ауысу',
     themeDarkTooltip: 'Күңгірт тақырыпқа ауысу',

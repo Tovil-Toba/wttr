@@ -20,6 +20,7 @@ export const ruTranslations: TranslationDictionary = {
   navbar: {
     subtitle: 'Погода в реальном времени',
     quick: 'Быстро:',
+    installTooltip: 'Установить приложение',
     settingsTooltip: 'Единицы измерения',
     themeLightTooltip: 'Включить светлую тему',
     themeDarkTooltip: 'Включить тёмную тему',

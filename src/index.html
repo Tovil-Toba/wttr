@@ -27,6 +27,19 @@
       rel="stylesheet"
     />
 
+    <!-- Early PWA Install Prompt Capture & Immediate Service Worker Registration -->
+    <script>
+      window.addEventListener('beforeinstallprompt', function (event) {
+        event.preventDefault();
+        window.__pwaInstallPrompt = event;
+        window.dispatchEvent(new CustomEvent('pwa-prompt-ready'));
+      });
+
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js').catch(function () {});
+      }
+    </script>
+
     <!-- Prevent FOUC Theme & Language Script (Modern Web Guidance) -->
     <script>
       (function () {

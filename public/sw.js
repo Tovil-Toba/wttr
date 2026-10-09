@@ -1,16 +1,14 @@
-// wttr.hub Self-destructing Service Worker
-// Automatically unregisters itself and purges legacy caches across all mobile/desktop browsers
-
+// wttr.hub PWA Service Worker
+// Satisfies Chromium PWA installability criteria while allowing all network traffic to pass through natively.
 self.addEventListener('install', () => {
   self.skipWaiting();
 });
 
 self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches
-      .keys()
-      .then((keys) => Promise.all(keys.map((k) => caches.delete(k))))
-      .then(() => self.registration.unregister())
-      .then(() => self.clients.claim()),
-  );
+  event.waitUntil(self.clients.claim());
+});
+
+// Pass-through fetch event handler required for Chromium PWA installability
+self.addEventListener('fetch', () => {
+  // Intentionally no event.respondWith - native network routing is preserved without caching interference
 });

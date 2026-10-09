@@ -279,5 +279,25 @@ describe('NavbarComponent', () => {
       expect(component.matchingCities().length).toBe(0);
       expect(element.textContent).toContain('Ничего не найдено в словаре');
     });
+
+    it('should not show install button by default when canInstall is false', () => {
+      const installIcon = element.querySelector('.pi-download');
+      expect(installIcon).toBeNull();
+    });
+
+    it('should show install button when canInstall is true and trigger install on click', async () => {
+      component.pwaInstall.canInstall.set(true);
+      await fixture.whenStable();
+
+      const installBtn = element
+        .querySelector('.pi-download')
+        ?.closest('button') as HTMLButtonElement;
+      expect(installBtn).toBeTruthy();
+      expect(installBtn.getAttribute('aria-label')).toBe('Установить приложение');
+
+      const installSpy = vi.spyOn(component.pwaInstall, 'install').mockResolvedValue(true);
+      installBtn.click();
+      expect(installSpy).toHaveBeenCalled();
+    });
   });
 });

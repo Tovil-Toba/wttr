@@ -19,6 +19,7 @@ export const trTranslations: RecursivePartial<TranslationDictionary> = {
   navbar: {
     subtitle: 'Gerçek zamanlı hava durumu',
     quick: 'Hızlı:',
+    installTooltip: 'Uygulamayı yükle',
     settingsTooltip: 'Ölçü birimleri',
     themeLightTooltip: 'Açık temaya geç',
     themeDarkTooltip: 'Karanlık temaya geç',

@@ -19,6 +19,7 @@ export const jaTranslations: RecursivePartial<TranslationDictionary> = {
   navbar: {
     subtitle: 'リアルタイム天気予報',
     quick: 'クイック:',
+    installTooltip: 'アプリをインストール',
     settingsTooltip: '測定単位',
     themeLightTooltip: 'ライトモードに切替',
     themeDarkTooltip: 'ダークモードに切替',
