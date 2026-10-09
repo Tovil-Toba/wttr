@@ -8,10 +8,11 @@ import { PwaInstallService } from '../../core/pwa-install.service';
 import { ThemeService } from '../../core/theme.service';
 import { PressureUnit, TempUnit, WindUnit } from '../../features/weather/weather.model';
 import { WeatherService } from '../../features/weather/weather.service';
+import { IosInstallModalComponent } from '../../shared/components/ios-install-modal/ios-install-modal';
 
 @Component({
   selector: 'app-navbar',
-  imports: [FormsModule, Tooltip],
+  imports: [FormsModule, Tooltip, IosInstallModalComponent],
   templateUrl: './navbar.html',
   styleUrl: './navbar.scss',
 })

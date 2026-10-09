@@ -299,5 +299,14 @@ describe('NavbarComponent', () => {
       installBtn.click();
       expect(installSpy).toHaveBeenCalled();
     });
+
+    it('should show iOS install modal when isIosModalOpen is true', async () => {
+      component.pwaInstall.isIosModalOpen.set(true);
+      await fixture.whenStable();
+
+      const modal = element.querySelector('app-ios-install-modal');
+      expect(modal).toBeTruthy();
+      expect(modal?.textContent).toContain('1');
+    });
   });
 });

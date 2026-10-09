@@ -1,0 +1,155 @@
+<div
+  class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 modal-backdrop-safe bg-black/60 backdrop-blur-md animate-in fade-in duration-200 overflow-y-auto overscroll-contain"
+  (click)="close.emit()"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="ios-modal-title"
+>
+  <!-- Modal Card -->
+  <div
+    class="relative w-full max-w-md sm:max-w-lg rounded-2xl sm:rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 shadow-2xl overflow-hidden flex flex-col my-auto animate-in zoom-in-95 duration-200"
+    (click)="$event.stopPropagation()"
+  >
+    <!-- Header -->
+    <div
+      class="flex items-center justify-between px-4 sm:px-6 py-3.5 sm:py-4 border-b border-slate-100 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-950/40 select-none shrink-0"
+    >
+      <div class="flex items-center gap-3">
+        <div
+          class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-sky-500 to-indigo-600 text-white flex items-center justify-center shadow-md shadow-sky-500/20 shrink-0"
+        >
+          <i class="pi pi-apple text-lg"></i>
+        </div>
+        <div>
+          <h3
+            id="ios-modal-title"
+            class="text-base font-bold text-slate-900 dark:text-white leading-tight"
+          >
+            {{ i18n.dict().iosInstall.title }}
+          </h3>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+            {{ i18n.dict().iosInstall.subtitle }}
+          </p>
+        </div>
+      </div>
+
+      <button
+        type="button"
+        (click)="close.emit()"
+        [title]="i18n.dict().common.close + ' (Esc)'"
+        class="w-9 h-9 rounded-xl border border-slate-200 dark:border-slate-800 bg-white/70 dark:bg-slate-800 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors flex items-center justify-center cursor-pointer shadow-xs"
+      >
+        <i class="pi pi-times text-sm"></i>
+      </button>
+    </div>
+
+    <!-- Body Steps -->
+    <div class="p-4 sm:p-6 space-y-4 text-slate-700 dark:text-slate-300 text-xs sm:text-sm">
+      <!-- Step 1 -->
+      <div
+        class="p-3.5 sm:p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-800 flex items-start gap-3.5"
+      >
+        <div
+          class="w-7 h-7 rounded-xl bg-sky-500 text-white font-bold text-xs flex items-center justify-center shrink-0 mt-0.5 shadow-xs shadow-sky-500/30"
+        >
+          1
+        </div>
+        <div class="space-y-1.5 flex-1 min-w-0">
+          <div class="flex items-center justify-between gap-2 flex-wrap">
+            <h4 class="font-bold text-slate-900 dark:text-white">
+              {{ i18n.dict().iosInstall.step1Title }}
+            </h4>
+            <span
+              class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-sky-100 dark:bg-sky-950/60 text-sky-700 dark:text-sky-300 border border-sky-200 dark:border-sky-800 text-xs font-semibold"
+            >
+              <svg
+                class="w-3.5 h-3.5"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+                <polyline points="16 6 12 2 8 6" />
+                <line x1="12" y1="2" x2="12" y2="15" />
+              </svg>
+              <span>{{ i18n.dict().iosInstall.actionShare }}</span>
+            </span>
+          </div>
+          <p class="text-slate-500 dark:text-slate-400 text-xs leading-relaxed">
+            {{ i18n.dict().iosInstall.step1Desc }}
+          </p>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div
+        class="p-3.5 sm:p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-800 flex items-start gap-3.5"
+      >
+        <div
+          class="w-7 h-7 rounded-xl bg-indigo-500 text-white font-bold text-xs flex items-center justify-center shrink-0 mt-0.5 shadow-xs shadow-indigo-500/30"
+        >
+          2
+        </div>
+        <div class="space-y-1.5 flex-1 min-w-0">
+          <div class="flex items-center justify-between gap-2 flex-wrap">
+            <h4 class="font-bold text-slate-900 dark:text-white">
+              {{ i18n.dict().iosInstall.step2Title }}
+            </h4>
+            <span
+              class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-indigo-100 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 text-xs font-semibold"
+            >
+              <i class="pi pi-plus-circle text-xs"></i>
+              <span>{{ i18n.dict().iosInstall.actionAdd }}</span>
+            </span>
+          </div>
+          <p class="text-slate-500 dark:text-slate-400 text-xs leading-relaxed">
+            {{ i18n.dict().iosInstall.step2Desc }}
+          </p>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div
+        class="p-3.5 sm:p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-800 flex items-start gap-3.5"
+      >
+        <div
+          class="w-7 h-7 rounded-xl bg-emerald-500 text-white font-bold text-xs flex items-center justify-center shrink-0 mt-0.5 shadow-xs shadow-emerald-500/30"
+        >
+          3
+        </div>
+        <div class="space-y-1.5 flex-1 min-w-0">
+          <div class="flex items-center justify-between gap-2 flex-wrap">
+            <h4 class="font-bold text-slate-900 dark:text-white">
+              {{ i18n.dict().iosInstall.step3Title }}
+            </h4>
+            <span
+              class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-emerald-500 text-white text-xs font-bold shadow-xs shadow-emerald-500/30"
+            >
+              <i class="pi pi-check text-xs"></i>
+              <span>{{ i18n.dict().iosInstall.actionDone }}</span>
+            </span>
+          </div>
+          <p class="text-slate-500 dark:text-slate-400 text-xs leading-relaxed">
+            {{ i18n.dict().iosInstall.step3Desc }}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div
+      class="flex items-center justify-end px-4 sm:px-6 py-3.5 sm:py-4 border-t border-slate-100 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-950/40 select-none shrink-0"
+    >
+      <button
+        type="button"
+        (click)="close.emit()"
+        class="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-semibold text-xs sm:text-sm transition-colors shadow-sm cursor-pointer"
+      >
+        {{ i18n.dict().common.close }}
+      </button>
+    </div>
+  </div>
+</div>

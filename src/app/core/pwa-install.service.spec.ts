@@ -75,4 +75,18 @@ describe('PwaInstallService', () => {
     delete (window as unknown as { __pwaInstallPrompt?: BeforeInstallPromptEvent })
       .__pwaInstallPrompt;
   });
+
+  it('should detect iOS and open iOS modal on install()', async () => {
+    service = TestBed.inject(PwaInstallService);
+    service.isIos.set(true);
+    service.canInstall.set(true);
+
+    expect(service.isIosModalOpen()).toBe(false);
+    const result = await service.install();
+    expect(result).toBe(true);
+    expect(service.isIosModalOpen()).toBe(true);
+
+    service.closeIosModal();
+    expect(service.isIosModalOpen()).toBe(false);
+  });
 });

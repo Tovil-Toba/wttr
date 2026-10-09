@@ -212,6 +212,19 @@ export interface TranslationDictionary {
     instructionsTitle: string;
     instructionsSubtitle: string;
   };
+  iosInstall: {
+    title: string;
+    subtitle: string;
+    step1Title: string;
+    step1Desc: string;
+    step2Title: string;
+    step2Desc: string;
+    step3Title: string;
+    step3Desc: string;
+    actionShare: string;
+    actionAdd: string;
+    actionDone: string;
+  };
   instructions: {
     tabSearch: string;
     tabSettings: string;
