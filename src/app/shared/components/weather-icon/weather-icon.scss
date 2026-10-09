@@ -41,12 +41,13 @@
 
 @keyframes moon-glow-pulse {
   from {
-    opacity: 0.9;
-    filter: drop-shadow(0 0 3px rgba(129, 140, 248, 0.4));
+    opacity: 0.92;
+    filter: drop-shadow(0 0 4px rgba(245, 158, 11, 0.45));
   }
   to {
     opacity: 1;
-    filter: drop-shadow(0 0 8px rgba(165, 180, 252, 0.8));
+    filter: drop-shadow(0 0 10px rgba(253, 224, 71, 0.75))
+      drop-shadow(0 0 16px rgba(245, 158, 11, 0.35));
   }
 }
 
@@ -54,6 +55,7 @@
 .anim-star-twinkle-2,
 .anim-star-twinkle-3 {
   animation: star-twinkle 2.5s ease-in-out infinite alternate;
+  filter: drop-shadow(0 0 3px rgba(254, 240, 138, 0.8));
 }
 
 .anim-star-twinkle-1 {
@@ -324,30 +326,46 @@
 
 /* Lightning */
 .anim-lightning {
+  transform-origin: 34px 42px;
   animation: lightning-flash 3.5s ease-in-out infinite;
 }
 
 @keyframes lightning-flash {
+  /* Resting / idle state: clearly visible in vibrant gold */
   0%,
-  88%,
-  96%,
+  82%,
+  97%,
   100% {
-    opacity: 0.15;
-    filter: drop-shadow(0 0 2px rgba(251, 191, 36, 0.3));
+    opacity: 0.85;
+    filter: drop-shadow(0 0 3px rgba(245, 158, 11, 0.5));
+    transform: scale(1);
+  }
+  /* Pre-strike charge flicker */
+  84% {
+    opacity: 0.65;
     transform: scale(0.97);
   }
-  89%,
-  93% {
+  /* First brilliant strike */
+  86%,
+  88% {
     opacity: 1;
     filter: drop-shadow(0 0 12px rgba(253, 224, 71, 0.95))
-      drop-shadow(0 0 20px rgba(245, 158, 11, 0.8));
-    transform: scale(1.04);
+      drop-shadow(0 0 22px rgba(245, 158, 11, 0.85));
+    transform: scale(1.08);
   }
-  91% {
-    opacity: 0.4;
+  /* Quick dip between strikes */
+  90% {
+    opacity: 0.7;
+    filter: drop-shadow(0 0 4px rgba(245, 158, 11, 0.6));
+    transform: scale(1.01);
   }
+  /* Second powerful strike */
+  92%,
   94% {
-    opacity: 0.85;
+    opacity: 1;
+    filter: drop-shadow(0 0 14px rgba(253, 224, 71, 1))
+      drop-shadow(0 0 26px rgba(245, 158, 11, 0.9));
+    transform: scale(1.1);
   }
 }
 
