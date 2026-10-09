@@ -84,11 +84,11 @@
             </defs>
 
             <!-- Sky arch fill -->
-            <path d="M 35,105 A 130,85 0 0,1 285,105 Z" fill="url(#skyUnderArc)" />
+            <path d="M 35,105 A 125,85 0 0,1 285,105 Z" fill="url(#skyUnderArc)" />
 
             <!-- Background celestial arc (dashed track) -->
             <path
-              d="M 35,105 A 130,85 0 0,1 285,105"
+              d="M 35,105 A 125,85 0 0,1 285,105"
               fill="none"
               stroke="#94a3b8"
               stroke-opacity="0.35"
@@ -96,17 +96,17 @@
               stroke-dasharray="4,4"
             />
 
-            <!-- Active illuminated arc (solid golden) -->
-            <path
-              d="M 35,105 A 130,85 0 0,1 285,105"
-              fill="none"
-              stroke="url(#sunArcGrad)"
-              stroke-width="2.5"
-              stroke-linecap="round"
-              [style.stroke-dasharray]="'410'"
-              [style.stroke-dashoffset]="410 - (410 * sun.progressPercent) / 100"
-              class="transition-all duration-700 ease-out"
-            />
+            <!-- Active illuminated arc (solid golden, terminating strictly at the sun position) -->
+            @if (sun.activePathD) {
+              <path
+                [attr.d]="sun.activePathD"
+                fill="none"
+                stroke="url(#sunArcGrad)"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                class="transition-all duration-500 ease-out"
+              />
+            }
 
             <!-- Horizon line -->
             <line

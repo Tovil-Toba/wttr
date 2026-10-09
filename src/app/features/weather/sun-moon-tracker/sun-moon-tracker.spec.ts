@@ -118,6 +118,9 @@ describe('SunMoonTrackerComponent', () => {
     expect(sun?.sunX).toBeLessThanOrEqual(285);
     expect(sun?.sunY).toBeGreaterThanOrEqual(20);
     expect(sun?.sunY).toBeLessThanOrEqual(105);
+    if (sun?.isDay && sun.progressPercent > 0) {
+      expect(sun.activePathD).toBe(`M 35,105 A 125,85 0 0,1 ${sun.sunX},${sun.sunY}`);
+    }
   });
 
   it('should compute moon tracker with full moon phase', () => {

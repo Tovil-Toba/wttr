@@ -18,6 +18,7 @@ export interface SunPathData {
   progressPercent: number;
   sunX: number;
   sunY: number;
+  activePathD: string;
 }
 
 export interface MoonTrackerData {
@@ -114,11 +115,13 @@ export class SunMoonTrackerComponent {
       progress = nowMin > sunsetMin ? 1 : 0;
     }
 
-    // Arc geometry on 320x130 viewBox:
-    // Left at (35, 105), apex at (160, 20), right at (285, 105)
-    // Parametric coordinates:
-    const sunX = Math.round((35 + 250 * progress) * 10) / 10;
+    // Semi-ellipse arc geometry on 320x125 viewBox:
+    // Left horizon at (35, 105), apex at (160, 20), right horizon at (285, 105)
+    // Semi-axes: Rx = 125 (span 250 centered at 160), Ry = 85 (height 105 - 20)
+    const sunX = Math.round((160 - 125 * Math.cos(Math.PI * progress)) * 10) / 10;
     const sunY = Math.round((105 - 85 * Math.sin(Math.PI * progress)) * 10) / 10;
+
+    const activePathD = isDay && progress > 0 ? `M 35,105 A 125,85 0 0,1 ${sunX},${sunY}` : '';
 
     return {
       sunrise: this.weatherService.formatTo24Hour(astro.sunrise),
@@ -132,6 +135,7 @@ export class SunMoonTrackerComponent {
       progressPercent: Math.round(progress * 100),
       sunX,
       sunY,
+      activePathD,
     };
   });
 
