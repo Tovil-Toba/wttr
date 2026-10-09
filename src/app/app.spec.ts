@@ -32,6 +32,25 @@ describe('App', () => {
     expect(compiled.querySelector('main')).toBeTruthy();
   });
 
+  it('should display scroll to top button when scrolled down and scroll to top on click', async () => {
+    const fixture = TestBed.createComponent(App);
+    const app = fixture.componentInstance;
+    await fixture.whenStable();
+
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.querySelector('#scroll-to-top-btn')).toBeNull();
+
+    app.showScrollTop.set(true);
+    await fixture.whenStable();
+    const scrollBtn = compiled.querySelector('#scroll-to-top-btn') as HTMLButtonElement;
+    expect(scrollBtn).toBeTruthy();
+
+    const scrollSpy = vi.spyOn(window, 'scrollTo').mockImplementation(() => {});
+    scrollBtn.click();
+    expect(scrollSpy).toHaveBeenCalledWith({ top: 0, behavior: 'smooth' });
+    scrollSpy.mockRestore();
+  });
+
   it('should toggle About modal dialog when clicking О проекте button', async () => {
     const fixture = TestBed.createComponent(App);
     const weatherService = TestBed.inject(WeatherService);

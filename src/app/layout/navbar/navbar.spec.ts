@@ -51,6 +51,10 @@ describe('NavbarComponent', () => {
     expect(element.textContent).toContain('Обнинск');
     expect(element.textContent).toContain('Москва');
     expect(element.textContent).toContain('Шереметьево (SVO)');
+
+    const logoContainer = element.querySelector('img[alt="wttr.hub"]')?.closest('div.order-1');
+    expect(logoContainer).toBeTruthy();
+    expect(logoContainer?.classList.contains('cursor-pointer')).toBe(false);
   });
 
   it('should submit search form, trigger fetchWeather with trimmed query and clear input', () => {

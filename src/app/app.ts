@@ -1,4 +1,5 @@
 import { Component, computed, effect, HostListener, inject, signal } from '@angular/core';
+import { Tooltip } from 'primeng/tooltip';
 
 import { I18nService } from './core/i18n';
 import { ThemeService } from './core/theme.service';
@@ -32,6 +33,7 @@ import {
     InstructionsModalComponent,
     AboutModalComponent,
     WeatherCompareModalComponent,
+    Tooltip,
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss',
@@ -71,8 +73,23 @@ export class App {
     this.isInstructionsOpen.set(false);
   }
 
+  readonly showScrollTop = signal<boolean>(false);
+
   retryFetch(): void {
     this.weatherService.refreshCurrentWeather();
+  }
+
+  @HostListener('window:scroll')
+  onWindowScroll(): void {
+    if (typeof window !== 'undefined') {
+      this.showScrollTop.set(window.scrollY > 350);
+    }
+  }
+
+  scrollToTop(): void {
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   }
 
   @HostListener('window:keydown', ['$event'])

@@ -15,6 +15,7 @@ export const enTranslations: TranslationDictionary = {
     minutes: 'min',
     km: 'km',
     mm: 'mm',
+    scrollTop: 'Scroll to top',
   },
   navbar: {
     subtitle: 'Real-time weather forecast',

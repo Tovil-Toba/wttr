@@ -15,6 +15,7 @@ export const ruTranslations: TranslationDictionary = {
     minutes: 'мин',
     km: 'км',
     mm: 'мм',
+    scrollTop: 'Наверх',
   },
   navbar: {
     subtitle: 'Погода в реальном времени',

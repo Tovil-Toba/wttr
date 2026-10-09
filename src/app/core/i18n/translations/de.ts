@@ -15,6 +15,7 @@ export const deTranslations: RecursivePartial<TranslationDictionary> = {
     minutes: 'Min.',
     km: 'km',
     mm: 'mm',
+    scrollTop: 'Nach oben',
   },
   navbar: {
     subtitle: 'Echtzeit-Wettervorhersage',

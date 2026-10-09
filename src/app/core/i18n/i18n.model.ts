@@ -13,6 +13,7 @@ export interface TranslationDictionary {
     minutes: string;
     km: string;
     mm: string;
+    scrollTop: string;
   };
   navbar: {
     subtitle: string;
