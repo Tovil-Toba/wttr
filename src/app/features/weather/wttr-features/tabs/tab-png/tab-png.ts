@@ -22,6 +22,8 @@ export class TabPngComponent {
   copied = signal<boolean>(false);
   imageLoading = signal<boolean>(true);
   imageSeconds = signal<number>(0);
+  useCoordsFallback = signal<boolean>(false);
+  imageHasError = signal<boolean>(false);
 
   readonly pngUrl = computed(() => {
     const q = this.query();
@@ -35,14 +37,29 @@ export class TabPngComponent {
     if (this.weatherService.useServerProxy) {
       return `/api/png?city=${encodeURIComponent(q)}&opts=${encodeURIComponent(optStr)}`;
     }
+
+    if (this.useCoordsFallback()) {
+      const area = this.weatherService.nearestArea();
+      if (area?.latitude && area?.longitude) {
+        return `https://wttr.in/${area.latitude},${area.longitude}${optStr}.png`;
+      }
+    }
+
     return `https://wttr.in/${encodeURIComponent(q)}${optStr}.png`;
   });
 
   constructor() {
-    // Whenever url changes, reset loading state
+    // Whenever url changes, reset loading state and error state
     effect(() => {
       this.pngUrl();
       this.imageLoading.set(true);
+      this.imageHasError.set(false);
+    });
+
+    // Reset coordinate fallback when city query changes
+    effect(() => {
+      this.query();
+      this.useCoordsFallback.set(false);
     });
 
     // Live timer while loading PNG
@@ -61,10 +78,23 @@ export class TabPngComponent {
 
   onImageLoaded(): void {
     this.imageLoading.set(false);
+    this.imageHasError.set(false);
   }
 
   onImageError(): void {
+    const area = this.weatherService.nearestArea();
+    if (!this.useCoordsFallback() && area?.latitude && area?.longitude) {
+      this.useCoordsFallback.set(true);
+      return;
+    }
     this.imageLoading.set(false);
+    this.imageHasError.set(true);
+  }
+
+  retry(): void {
+    this.imageLoading.set(true);
+    this.imageHasError.set(false);
+    this.useCoordsFallback.set(false);
   }
 
   onCopy(): void {

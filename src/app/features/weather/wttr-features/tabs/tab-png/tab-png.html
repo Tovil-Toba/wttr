@@ -75,15 +75,31 @@
       </div>
     }
 
+    @if (!imageLoading() && imageHasError()) {
+      <div class="py-8 flex flex-col items-center justify-center text-center space-y-3 p-4 text-slate-400">
+        <div class="w-12 h-12 rounded-2xl bg-amber-500/10 text-amber-400 flex items-center justify-center">
+          <i class="pi pi-image text-xl"></i>
+        </div>
+        <p class="text-sm font-medium text-slate-300">Сервис инфографики wttr.in временно недоступен</p>
+        <button
+          type="button"
+          (click)="retry()"
+          class="px-4 py-2 rounded-xl bg-sky-600 hover:bg-sky-700 text-white text-xs font-semibold transition-colors flex items-center gap-1.5 cursor-pointer shadow-sm"
+        >
+          <i class="pi pi-refresh"></i> {{ i18n.dict().common.retry }}
+        </button>
+      </div>
+    }
+
     <img
       [src]="pngUrl()"
       [alt]="query()"
       (load)="onImageLoaded()"
       (error)="onImageError()"
       class="max-w-full rounded-lg shadow-md transition-opacity duration-300"
-      [class.opacity-0]="imageLoading()"
-      [class.opacity-100]="!imageLoading()"
-      [class.hidden]="imageLoading()"
+      [class.opacity-0]="imageLoading() || imageHasError()"
+      [class.opacity-100]="!imageLoading() && !imageHasError()"
+      [class.hidden]="imageLoading() || imageHasError()"
     />
   </div>
 

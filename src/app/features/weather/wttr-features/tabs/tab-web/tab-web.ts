@@ -38,7 +38,12 @@ export class TabWebComponent {
   readonly safeHtml = computed<SafeHtml>(() => {
     const raw = this.htmlContent();
     if (!raw) return '';
-    return this.sanitizer.bypassSecurityTrustHtml(raw);
+    const clean = raw
+      .replace(/<script\b[\s\S]*?<\/script>/gi, '')
+      .replace(/<script\b[^>]*>/gi, '')
+      .replace(/\son\w+="[^"]*"/gi, '')
+      .replace(/\son\w+='[^']*'/gi, '');
+    return this.sanitizer.bypassSecurityTrustHtml(clean);
   });
 
   onCopy(): void {

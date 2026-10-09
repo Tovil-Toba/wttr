@@ -43,17 +43,18 @@ export class WeatherService {
   readonly fallbackSourceName = signal<string>('wttr.is');
   private wttrBlockedInSession = false;
 
-  // Server proxy detection (for production host on Render and local Express server)
-  get useServerProxy(): boolean {
+  private get isTestingEnv(): boolean {
     if (!this.window) return false;
-    // Disable in tests (Vitest / Karma) to preserve test mocks
-    if (
+    return !!(
       (this.window as any).__vitest_worker__ ||
       (this.window as any).__karma__ ||
       this.window.location.port === '9876'
-    ) {
-      return false;
-    }
+    );
+  }
+
+  // Server proxy detection (for production host on Render and local Express server on port 3000)
+  get useServerProxy(): boolean {
+    if (!this.window || this.isTestingEnv) return false;
     const host = this.window.location.hostname;
     const port = this.window.location.port;
     if (port === '3000') return true;
@@ -216,7 +217,7 @@ export class WeatherService {
               .get<WttrResponse>(
                 `/api/weather?city=${encodeURIComponent(cleanQuery)}&lang=${this.currentLang()}`,
               )
-              .pipe(timeout(6000)),
+              .pipe(timeout(10000)),
           );
           this.isFallbackMirror.set(false);
           this.fallbackSourceName.set('wttr.in');
@@ -231,12 +232,25 @@ export class WeatherService {
               this.window.sessionStorage.removeItem('wttr_fallback_active');
             } catch {}
           }
-        } catch (proxyErr) {
-          console.warn(
-            '[WeatherService] Proxy fetch failed, attempting direct fallback:',
-            proxyErr,
-          );
-          data = await this.fetchDirectWeather(cleanQuery);
+        } catch (proxyErr: any) {
+          const isHtmlParsingError =
+            proxyErr?.error instanceof SyntaxError ||
+            proxyErr?.message?.includes('Http failure during parsing') ||
+            proxyErr?.message?.includes('Unexpected token');
+
+          if (isHtmlParsingError) {
+            console.info(
+              '[WeatherService] Proxy endpoint returned HTML (dev-server needs restart to pick up proxy.conf.json). Engaging Open-Meteo fallback.',
+            );
+          } else {
+            console.warn(
+              '[WeatherService] Proxy fetch unavailable, engaging Open-Meteo fallback:',
+              proxyErr?.message || proxyErr,
+            );
+          }
+          this.isFallbackMirror.set(true);
+          this.fallbackSourceName.set('Open-Meteo');
+          data = await this.fetchOpenMeteoFallback(cleanQuery, this.currentLang());
         }
       } else {
         data = await this.fetchDirectWeather(cleanQuery);
@@ -329,17 +343,46 @@ export class WeatherService {
                 responseType: 'text',
               },
             )
-            .pipe(timeout(6000)),
+            .pipe(timeout(10000)),
         );
+        if (
+          text &&
+          (text.includes('<!DOCTYPE') || text.includes('<!doctype') || text.includes('<html'))
+        ) {
+          this.terminalOutput.set(this.generateSyntheticTerminal(cleanQuery));
+          this.isTerminalLoading.set(false);
+          return;
+        }
         this.terminalOutput.set(text);
         this.isTerminalLoading.set(false);
         return;
       } catch (proxyErr) {
-        console.warn('[WeatherService] Proxy terminal fetch failed, trying direct:', proxyErr);
+        this.terminalOutput.set(this.generateSyntheticTerminal(cleanQuery));
+        this.isTerminalLoading.set(false);
+        return;
       }
     }
 
+    const area = this.nearestArea();
+
     if (this.wttrBlockedInSession) {
+      if (!this.isTestingEnv && area?.latitude && area?.longitude) {
+        try {
+          const coordsText = await firstValueFrom(
+            this.http
+              .get(
+                `${this.primaryBase}/${area.latitude},${area.longitude}?T&lang=${this.currentLang()}`,
+                {
+                  responseType: 'text',
+                },
+              )
+              .pipe(timeout(3500)),
+          );
+          this.terminalOutput.set(coordsText);
+          this.isTerminalLoading.set(false);
+          return;
+        } catch {}
+      }
       this.terminalOutput.set(this.generateSyntheticTerminal(cleanQuery));
       this.isTerminalLoading.set(false);
       return;
@@ -371,6 +414,23 @@ export class WeatherService {
         );
         this.terminalOutput.set(fallbackText);
       } catch {
+        if (!this.isTestingEnv && area?.latitude && area?.longitude) {
+          try {
+            const coordsText = await firstValueFrom(
+              this.http
+                .get(
+                  `${this.primaryBase}/${area.latitude},${area.longitude}?T&lang=${this.currentLang()}`,
+                  {
+                    responseType: 'text',
+                  },
+                )
+                .pipe(timeout(3500)),
+            );
+            this.terminalOutput.set(coordsText);
+            this.isTerminalLoading.set(false);
+            return;
+          } catch {}
+        }
         this.terminalOutput.set(this.generateSyntheticTerminal(cleanQuery));
       }
     } finally {
@@ -408,17 +468,48 @@ export class WeatherService {
               responseType: 'text',
               headers: { Accept: 'text/html' },
             })
-            .pipe(timeout(6000)),
+            .pipe(timeout(10000)),
         );
+        const isSpaIndexHtml =
+          html.includes('<app-root') ||
+          html.includes('@vite/client') ||
+          html.includes('wttr.hub') ||
+          html.includes('manifest.webmanifest');
+
+        if (html && isSpaIndexHtml) {
+          this.webHtml.set(this.generateSyntheticWebHtml(cleanQuery));
+          this.isWebLoading.set(false);
+          return;
+        }
         this.webHtml.set(this.optimizeWttrHtml(html));
         this.isWebLoading.set(false);
         return;
       } catch (proxyErr) {
-        console.warn('[WeatherService] Proxy web HTML fetch failed, trying direct:', proxyErr);
+        this.webHtml.set(this.generateSyntheticWebHtml(cleanQuery));
+        this.isWebLoading.set(false);
+        return;
       }
     }
 
+    const area = this.nearestArea();
+
     if (this.wttrBlockedInSession) {
+      if (!this.isTestingEnv && area?.latitude && area?.longitude) {
+        try {
+          const coordsUrl = `${this.primaryBase}/${area.latitude},${area.longitude}?lang=${this.currentLang()}`;
+          const coordsHtml = await firstValueFrom(
+            this.http
+              .get(coordsUrl, {
+                responseType: 'text',
+                headers: { Accept: 'text/html' },
+              })
+              .pipe(timeout(3500)),
+          );
+          this.webHtml.set(this.optimizeWttrHtml(coordsHtml));
+          this.isWebLoading.set(false);
+          return;
+        } catch {}
+      }
       this.webHtml.set(this.generateSyntheticWebHtml(cleanQuery));
       this.isWebLoading.set(false);
       return;
@@ -448,6 +539,22 @@ export class WeatherService {
         );
         this.webHtml.set(this.optimizeWttrHtml(fallbackHtml));
       } catch {
+        if (!this.isTestingEnv && area?.latitude && area?.longitude) {
+          try {
+            const coordsUrl = `${this.primaryBase}/${area.latitude},${area.longitude}?lang=${this.currentLang()}`;
+            const coordsHtml = await firstValueFrom(
+              this.http
+                .get(coordsUrl, {
+                  responseType: 'text',
+                  headers: { Accept: 'text/html' },
+                })
+                .pipe(timeout(3500)),
+            );
+            this.webHtml.set(this.optimizeWttrHtml(coordsHtml));
+            this.isWebLoading.set(false);
+            return;
+          } catch {}
+        }
         this.webHtml.set(this.generateSyntheticWebHtml(cleanQuery));
       }
     } finally {
@@ -499,8 +606,11 @@ export class WeatherService {
       html
         // 1. Remove render-blocking stylesheet from adobe-fonts.github.io which causes a 5s connection timeout
         .replace(/<link[^>]+adobe-fonts\.github\.io[^>]*>/gi, '')
-        // 2. Remove blocking/hanging external scripts (twitter widgets, github buttons)
-        .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+        // 2. Remove all scripts and inline event handlers completely so sandboxed iframe never encounters scripts
+        .replace(/<script\b[\s\S]*?<\/script>/gi, '')
+        .replace(/<script\b[^>]*>/gi, '')
+        .replace(/\son\w+="[^"]*"/gi, '')
+        .replace(/\son\w+='[^']*'/gi, '')
         // 3. Inject optimized modern monospace font, dark background, and smooth mobile touch scroll styling
         .replace(
           '</style>',
@@ -664,14 +774,46 @@ export class WeatherService {
         : cur.weatherDesc?.[0]?.value
       : '';
 
-    return `
-      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; text-align: center; padding: 2rem; color: #94a3b8;">
-        <h2 style="color: #38bdf8; margin-bottom: 0.5rem;">${city}</h2>
-        <div style="font-size: 2.5rem; font-weight: bold; color: #f8fafc; margin: 1rem 0;">${temp}</div>
-        <div style="font-size: 1.1rem; color: #cbd5e1; margin-bottom: 1.5rem;">${desc}</div>
-        <p style="font-size: 0.85rem; opacity: 0.8;">wttr.in прямой веб-отчет недоступен на данной сети.<br>Данные отображаются через резервное зеркало wttr.hub.</p>
-      </div>
-    `;
+    return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #000000 !important;
+      color: #94a3b8;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+    }
+    .card {
+      text-align: center;
+      padding: 2.5rem 1.5rem;
+      max-width: 480px;
+      width: 100%;
+    }
+    h2 { color: #38bdf8; margin: 0 0 0.5rem 0; font-size: 1.75rem; font-weight: 700; }
+    .temp { font-size: 3rem; font-weight: 800; color: #f8fafc; margin: 0.75rem 0; }
+    .desc { font-size: 1.15rem; color: #cbd5e1; margin-bottom: 1.5rem; }
+    .note { font-size: 0.85rem; color: #64748b; line-height: 1.5; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>${city}</h2>
+    <div class="temp">${temp}</div>
+    <div class="desc">${desc}</div>
+    <p class="note">wttr.in прямой веб-отчет недоступен на данной сети.<br>Данные отображаются через резервное зеркало wttr.hub.</p>
+  </div>
+</body>
+</html>`;
   }
 
   // Geolocation detection
@@ -759,7 +901,19 @@ export class WeatherService {
     }
 
     let data: WttrResponse;
-    if (this.wttrBlockedInSession) {
+    if (this.useServerProxy) {
+      try {
+        data = await firstValueFrom(
+          this.http
+            .get<WttrResponse>(
+              `/api/weather?city=${encodeURIComponent(cleanQuery)}&lang=${this.currentLang()}`,
+            )
+            .pipe(timeout(10000)),
+        );
+      } catch {
+        data = await this.fetchOpenMeteoFallback(cleanQuery, this.currentLang());
+      }
+    } else if (this.wttrBlockedInSession) {
       data = await this.fetchOpenMeteoFallback(cleanQuery, this.currentLang());
     } else {
       try {
