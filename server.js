@@ -36,10 +36,24 @@ async function fetchUpstream(endpoint, responseType = 'json') {
   for (const base of mirrors) {
     try {
       const url = `${base}${endpoint}`;
+      const defaultUserAgent =
+        responseType === 'html'
+          ? 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'
+          : 'curl/7.68.0';
+
+      const defaultAccept =
+        responseType === 'json'
+          ? 'application/json'
+          : responseType === 'image'
+            ? 'image/png'
+            : responseType === 'html'
+              ? 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+              : '*/*';
+
       const res = await fetch(url, {
         headers: {
-          'User-Agent': 'curl/7.68.0',
-          Accept: responseType === 'json' ? 'application/json' : responseType === 'image' ? 'image/png' : '*/*',
+          'User-Agent': defaultUserAgent,
+          Accept: defaultAccept,
         },
         signal: AbortSignal.timeout(6000),
       });
@@ -290,7 +304,7 @@ app.get('/api/web', async (req, res) => {
   }
 
   try {
-    const html = await fetchUpstream(`/${encodeURIComponent(city)}?lang=${lang}`, 'text');
+    const html = await fetchUpstream(`/${encodeURIComponent(city)}?lang=${lang}`, 'html');
     setCached(cacheKey, html);
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
     res.setHeader('Cache-Control', 'public, max-age=180');

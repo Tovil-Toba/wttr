@@ -458,21 +458,71 @@ export class WeatherService {
   private optimizeWttrHtml(html: string): string {
     if (!html) return '';
 
+    // If upstream returned plain terminal text or text without HTML markup
+    if (!html.includes('<html') && !html.includes('<!DOCTYPE')) {
+      const clean = html.replace(/[\u001b\x1b]\[[0-9;]*[a-zA-Z]/g, '');
+      return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #000000 !important;
+      color: #38bdf8;
+      height: 100%;
+      overflow-x: auto !important;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+      font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Monaco, Consolas, monospace !important;
+    }
+    pre {
+      margin: 0;
+      padding: 12px;
+      font-size: 11.8px;
+      line-height: 1.25;
+      white-space: pre;
+      color: #e2e8f0;
+      min-width: max-content;
+    }
+  </style>
+</head>
+<body>
+  <pre>${clean}</pre>
+</body>
+</html>`;
+    }
+
     return (
       html
         // 1. Remove render-blocking stylesheet from adobe-fonts.github.io which causes a 5s connection timeout
         .replace(/<link[^>]+adobe-fonts\.github\.io[^>]*>/gi, '')
         // 2. Remove blocking/hanging external scripts (twitter widgets, github buttons)
         .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
-        // 3. Inject optimized modern monospace font and smooth scrollbar styling
+        // 3. Inject optimized modern monospace font, dark background, and smooth mobile touch scroll styling
         .replace(
           '</style>',
           `
-        /* Modern font & smooth scrollbar enhancements */
+        /* Modern font, dark background & touch scroll enhancements */
+        html, body {
+          background: #000000 !important;
+          color: #bbbbbb;
+          overflow-x: auto !important;
+          overflow-y: auto !important;
+          -webkit-overflow-scrolling: touch;
+        }
         body {
           font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Monaco, Consolas, monospace !important;
           scrollbar-width: thin;
           scrollbar-color: #334155 #090d16;
+        }
+        .term-container {
+          min-width: max-content !important;
+          max-width: none !important;
+          width: auto !important;
+          padding: 8px 12px 16px 12px !important;
         }
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: #000; }

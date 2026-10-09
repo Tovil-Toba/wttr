@@ -149,6 +149,7 @@ export const enTranslations: TranslationDictionary = {
     copyLink: 'Copy link',
     copyCommand: 'Copy command',
     openNewTab: 'Open in new tab',
+    openNewTabShort: 'Open',
     loading: 'Loading...',
 
     webReportTitle: 'wttr.in — Weather report web page',

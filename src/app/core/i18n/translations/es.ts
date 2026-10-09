@@ -144,6 +144,7 @@ export const esTranslations: RecursivePartial<TranslationDictionary> = {
     copyLink: 'Copiar enlace',
     copyCommand: 'Copiar comando',
     openNewTab: 'Abrir en nueva pestaña',
+    openNewTabShort: 'Abrir',
     loading: 'Cargando...',
 
     webReportTitle: 'wttr.in — Página web del informe meteorológico',

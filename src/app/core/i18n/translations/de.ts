@@ -146,6 +146,7 @@ export const deTranslations: RecursivePartial<TranslationDictionary> = {
     copyLink: 'Link kopieren',
     copyCommand: 'Befehl kopieren',
     openNewTab: 'In neuem Tab öffnen',
+    openNewTabShort: 'Öffnen',
     loading: 'Laden...',
 
     webReportTitle: 'wttr.in — Wetterbericht-Webseite',

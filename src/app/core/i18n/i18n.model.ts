@@ -148,6 +148,7 @@ export interface TranslationDictionary {
     copyLink: string;
     copyCommand: string;
     openNewTab: string;
+    openNewTabShort: string;
     loading: string;
 
     // Tab 1: Web

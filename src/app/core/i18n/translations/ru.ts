@@ -149,6 +149,7 @@ export const ruTranslations: TranslationDictionary = {
     copyLink: 'Копировать ссылку',
     copyCommand: 'Скопировать команду',
     openNewTab: 'Открыть в новой вкладке',
+    openNewTabShort: 'Открыть',
     loading: 'Загрузка...',
 
     webReportTitle: 'wttr.in — Веб-страница отчёта погоды',

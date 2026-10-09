@@ -143,6 +143,7 @@ export const frTranslations: RecursivePartial<TranslationDictionary> = {
     copyLink: 'Copier le lien',
     copyCommand: 'Copier la commande',
     openNewTab: 'Ouvrir dans un nouvel onglet',
+    openNewTabShort: 'Ouvrir',
     loading: 'Chargement...',
 
     webReportTitle: 'wttr.in — Page web du rapport météo',
